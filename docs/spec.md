@@ -30,6 +30,7 @@ Um pipeline de dados que junta a biblioteca e as horas jogadas (coletadas todos 
 16. Como recrutador, quero abrir o repositório e entender em poucos segundos o que o projeto faz, ver as execuções automáticas e prints do painel, para avaliar a capacidade técnica do candidato.
 17. Como amigo do dono do projeto (fase 2), quero informar meu perfil e meu histórico e ver o meu próprio painel, sem acesso aos dados de outras pessoas.
 18. Como jogador, quero ver quanto gastei dentro de cada jogo (compras no jogo feitas pela Steam), inclusive nos gratuitos, para comparar o custo real de jogos gratuitos e pagos.
+19. Como jogador, quero ver o desconto que consegui em cada compra e quanto economizei no total, calculados automaticamente, sem informar nada além do histórico de compras.
 
 ## Data and Sources
 
@@ -99,6 +100,7 @@ O banco já nasce preparado para vários usuários: toda tabela de dados pessoai
 18. Jogos "sem valor conhecido" aparecem nas horas jogadas, mas ficam fora do ranking de custo por hora e da soma do dinheiro parado, porque não dá para somar um valor desconhecido. O painel mostra quantos jogos estão nessa situação.
 19. Itens fora das métricas (programas e outros) aparecem numa lista no painel, com o motivo. Assim, um jogo de verdade classificado errado, por exemplo um jogo removido da loja sem gêneros, pode ser percebido e corrigido.
 20. Jogos encerrados ou retirados da loja não têm regra própria: as regras de licença (6), de origem do valor (2) e de classificação (17) já resolvem esses casos.
+21. Desconto obtido = 1 − (valor pago ÷ preço cheio de tabela). Economia total = soma dos preços cheios − soma dos valores pagos. Só entram jogos com origem "pago" e com preço de tabela. Em pacotes, vale o valor atribuído a cada jogo depois da divisão. O painel avisa que a comparação é com o preço cheio atual: se o preço mudou desde a compra (por exemplo, num reajuste regional), o desconto calculado fica distorcido.
 
 **Painel (Power BI)**
 
@@ -140,3 +142,4 @@ Cada conferência usa uma fonte independente do código, nunca o próprio result
 2. ~~Preço de referência para jogos que não estão mais à venda na loja.~~ Respondida em 16/10/2026: a origem "sem valor conhecido" (regras 2 e 18) e a divisão igual no pacote (regra 4).
 3. Como tratar um pacote que contém DLCs ou jogos que a pessoa já tinha antes da compra.
 4. ~~Se os jogos compartilhados pela Biblioteca Familiar da Steam aparecem na API e, se aparecerem, como tratá-los.~~ Respondida em 16/10/2026: não aparecem. A API devolve só os jogos da conta e os gratuitos jogados.
+5. Depois da v1: verificar se a API do IsThereAnyDeal tem histórico de preços da loja brasileira em reais. Se tiver, o desconto obtido (regra 21) pode comparar o valor pago com o preço cheio da época da compra, e não com o atual. A chave dessa API seria do projeto, guardada nos segredos do GitHub, sem nenhum passo extra para o usuário.

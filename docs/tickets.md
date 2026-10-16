@@ -158,6 +158,7 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 - [ ] O Power BI se conecta ao Supabase em modo de importação e atualiza com um clique.
 - [ ] Todo valor de custo exibido mostra se a origem é pago ou estimado.
 - [ ] O painel mostra, por jogo, o valor pago e o gasto em compras no jogo separados, permite comparar gratuitos e pagos, e informa que compras feitas fora da Steam não estão incluídas.
+- [ ] O painel mostra o desconto obtido por compra e a economia total (spec, regra 21), com o aviso de que a comparação é com o preço cheio atual. Para 3 compras, o desconto bate com uma conta feita à mão (valor do histórico de compras e preço cheio da página da loja).
 - [ ] O custo por hora de 3 jogos com preço pago bate com uma conta feita à mão (valor do histórico de compras dividido pelas horas exibidas na biblioteca da Steam).
 - [ ] A visão de horas por dia mostra os dias coletados sem valores negativos.
 

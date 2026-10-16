@@ -1,3 +1,17 @@
 # Instrucoes locais do assistente de codigo (nao versionar)
 CLAUDE.md
 CLAUDE.local.md
+
+# Credentials: real values live only in .env (template: .env.example)
+.env
+
+# Purchase history saved from the browser (personal data, never commit)
+*.html
+# Exception: fictional history used by the tests
+!tests/fixtures/*.html
+
+# Python temporary files
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/

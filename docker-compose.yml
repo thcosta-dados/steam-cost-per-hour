@@ -1,0 +1,37 @@
+# Local environment: `docker compose up -d` starts the database and the Python app.
+# Values like ${POSTGRES_PASSWORD} are read from the .env file (never committed).
+
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    # 5433 on Windows -> 5432 in the container (5432 is taken by the local PostgreSQL)
+    ports:
+      - "5433:5432"
+    # Named volume: data survives `docker compose down`
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    # Reports "healthy" only when the database accepts connections
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    env_file: .env
+    volumes:
+      - .:/app
+    # Starts only after the database is ready
+    depends_on:
+      db:
+        condition: service_healthy
+    # Keeps the container running so we can execute commands in it
+    command: sleep infinity
+
+volumes:
+  pgdata:

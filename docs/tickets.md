@@ -14,12 +14,12 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 
 **Acceptance criteria:**
 - [x] O repositório existe no GitHub com a especificação e os tickets.
-- [ ] Git, Python e Docker Desktop estão instalados e funcionando no computador de desenvolvimento.
-- [ ] Com o Docker instalado, um único comando sobe o ambiente local e o banco PostgreSQL fica acessível.
-- [ ] Um teste de exemplo roda com pytest dentro do ambiente e passa.
-- [ ] Credenciais e arquivos de histórico estão listados para serem ignorados pelo Git, e um teste manual confirma que um arquivo desses não aparece para commit.
-- [ ] O modelo de variáveis de ambiente lista a chave da API da Steam e os dados de conexão do banco, sem valores reais.
-- [ ] Existe um README provisório.
+- [x] Git, Python e Docker Desktop estão instalados e funcionando no computador de desenvolvimento.
+- [x] Com o Docker instalado, um único comando sobe o ambiente local e o banco PostgreSQL fica acessível.
+- [x] Um teste de exemplo roda com pytest dentro do ambiente e passa.
+- [x] Credenciais e arquivos de histórico estão listados para serem ignorados pelo Git, e um teste manual confirma que um arquivo desses não aparece para commit.
+- [x] O modelo de variáveis de ambiente lista a chave da API da Steam e os dados de conexão do banco, sem valores reais.
+- [x] Existe um README provisório.
 
 ---
 

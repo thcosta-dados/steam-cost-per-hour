@@ -1,0 +1,134 @@
+# Especificação: steam-cost-per-hour
+
+Versão 1, definida em 15/10/2026 a partir da sessão de grill-me. O nome criativo do projeto fica para depois. O repositório se chama steam-cost-per-hour.
+
+## Problem Statement
+
+Quem joga no PC compra muitos jogos ao longo dos anos, em promoções, pacotes e presentes, e perde a noção de quanto cada um realmente valeu. A Steam mostra quanto tempo a pessoa jogou e, em outra página, quanto ela pagou, mas nunca junta as duas coisas. Não existe um jeito simples de responder perguntas como "qual jogo saiu mais barato por hora de diversão?" ou "quanto dinheiro eu tenho parado em jogos que nunca abri?".
+
+## Solution
+
+Um pipeline de dados que junta a biblioteca e as horas jogadas (coletadas todos os dias, automaticamente, pela API da Steam) com o histórico de compras da própria pessoa, trata os casos difíceis do histórico (pacotes, reembolsos, presentes, créditos de carteira) e entrega um painel que mostra o custo por hora de cada jogo. Como destaque secundário, o painel mostra o dinheiro parado em jogos nunca abertos e em jogos mal começados. Qualquer pessoa com perfil público pode usar com os próprios dados, e só com os próprios dados.
+
+## User Stories
+
+1. Como jogador, quero ver o custo por hora de cada jogo da minha biblioteca, para saber quais compras valeram a pena.
+2. Como jogador, quero ver quanto dinheiro está parado em jogos que nunca abri, para repensar minhas próximas compras.
+3. Como jogador, quero ver os jogos que comprei e joguei menos de 1 hora em um grupo separado, para identificar compras que quase não usei.
+4. Como jogador, quero que minhas horas sejam coletadas todos os dias sem eu fazer nada, para ter um histórico de quanto joguei em cada dia.
+5. Como jogador, quero carregar meu histórico de compras rodando um comando no meu computador, para que o arquivo com meus dados pessoais nunca vá para o GitHub.
+6. Como jogador sem histórico de compras carregado, quero ver um custo por hora estimado pelo preço cheio da loja, claramente marcado como estimado, para ainda ter uma noção do valor de cada jogo.
+7. Como jogador, quero que uma compra de pacote seja dividida entre os jogos de forma proporcional ao preço de cada um, para que o custo de cada jogo seja justo.
+8. Como jogador, quero que compras reembolsadas não contem como gasto, para que o painel reflita só o que eu realmente paguei.
+9. Como jogador, quero que jogos recebidos de presente e jogos gratuitos apareçam com custo zero e marcados como tal, para ver minha biblioteca completa.
+10. Como jogador, quero que linhas do histórico que não são compra de jogo (créditos de carteira, itens, linhas não reconhecidas) e compras em moeda estrangeira fiquem registradas com o motivo da rejeição, para saber que nada sumiu sem explicação.
+11. Como jogador, quero ser identificado no banco por um código anônimo e no painel por um apelido que eu escolher, para que meu SteamID não fique exposto.
+12. Como dono do projeto, quero ser avisado por e-mail quando a coleta diária falhar, para corrigir o problema antes de perder muitos dias de histórico.
+13. Como dono do projeto, quero que toda execução do pipeline fique registrada (sucesso ou falha, horário, quantidade de jogos coletados), para acompanhar a saúde da coleta.
+14. Como dono do projeto, quero rodar o projeto inteiro no meu computador com um comando, em um ambiente igual ao de qualquer outra pessoa, para desenvolver e testar sem mexer no banco real.
+15. Como dono do projeto, quero testes automáticos para cada regra de negócio, para ter certeza de que uma mudança no código não quebra o cálculo.
+16. Como recrutador, quero abrir o repositório e entender em poucos segundos o que o projeto faz, ver as execuções automáticas e prints do painel, para avaliar a capacidade técnica do candidato.
+17. Como amigo do dono do projeto (fase 2), quero informar meu perfil e meu histórico e ver o meu próprio painel, sem acesso aos dados de outras pessoas.
+
+## Data and Sources
+
+**API da Steam (Steam Web API).** Fornece a lista de jogos da biblioteca de um usuário e o total acumulado de minutos jogados em cada um. Exige uma chave de API gratuita e só funciona para perfis com os detalhes de jogos públicos. A API não informa preço pago nem horas por dia, só o total acumulado. Por isso o pipeline tira uma foto diária (snapshot) e calcula as horas de cada dia pela diferença entre duas fotos seguidas.
+
+**Loja da Steam.** Fornece o preço cheio de tabela de cada jogo em reais e o link da imagem de capa. Usado para a estimativa de preço quando não há histórico de compras, para a divisão proporcional de pacotes e para as capas no painel.
+
+**Histórico de compras da Steam.** Página que cada pessoa logada pode ver na própria conta, com data, itens, tipo de transação e valor. Não há exportação oficial, então a pessoa salva a página como arquivo HTML pelo navegador. É a única fonte do preço realmente pago. Problemas de qualidade conhecidos: pacotes com vários jogos em uma única linha, reembolsos que aparecem como transação separada, presentes recebidos, créditos de carteira e itens de jogo misturados com compras de jogos, possíveis compras em outras moedas, e o layout da página pode mudar no futuro.
+
+**Frequência.** API coletada 1 vez por dia. Histórico de compras carregado manualmente sempre que a pessoa quiser atualizar.
+
+## Implementation Decisions
+
+**Etapas do pipeline**
+
+1. Coleta diária: chama a API da Steam para cada usuário cadastrado, grava um snapshot de minutos jogados por jogo e registra a execução.
+2. Catálogo de jogos: para cada jogo novo encontrado, busca o nome, o preço cheio de tabela e a imagem de capa na loja e registra isso uma única vez.
+3. Carga do histórico: script rodado na máquina da pessoa que lê o HTML do histórico, aplica as regras de qualidade e envia ao banco só as compras tratadas e as linhas rejeitadas com motivo. O arquivo HTML nunca sai do computador da pessoa nem vai para o repositório.
+4. Camada de análise: views no banco que entregam o custo por hora, as horas por dia, o dinheiro parado e os jogos mal começados, prontas para o Power BI.
+5. Painel: Power BI conectado ao banco, em modo de importação, lendo as views.
+
+**Ferramentas e motivo de cada uma**
+
+1. Python com Pandas para transformação, por ser o padrão de mercado para manipulação de dados em Python.
+2. Requests para chamar a API e a loja, por ser simples e padrão de mercado.
+3. BeautifulSoup para ler o HTML do histórico de compras.
+4. PostgreSQL hospedado no Supabase (plano gratuito), porque a coleta roda na nuvem e precisa de um banco acessível pela internet.
+5. GitHub Actions como agendador da coleta diária, porque roda com o computador desligado, é gratuito e deixa as execuções visíveis no repositório.
+6. pytest para os testes das regras de negócio.
+7. Docker para o ambiente local (Python e um PostgreSQL local), para desenvolver e testar sem tocar no banco real. A coleta na nuvem não usa Docker na v1.
+8. Power BI para o painel, por ser uma das ferramentas de BI mais usadas no mercado.
+
+A chave da API da Steam e as credenciais do banco ficam guardadas como segredos do GitHub e em variáveis de ambiente locais, nunca escritas no código.
+
+**Modelo de dados (formato das tabelas)**
+
+O banco já nasce preparado para vários usuários: toda tabela de dados pessoais tem a coluna de usuário.
+
+- users: código anônimo (hash do SteamID), apelido, data de cadastro.
+- games: identificador do jogo na Steam, nome, preço cheio de tabela em reais, data em que o preço foi registrado, link da imagem de capa, indicação de jogo gratuito.
+- library: usuário, jogo, data em que apareceu na biblioteca, indicação de removido.
+- playtime_snapshots: usuário, jogo, data, minutos acumulados. Uma linha por usuário, jogo e dia.
+- purchases: usuário, data, tipo (compra, presente recebido, reembolso), valor total, moeda.
+- purchase_items: compra, jogo, valor atribuído ao jogo depois da divisão do pacote.
+- quarantine: usuário, origem (histórico ou coleta), conteúdo original da linha, motivo da rejeição, data.
+- pipeline_runs: horário de início e fim, status, quantidade de usuários e jogos coletados, mensagem de erro.
+
+**Regras de negócio e definições de métricas**
+
+1. Custo por hora = valor pago pelo jogo dividido pelas horas totais jogadas. É calculado para todos os jogos com horas maiores que zero.
+2. Origem do preço: "pago" quando vem do histórico de compras, "estimado" quando vem do preço cheio de tabela. Toda métrica de custo carrega essa marcação.
+3. Preço estimado é o preço cheio de tabela, sem desconto, registrado na primeira vez que o jogo aparece e nunca atualizado depois.
+4. Pacote: o valor pago é dividido entre os jogos do pacote proporcionalmente ao preço cheio de tabela de cada um.
+5. Reembolso: a compra e o estorno se anulam. Se o jogo continuar na biblioteca por outro motivo, segue a regra desse outro motivo.
+6. Presentes recebidos e jogos gratuitos: custo zero, marcados como "presente" ou "gratuito", e entram no ranking com R$ 0 por hora.
+7. Moeda: na v1 só compras em reais são aceitas. Compras em outra moeda vão para a quarentena.
+8. Linhas do histórico que não são compra de jogo (créditos de carteira, itens de jogo, linhas não reconhecidas) vão para a quarentena com o motivo.
+9. Jogos com 0 horas não entram no ranking de custo por hora e compõem o indicador de dinheiro parado.
+10. Jogos com mais de 0 e menos de 1 hora têm o custo por hora calculado e guardado, mas não aparecem no ranking principal do painel. Formam o grupo "comprados e mal começados".
+11. Horas por dia = minutos acumulados no snapshot do dia menos os do dia anterior.
+12. Jogo novo na biblioteca começa a contar a partir do primeiro snapshot em que aparece.
+13. Se o total de minutos de um jogo diminuir de um dia para o outro, aquele dia vai para a quarentena em vez de gerar horas negativas.
+14. Jogo que some da biblioteca mantém todo o histórico e é marcado como removido.
+15. Falha na coleta: a execução é registrada como falha, o GitHub envia e-mail ao dono do repositório e a coleta tenta de novo no dia seguinte. Um perfil que virou privado é registrado como falha daquele usuário, sem derrubar a coleta dos demais.
+
+**Painel (Power BI)**
+
+Visão principal: ranking de custo por hora dos jogos com 1 hora ou mais, mostrando sempre as horas e a origem do preço ao lado. Destaques secundários: total de dinheiro parado em jogos com 0 horas e total em jogos mal começados. Visões de apoio: horas jogadas por dia e por jogo. O design interativo (tema, capas, navegação, detalhe por jogo) está descrito no ticket 11.
+
+**Idioma.** Código, tabelas e colunas em inglês. README em português com um resumo curto em inglês no topo.
+
+## Success Criteria
+
+Cada conferência usa uma fonte independente do código, nunca o próprio resultado calculado de novo.
+
+1. Horas jogadas: para 5 jogos escolhidos ao acaso, as horas no banco batem com as horas exibidas na biblioteca da Steam.
+2. Valores pagos: para 5 compras, incluindo pelo menos um pacote, um reembolso e um presente, o valor no banco bate com o que aparece na página de Histórico de compras da Steam.
+3. Contagem do histórico: linhas aceitas mais linhas na quarentena somam exatamente o total de linhas do arquivo de histórico, e toda linha da quarentena tem um motivo preenchido.
+4. Coleta diária: 7 execuções seguidas com sucesso visíveis no GitHub Actions, e cada dia tem um snapshot por jogo da biblioteca, com o número de jogos igual ao total exibido no perfil da Steam.
+5. Painel: o custo por hora de 3 jogos no Power BI bate com uma conta feita à mão (valor pago dividido pelas horas exibidas na biblioteca da Steam), e o total de dinheiro parado bate com a soma manual dos jogos com 0 horas.
+6. Testes: os testes das regras de negócio (pacote, reembolso, presente, moeda estrangeira, zero horas, horas que diminuem, jogo novo) passam.
+7. Qualidade de dados: nenhuma chave duplicada (um snapshot por usuário, jogo e dia, um item por compra e jogo), nenhum valor pago negativo, nenhum jogo sem nome no catálogo.
+8. Privacidade: nenhum SteamID em texto aberto no banco, nenhum arquivo de histórico ou credencial no repositório.
+
+**A v1 está pronta quando** a coleta rodar sozinha por 7 dias, o histórico do autor estiver carregado, o painel mostrar custo por hora e dinheiro parado, todos os critérios acima passarem e o README tiver os prints do painel.
+
+## Out of Scope
+
+1. Outros usuários além do autor usando o projeto (fase 2, embora o banco já esteja preparado).
+2. Conversão de moedas estrangeiras (fase 2).
+3. Alertas por Telegram ou qualquer outro canal de mensagem.
+4. Login automático na Steam ou qualquer coleta que exija a senha do usuário.
+5. Coleta de perfis de pessoas que não deram consentimento, mesmo que públicos.
+6. Docker na execução em nuvem (na v1 ele é só o ambiente local).
+7. Página web pública para visualizar o painel.
+8. Plataformas além da Steam (Epic, PlayStation, Xbox).
+
+## Open Questions
+
+1. Nome criativo do projeto (o repositório segue como steam-cost-per-hour por enquanto).
+2. Preço de referência para jogos que não estão mais à venda na loja: sem preço cheio de tabela, não há estimativa nem divisão proporcional de pacote. Precisa de uma regra (por exemplo, divisão igual no pacote e jogo sem estimativa).
+3. Como tratar um pacote que contém DLCs ou jogos que a pessoa já tinha antes da compra.
+4. Se os jogos compartilhados pela Biblioteca Familiar da Steam aparecem na API e, se aparecerem, como tratá-los.

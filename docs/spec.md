@@ -94,7 +94,7 @@ O banco já nasce preparado para vários usuários: toda tabela de dados pessoai
 13. Se o total de minutos de um jogo diminuir de um dia para o outro, aquele dia vai para a quarentena em vez de gerar horas negativas.
 14. Jogo que some da biblioteca mantém todo o histórico e é marcado como removido.
 15. Falha na coleta: a execução é registrada como falha, o GitHub envia e-mail ao dono do repositório e a coleta tenta de novo no dia seguinte. Um perfil que virou privado é registrado como falha daquele usuário, sem derrubar a coleta dos demais.
-16. Compras no jogo (microtransações pagas pela Steam) somam ao gasto total do jogo, gratuito ou pago. Créditos de carteira continuam na quarentena: o dinheiro só conta quando é gasto, para não ser contado duas vezes. Compras feitas fora da Steam (no site da empresa do jogo) não aparecem no histórico e ficam fora da v1. O painel informa esse limite.
+16. Compras no jogo (microtransações pagas pela Steam) somam ao gasto total do jogo, gratuito ou pago. Créditos de carteira continuam na quarentena: o dinheiro só conta quando é gasto, para não ser contado duas vezes. Compras feitas fora da Steam (no site da empresa do jogo) não aparecem no histórico e ficam fora do projeto. O painel informa esse limite.
 17. Só itens do tipo "jogo" na loja entram na camada de análise e no painel. Programas (como o Wallpaper Engine), servidores de teste e demos continuam guardados na coleta, mas ficam fora das métricas.
 
 **Painel (Power BI)**
@@ -128,7 +128,8 @@ Cada conferência usa uma fonte independente do código, nunca o próprio result
 6. Docker na execução em nuvem (na v1 ele é só o ambiente local).
 7. Página web pública para visualizar o painel.
 8. Plataformas além da Steam (Epic, PlayStation, Xbox).
-9. Compras no jogo feitas fora da Steam. Caminho previsto para a fase 2: uma planilha preenchida pela própria pessoa (jogo, data, valor), carregada pelo mesmo script do histórico e marcada como origem "manual".
+9. Compras no jogo feitas fora da Steam. Não existe fonte confiável para elas: os sites de cada empresa exigem login, e uma planilha preenchida à mão foi descartada por ser insustentável (a pessoa não tem esses valores).
+10. Horas em jogos emprestados pela Biblioteca Familiar. A API principal não os devolve, e a de jogos recentes só cobriria o que foi jogado nas últimas 2 semanas, a partir do início da coleta. Avaliado e descartado em 16/10/2026.
 
 ## Open Questions
 

@@ -30,18 +30,18 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Blocked by:** 01.
 
 **Acceptance criteria:**
-- [ ] As tabelas de usuários, jogos, biblioteca e snapshots existem no banco local com as chaves definidas na especificação.
-- [ ] Após rodar o comando, o número de jogos no banco é igual ao total exibido no perfil da Steam.
-- [ ] Para 5 jogos escolhidos ao acaso, as horas no banco batem com as horas exibidas na biblioteca da Steam.
-- [ ] Rodar o comando duas vezes no mesmo dia mantém exatamente um snapshot por jogo naquele dia.
-- [ ] Nenhum SteamID em texto aberto existe no banco.
-- [ ] A chave da API é lida da variável de ambiente, nunca escrita no código.
+- [x] As tabelas de usuários, jogos, biblioteca e snapshots existem no banco local com as chaves definidas na especificação.
+- [x] Após rodar o comando, o número de jogos no banco bate com o perfil da Steam, com cada diferença explicada. Conferido em 16/10/2026: banco 79 = 54 jogos da conta + 25 gratuitos jogados. O contador "Jogos" do perfil (52) não inclui gratuitos nem 2 dos 4 itens de teste ou programa. A lista "Todos os jogos" (100) inclui jogos jogados da Biblioteca Familiar, que a API não devolve.
+- [x] Para 5 jogos escolhidos ao acaso, as horas no banco batem com as horas exibidas na biblioteca da Steam.
+- [x] Rodar o comando duas vezes no mesmo dia mantém exatamente um snapshot por jogo naquele dia.
+- [x] Nenhum SteamID em texto aberto existe no banco.
+- [x] A chave da API é lida da variável de ambiente, nunca escrita no código.
 
 ---
 
 # 03: Catálogo de preços
 
-**What to build:** para cada jogo novo encontrado na biblioteca, o pipeline busca na loja da Steam o nome, o preço cheio de tabela em reais, o link da imagem de capa e se o jogo é gratuito, e registra isso uma única vez, junto com a data do registro. Jogos que já estão no catálogo não são consultados de novo.
+**What to build:** para cada jogo novo encontrado na biblioteca, o pipeline busca na loja da Steam o nome, o tipo do item (jogo, programa, demo etc.), o preço cheio de tabela em reais, o link da imagem de capa e se o jogo é gratuito, e registra isso uma única vez, junto com a data do registro. Jogos que já estão no catálogo não são consultados de novo.
 
 **Blocked by:** 02.
 
@@ -49,6 +49,7 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 - [ ] Todo jogo da biblioteca tem nome no catálogo.
 - [ ] Para 5 jogos pagos, o preço registrado bate com o preço cheio exibido na página da loja (sem desconto).
 - [ ] Jogos gratuitos estão marcados como gratuitos.
+- [ ] Todo item do catálogo tem o tipo registrado, e o Wallpaper Engine aparece como programa, não como jogo.
 - [ ] Rodar o pipeline de novo não altera preços já registrados.
 - [ ] Jogos sem preço na loja (fora de venda) ficam registrados sem preço e aparecem numa lista para decidir a regra (pergunta em aberto da especificação).
 - [ ] As chamadas à loja respeitam um intervalo entre requisições para não sobrecarregar o serviço.
@@ -63,6 +64,7 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 
 **Acceptance criteria:**
 - [ ] O custo por hora é calculado e guardado para todos os jogos com horas maiores que zero.
+- [ ] As views consideram só itens do tipo "jogo": programas, servidores de teste e demos ficam fora das métricas.
 - [ ] O ranking do painel mostra só jogos com 1 hora ou mais, com as horas e a origem do preço ao lado.
 - [ ] O custo por hora de 3 jogos no painel bate com uma conta feita à mão (preço da loja dividido pelas horas exibidas na biblioteca da Steam).
 - [ ] O total de dinheiro parado bate com a soma manual dos preços dos jogos com 0 horas.
@@ -78,7 +80,7 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 
 **Acceptance criteria:**
 - [ ] A estrutura das tabelas no Supabase é idêntica à do banco local, criada pelos mesmos scripts.
-- [ ] Uma coleta manual grava os dados no Supabase, e o número de jogos bate com o perfil da Steam.
+- [ ] Uma coleta manual grava os dados no Supabase, e o número de jogos bate com o do banco local na mesma data (que já foi conferido contra o perfil da Steam no ticket 02).
 - [ ] Trocar de banco não exige mudar nenhuma linha de código, só as variáveis de ambiente.
 - [ ] As credenciais do Supabase não aparecem em nenhum arquivo do repositório.
 
@@ -115,7 +117,7 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 
 # 08: Histórico de compras, casos simples
 
-**What to build:** um script rodado no computador da pessoa lê o arquivo HTML do histórico de compras salvo da Steam e carrega no banco as compras normais e os presentes recebidos. Créditos de carteira, itens de jogo, linhas não reconhecidas e compras em outra moeda vão para a quarentena com o motivo. O arquivo HTML nunca sai do computador. O repositório público usa um arquivo de histórico fictício para os testes.
+**What to build:** um script rodado no computador da pessoa lê o arquivo HTML do histórico de compras salvo da Steam e carrega no banco as compras normais, os presentes recebidos e as compras no jogo (microtransações pagas pela Steam, inclusive em jogos gratuitos). Créditos de carteira, itens do Mercado da Comunidade, linhas não reconhecidas e compras em outra moeda vão para a quarentena com o motivo. O arquivo HTML nunca sai do computador. O repositório público usa um arquivo de histórico fictício para os testes.
 
 **Blocked by:** 02.
 
@@ -124,6 +126,7 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 - [ ] Toda linha na quarentena tem motivo preenchido.
 - [ ] Para 3 compras normais e 1 presente, o valor e a data no banco batem com a página de Histórico de compras da Steam.
 - [ ] Presentes recebidos ficam com custo zero e marcados como presente.
+- [ ] Para 2 compras no jogo (pelo menos uma em jogo gratuito), o valor, a data e o jogo no banco batem com a página de Histórico de compras, e nenhum crédito de carteira é contado como gasto.
 - [ ] Testes automáticos usam um histórico fictício com todos os tipos de linha, e nenhum histórico real está no repositório.
 - [ ] Carregar o mesmo arquivo duas vezes não duplica compras.
 
@@ -152,6 +155,7 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Acceptance criteria:**
 - [ ] O Power BI se conecta ao Supabase em modo de importação e atualiza com um clique.
 - [ ] Todo valor de custo exibido mostra se a origem é pago ou estimado.
+- [ ] O painel mostra, por jogo, o valor pago e o gasto em compras no jogo separados, permite comparar gratuitos e pagos, e informa que compras feitas fora da Steam não estão incluídas.
 - [ ] O custo por hora de 3 jogos com preço pago bate com uma conta feita à mão (valor do histórico de compras dividido pelas horas exibidas na biblioteca da Steam).
 - [ ] A visão de horas por dia mostra os dias coletados sem valores negativos.
 

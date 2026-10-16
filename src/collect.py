@@ -19,10 +19,11 @@ def hash_steam_id(steam_id, secret_key):
     return hmac.new(secret_key.encode(), steam_id.encode(), hashlib.sha256).hexdigest()
 
 
-def save_collection(conn, user_id, nickname, games, snapshot_date):
+def save_collection(conn, user_id, nickname, games, licensed_app_ids, snapshot_date):
     """Save one collection: user, games, library and the day's snapshot.
 
     `games` uses the Steam API format: {"appid", "name", "playtime_forever"}.
+    `licensed_app_ids`: games the user has a license for; the others are played for free.
     Does not commit: the caller decides (all or nothing).
     """
     with conn.cursor() as cur:
@@ -38,11 +39,11 @@ def save_collection(conn, user_id, nickname, games, snapshot_date):
                ON CONFLICT (app_id) DO NOTHING""",
             [(g["appid"], g["name"]) for g in games],
         )
-        # Library: keep the date the game first appeared
+        # Library: keep the date the game first appeared; the license status can change
         cur.executemany(
-            """INSERT INTO library (user_id, app_id, first_seen_date) VALUES (%s, %s, %s)
-               ON CONFLICT (user_id, app_id) DO NOTHING""",
-            [(user_id, g["appid"], snapshot_date) for g in games],
+            """INSERT INTO library (user_id, app_id, first_seen_date, has_license) VALUES (%s, %s, %s, %s)
+               ON CONFLICT (user_id, app_id) DO UPDATE SET has_license = EXCLUDED.has_license""",
+            [(user_id, g["appid"], snapshot_date, g["appid"] in licensed_app_ids) for g in games],
         )
         # Snapshot: one row per user, game and day; a second run that day keeps the latest value
         cur.executemany(
@@ -59,14 +60,19 @@ def main():
     user_id = hash_steam_id(steam_id, os.environ["STEAM_ID_HASH_KEY"])
     nickname = os.environ["STEAM_NICKNAME"]
 
-    games = get_owned_games(os.environ["STEAM_API_KEY"], steam_id)
+    api_key = os.environ["STEAM_API_KEY"]
+    # Two queries: all games (with free ones played) and only licensed games.
+    # A game in the first list but not in the second is played without a license.
+    games = get_owned_games(api_key, steam_id, include_played_free_games=True)
+    licensed_app_ids = {g["appid"] for g in get_owned_games(api_key, steam_id, include_played_free_games=False)}
     # Brazil's date, not the server's (GitHub Actions runs in UTC)
     today = datetime.now(ZoneInfo("America/Sao_Paulo")).date()
 
     # The connection block commits only if everything works (all or nothing)
     with get_connection() as conn:
-        save_collection(conn, user_id, nickname, games, today)
-    print(f"{len(games)} games collected for {nickname} on {today}.")
+        save_collection(conn, user_id, nickname, games, licensed_app_ids, today)
+    print(f"{len(games)} games collected for {nickname} on {today} "
+          f"({len(licensed_app_ids)} with a license, {len(games) - len(licensed_app_ids)} played for free).")
 
 
 if __name__ == "__main__":

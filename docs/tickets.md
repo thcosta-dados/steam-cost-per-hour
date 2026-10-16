@@ -41,18 +41,18 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 
 # 03: Catálogo de preços
 
-**What to build:** para cada jogo novo encontrado na biblioteca, o pipeline busca na loja da Steam o nome, o tipo do item (jogo, programa, demo etc.), o preço cheio de tabela em reais, o link da imagem de capa e se o jogo é gratuito, e registra isso uma única vez, junto com a data do registro. Jogos que já estão no catálogo não são consultados de novo.
+**What to build:** para cada jogo novo encontrado na biblioteca, o pipeline busca na loja da Steam o tipo e os gêneros do item, o preço cheio de tabela em reais, o link da imagem de capa e se o jogo é gratuito, e registra isso uma única vez, junto com a data do registro. Jogos que já estão no catálogo não são consultados de novo.
 
 **Blocked by:** 02.
 
 **Acceptance criteria:**
-- [ ] Todo jogo da biblioteca tem nome no catálogo.
-- [ ] Para 5 jogos pagos, o preço registrado bate com o preço cheio exibido na página da loja (sem desconto).
-- [ ] Jogos gratuitos estão marcados como gratuitos.
-- [ ] Todo item do catálogo tem o tipo registrado, e o Wallpaper Engine aparece como programa, não como jogo.
-- [ ] Rodar o pipeline de novo não altera preços já registrados.
-- [ ] Jogos sem preço na loja (fora de venda) ficam registrados sem preço e aparecem numa lista para decidir a regra (pergunta em aberto da especificação).
-- [ ] As chamadas à loja respeitam um intervalo entre requisições para não sobrecarregar o serviço.
+- [x] Todo jogo da biblioteca tem nome no catálogo.
+- [x] Para 5 jogos pagos, o preço registrado bate com o preço cheio exibido na página da loja (sem desconto). Conferido em 16/10/2026 com Cyberpunk 2077, Mortal Kombat 11, Hades II, Dying Light 2 e Dead by Daylight. Dois estavam em promoção, e o banco registrou o preço riscado.
+- [x] Jogos gratuitos estão marcados como gratuitos pela regra de licença (spec, regra 6): a coleta marca na biblioteca os jogos que a pessoa joga sem licença. Conferido pela própria pessoa, que confirmou que não pagou por nenhum dos 25 marcados. CS2, PUBG e R6 ficaram "com licença". Se a licença foi paga ou não, quem decide é o histórico de compras (ticket 08), sem suposição.
+- [x] A regra de classificação em SQL separa jogo, programa e outro. Na revisão manual da lista, o Wallpaper Engine aparece como programa, os servidores de teste e playtests como outro, e nenhum jogo de verdade fica fora de "jogo". O GrandChase Classic, sem gêneros na loja, ficou como outro por decisão do dono.
+- [x] Rodar o pipeline de novo não altera preços já registrados.
+- [x] Jogos sem preço na loja (fora de venda) ficam registrados sem preço e aparecem numa lista para decidir a regra (pergunta em aberto da especificação). HITMAN™ 2 e GRID Autosport conferidos na loja. A regra foi decidida (spec, regras 2, 18 e 20).
+- [x] As chamadas à loja respeitam um intervalo entre requisições para não sobrecarregar o serviço.
 
 ---
 
@@ -64,7 +64,9 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 
 **Acceptance criteria:**
 - [ ] O custo por hora é calculado e guardado para todos os jogos com horas maiores que zero.
-- [ ] As views consideram só itens do tipo "jogo": programas, servidores de teste e demos ficam fora das métricas.
+- [ ] As views consideram só itens classificados como "jogo" (regra do ticket 03): programas, servidores de teste e playtests ficam fora das métricas.
+- [ ] Cada jogo recebe a origem do valor ("gratuito", "estimado" ou "sem valor conhecido"). Os "sem valor conhecido" ficam fora do ranking e do dinheiro parado, e o painel mostra quantos são.
+- [ ] O painel tem a lista de itens fora das métricas, com o motivo de cada um.
 - [ ] O ranking do painel mostra só jogos com 1 hora ou mais, com as horas e a origem do preço ao lado.
 - [ ] O custo por hora de 3 jogos no painel bate com uma conta feita à mão (preço da loja dividido pelas horas exibidas na biblioteca da Steam).
 - [ ] O total de dinheiro parado bate com a soma manual dos preços dos jogos com 0 horas.
@@ -139,7 +141,7 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Blocked by:** 03, 08.
 
 **Acceptance criteria:**
-- [ ] Testes automáticos cobrem: pacote com jogos de preços diferentes, pacote com jogo gratuito, reembolso simples e jogo reembolsado e depois recebido de presente.
+- [ ] Testes automáticos cobrem: pacote com jogos de preços diferentes, pacote com jogo gratuito, pacote com jogo sem preço de tabela (divisão igual), reembolso simples e jogo reembolsado e depois recebido de presente.
 - [ ] A soma dos valores atribuídos aos jogos de um pacote é exatamente igual ao valor pago pelo pacote (sem perda de centavos).
 - [ ] Para 1 pacote e 1 reembolso reais, o resultado no banco confere com a página de Histórico de compras da Steam.
 - [ ] Nenhum valor pago negativo existe no banco.

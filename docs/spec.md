@@ -35,7 +35,7 @@ Um pipeline de dados que junta a biblioteca e as horas jogadas (coletadas todos 
 
 **API da Steam (Steam Web API).** Fornece a lista de jogos da biblioteca de um usuário e o total acumulado de minutos jogados em cada um. Exige uma chave de API gratuita e só funciona para perfis com os detalhes de jogos públicos. A API não informa preço pago nem horas por dia, só o total acumulado. Por isso o pipeline tira uma foto diária (snapshot) e calcula as horas de cada dia pela diferença entre duas fotos seguidas. A API devolve os jogos da conta e, com o parâmetro de gratuitos jogados, os jogos gratuitos que a pessoa já abriu. Jogos emprestados pela Biblioteca Familiar não aparecem (conferido em 16/10/2026). A coleta guarda tudo o que a API devolve, inclusive programas e servidores de teste. A separação do que é jogo acontece no catálogo e na camada de análise.
 
-**Loja da Steam.** Fornece o preço cheio de tabela de cada jogo em reais, o link da imagem de capa e o tipo do item (jogo, programa, demo etc.). Usado para a estimativa de preço quando não há histórico de compras, para a divisão proporcional de pacotes e para as capas no painel.
+**Loja da Steam.** Fornece o preço cheio de tabela de cada jogo em reais, o link da imagem de capa, o tipo e os gêneros do item. Usado para a estimativa de preço quando não há histórico de compras, para a divisão proporcional de pacotes e para as capas no painel.
 
 **Histórico de compras da Steam.** Página que cada pessoa logada pode ver na própria conta, com data, itens, tipo de transação e valor. Não há exportação oficial, então a pessoa salva a página como arquivo HTML pelo navegador. É a única fonte do preço realmente pago. Problemas de qualidade conhecidos: pacotes com vários jogos em uma única linha, reembolsos que aparecem como transação separada, presentes recebidos, créditos de carteira e itens de jogo misturados com compras de jogos, possíveis compras em outras moedas, e o layout da página pode mudar no futuro.
 
@@ -69,8 +69,8 @@ A chave da API da Steam e as credenciais do banco ficam guardadas como segredos 
 O banco já nasce preparado para vários usuários: toda tabela de dados pessoais tem a coluna de usuário.
 
 - users: código anônimo (hash do SteamID), apelido, data de cadastro.
-- games: identificador do jogo na Steam, nome, tipo do item na loja (jogo, programa, demo etc.), preço cheio de tabela em reais, data em que o preço foi registrado, link da imagem de capa, indicação de jogo gratuito.
-- library: usuário, jogo, data em que apareceu na biblioteca, indicação de removido.
+- games: identificador do jogo na Steam, nome, tipo e gêneros do item na loja (dados brutos usados na classificação), preço cheio de tabela em reais, data em que o preço foi registrado, link da imagem de capa, indicação de jogo gratuito.
+- library: usuário, jogo, data em que apareceu na biblioteca, indicação de removido, indicação de licença (a pessoa tem o jogo na conta ou só joga sem licença).
 - playtime_snapshots: usuário, jogo, data, minutos acumulados. Uma linha por usuário, jogo e dia.
 - purchases: usuário, data, tipo (compra, presente recebido, reembolso, compra no jogo), valor total, moeda.
 - purchase_items: compra, jogo, valor atribuído ao jogo depois da divisão do pacote.
@@ -80,11 +80,11 @@ O banco já nasce preparado para vários usuários: toda tabela de dados pessoai
 **Regras de negócio e definições de métricas**
 
 1. Custo por hora = gasto total com o jogo dividido pelas horas totais jogadas. Gasto total = valor pago pelo jogo + compras no jogo. O painel mostra as duas partes separadas. É calculado para todos os jogos com horas maiores que zero.
-2. Origem do preço: "pago" quando vem do histórico de compras, "estimado" quando vem do preço cheio de tabela. Toda métrica de custo carrega essa marcação.
+2. Origem do valor, em ordem de prioridade: "pago" (está no histórico de compras), "presente" ou "gratuito" (R$ 0 mais compras no jogo), "estimado" (tem licença, não está no histórico, e a loja tem preço cheio de tabela) e "sem valor conhecido" (tem licença, não está no histórico, e a loja não tem preço). Toda métrica de custo carrega essa marcação.
 3. Preço estimado é o preço cheio de tabela, sem desconto, registrado na primeira vez que o jogo aparece e nunca atualizado depois.
-4. Pacote: o valor pago é dividido entre os jogos do pacote proporcionalmente ao preço cheio de tabela de cada um.
+4. Pacote: o valor pago é dividido entre os jogos do pacote proporcionalmente ao preço cheio de tabela de cada um. Se algum jogo do pacote não tiver preço de tabela, o valor é dividido em partes iguais, e a divisão fica marcada como igual.
 5. Reembolso: a compra e o estorno se anulam. Se o jogo continuar na biblioteca por outro motivo, segue a regra desse outro motivo.
-6. Presentes recebidos e jogos gratuitos: valor pago zero, marcados como "presente" ou "gratuito". Sem compras no jogo, entram no ranking com R$ 0 por hora.
+6. Presentes recebidos e jogos gratuitos: valor pago zero, marcados como "presente" ou "gratuito". Sem compras no jogo, entram no ranking com R$ 0 por hora. "Gratuito" é definido por pessoa, pela API: é o jogo que a pessoa joga sem ter licença, ou seja, que só aparece na consulta com o parâmetro de gratuitos jogados. A indicação de gratuito da loja não serve para isso, porque mostra o status atual do jogo para qualquer pessoa: um jogo comprado que depois virou gratuito continua pago para quem o comprou, e um gratuito que foi encerrado continua gratuito. Ela fica guardada só como dado bruto. Ter licença também não prova que houve pagamento: alguns jogos que viraram gratuitos dão licença a quem começou a jogar depois da mudança. Por isso, um jogo com licença só tem valor "pago" se estiver no histórico de compras. Se não estiver, segue a regra 2 (estimado ou sem valor conhecido) e nunca vira R$ 0 por suposição.
 7. Moeda: na v1 só compras em reais são aceitas. Compras em outra moeda vão para a quarentena.
 8. Linhas do histórico que não são compra de jogo nem compra no jogo (créditos de carteira, itens do Mercado da Comunidade, linhas não reconhecidas) vão para a quarentena com o motivo.
 9. Jogos com 0 horas não entram no ranking de custo por hora e compõem o indicador de dinheiro parado.
@@ -95,7 +95,10 @@ O banco já nasce preparado para vários usuários: toda tabela de dados pessoai
 14. Jogo que some da biblioteca mantém todo o histórico e é marcado como removido.
 15. Falha na coleta: a execução é registrada como falha, o GitHub envia e-mail ao dono do repositório e a coleta tenta de novo no dia seguinte. Um perfil que virou privado é registrado como falha daquele usuário, sem derrubar a coleta dos demais.
 16. Compras no jogo (microtransações pagas pela Steam) somam ao gasto total do jogo, gratuito ou pago. Créditos de carteira continuam na quarentena: o dinheiro só conta quando é gasto, para não ser contado duas vezes. Compras feitas fora da Steam (no site da empresa do jogo) não aparecem no histórico e ficam fora do projeto. O painel informa esse limite.
-17. Só itens do tipo "jogo" na loja entram na camada de análise e no painel. Programas (como o Wallpaper Engine), servidores de teste e demos continuam guardados na coleta, mas ficam fora das métricas.
+17. Só itens classificados como "jogo" entram na camada de análise e no painel. Programas (como o Wallpaper Engine), servidores de teste e playtests continuam guardados na coleta, mas ficam fora das métricas. O campo de tipo da loja não basta, porque a loja marca o Wallpaper Engine e os servidores de teste como "game". A classificação é uma regra em SQL sobre os dados brutos da loja: "programa" se o item tem algum gênero de software (Utilities, Design & Illustration, Photo Editing etc.), "outro" se não tem gênero nem página na loja, e "jogo" no resto.
+18. Jogos "sem valor conhecido" aparecem nas horas jogadas, mas ficam fora do ranking de custo por hora e da soma do dinheiro parado, porque não dá para somar um valor desconhecido. O painel mostra quantos jogos estão nessa situação.
+19. Itens fora das métricas (programas e outros) aparecem numa lista no painel, com o motivo. Assim, um jogo de verdade classificado errado, por exemplo um jogo removido da loja sem gêneros, pode ser percebido e corrigido.
+20. Jogos encerrados ou retirados da loja não têm regra própria: as regras de licença (6), de origem do valor (2) e de classificação (17) já resolvem esses casos.
 
 **Painel (Power BI)**
 
@@ -134,6 +137,6 @@ Cada conferência usa uma fonte independente do código, nunca o próprio result
 ## Open Questions
 
 1. Nome criativo do projeto (o repositório segue como steam-cost-per-hour por enquanto).
-2. Preço de referência para jogos que não estão mais à venda na loja: sem preço cheio de tabela, não há estimativa nem divisão proporcional de pacote. Precisa de uma regra (por exemplo, divisão igual no pacote e jogo sem estimativa).
+2. ~~Preço de referência para jogos que não estão mais à venda na loja.~~ Respondida em 16/10/2026: a origem "sem valor conhecido" (regras 2 e 18) e a divisão igual no pacote (regra 4).
 3. Como tratar um pacote que contém DLCs ou jogos que a pessoa já tinha antes da compra.
 4. ~~Se os jogos compartilhados pela Biblioteca Familiar da Steam aparecem na API e, se aparecerem, como tratá-los.~~ Respondida em 16/10/2026: não aparecem. A API devolve só os jogos da conta e os gratuitos jogados.

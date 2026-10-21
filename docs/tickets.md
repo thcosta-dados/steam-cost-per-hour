@@ -81,10 +81,11 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Blocked by:** 02.
 
 **Acceptance criteria:**
-- [ ] A estrutura das tabelas no Supabase é idêntica à do banco local, criada pelos mesmos scripts.
-- [ ] Uma coleta manual grava os dados no Supabase, e o número de jogos bate com o do banco local na mesma data (que já foi conferido contra o perfil da Steam no ticket 02).
-- [ ] Trocar de banco não exige mudar nenhuma linha de código, só as variáveis de ambiente.
-- [ ] As credenciais do Supabase não aparecem em nenhum arquivo do repositório.
+- [x] A estrutura das tabelas no Supabase é idêntica à do banco local, criada pelos mesmos scripts. Conferido em 21/10/2026: o catálogo dos dois bancos (colunas, chaves, checks, RLS, opções e definição das views) é idêntico, 58 de 58 linhas.
+- [x] Uma coleta manual grava os dados no Supabase, e o número de jogos bate com o do banco local na mesma data (que já foi conferido contra o perfil da Steam no ticket 02). Conferido: 79 jogos, 79 snapshots e 490.104 minutos em 21/10 nos dois bancos, com o mesmo código de usuário e o mesmo catálogo.
+- [x] Trocar de banco não exige mudar nenhuma linha de código, só as variáveis de ambiente.
+- [x] As credenciais do Supabase não aparecem em nenhum arquivo do repositório.
+- [x] Os dados não ficam expostos pela API pública do Supabase: RLS ligado nas tabelas, views com security_invoker e o Security Advisor do Supabase sem alertas (só o aviso informativo esperado de RLS sem policies).
 
 ---
 

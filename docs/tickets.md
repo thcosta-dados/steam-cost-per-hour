@@ -63,14 +63,14 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Blocked by:** 03.
 
 **Acceptance criteria:**
-- [ ] O custo por hora é calculado e guardado para todos os jogos com horas maiores que zero.
-- [ ] As views consideram só itens classificados como "jogo" (regra do ticket 03): programas, servidores de teste e playtests ficam fora das métricas.
-- [ ] Cada jogo recebe a origem do valor ("gratuito", "estimado" ou "sem valor conhecido"). Os "sem valor conhecido" ficam fora do ranking e do dinheiro parado, e o painel mostra quantos são.
-- [ ] O painel tem a lista de itens fora das métricas, com o motivo de cada um.
-- [ ] O ranking do painel mostra só jogos com 1 hora ou mais, com as horas e a origem do preço ao lado.
-- [ ] O custo por hora de 3 jogos no painel bate com uma conta feita à mão (preço da loja dividido pelas horas exibidas na biblioteca da Steam).
-- [ ] O total de dinheiro parado bate com a soma manual dos preços dos jogos com 0 horas.
-- [ ] Jogos gratuitos aparecem com R$ 0 por hora.
+- [x] O custo por hora é calculado e guardado para todos os jogos com horas maiores que zero.
+- [x] As views consideram só itens classificados como "jogo" (regra do ticket 03): programas, servidores de teste e playtests ficam fora das métricas.
+- [x] Cada jogo recebe a origem do valor ("gratuito", "estimado" ou "sem valor conhecido"). Os "sem valor conhecido" ficam fora do ranking e do dinheiro parado, e o painel mostra quantos são.
+- [x] O painel tem a lista de itens fora das métricas, com o motivo de cada um.
+- [x] O ranking do painel mostra só jogos com 1 hora ou mais, com as horas e a origem do preço ao lado.
+- [x] O custo por hora de 3 jogos no painel bate com uma conta feita à mão (preço da loja dividido pelas horas exibidas na biblioteca da Steam). Conferido em 21/10/2026 com ARC Raiders, Ready or Not e Cities: Skylines.
+- [x] O total de dinheiro parado bate com a soma manual dos preços dos jogos com 0 horas. Conferido: R$ 431,89 (Company of Heroes 2, GTA V Enhanced e Metro Exodus Enhanced). Ver a pergunta em aberto 6 da spec.
+- [x] O ranking principal mostra só jogos pagos. Os gratuitos aparecem num ranking próprio, ordenado por horas, e o grupo "comprados e mal começados" tem só jogos pagos.
 
 ---
 
@@ -157,7 +157,7 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Acceptance criteria:**
 - [ ] O Power BI se conecta ao Supabase em modo de importação e atualiza com um clique.
 - [ ] Todo valor de custo exibido mostra se a origem é pago ou estimado.
-- [ ] O painel mostra, por jogo, o valor pago e o gasto em compras no jogo separados, permite comparar gratuitos e pagos, e informa que compras feitas fora da Steam não estão incluídas.
+- [ ] O painel mostra, por jogo, o valor pago e o gasto em compras no jogo separados. O ranking dos gratuitos e presentes ganha o gasto e o custo por hora, e o painel permite comparar gratuitos e pagos e informa que compras feitas fora da Steam não estão incluídas.
 - [ ] O painel mostra o desconto obtido por compra e a economia total (spec, regra 21), com o aviso de que a comparação é com o preço cheio atual. Para 3 compras, o desconto bate com uma conta feita à mão (valor do histórico de compras e preço cheio da página da loja).
 - [ ] O custo por hora de 3 jogos com preço pago bate com uma conta feita à mão (valor do histórico de compras dividido pelas horas exibidas na biblioteca da Steam).
 - [ ] A visão de horas por dia mostra os dias coletados sem valores negativos.

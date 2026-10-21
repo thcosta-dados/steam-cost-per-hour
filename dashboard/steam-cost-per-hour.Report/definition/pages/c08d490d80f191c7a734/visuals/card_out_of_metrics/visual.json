@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "card_out_of_metrics",
+  "position": {
+    "x": 1445,
+    "y": 20,
+    "z": 3,
+    "width": 455,
+    "height": 150,
+    "tabOrder": 3
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "items_out_of_metrics"
+                    }
+                  },
+                  "Property": "Itens fora das métricas"
+                }
+              },
+              "queryRef": "items_out_of_metrics.Itens fora das métricas",
+              "nativeQueryRef": "Itens fora das métricas"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

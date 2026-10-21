@@ -1,5 +1,6 @@
 # Local environment: `docker compose up -d` starts the database and the Python app.
 # Values like ${POSTGRES_PASSWORD} are read from the .env file (never committed).
+# The app-cloud service runs the same code against Supabase (.env.cloud).
 
 services:
   db:
@@ -32,6 +33,15 @@ services:
         condition: service_healthy
     # Keeps the container running so we can execute commands in it
     command: sleep infinity
+
+  # Same code and image, pointed at Supabase through .env.cloud.
+  # Only runs on explicit request, e.g.: docker compose run --rm app-cloud python -m src.collect
+  app-cloud:
+    build: .
+    env_file: .env.cloud
+    volumes:
+      - .:/app
+    profiles: [cloud]  # not started by "docker compose up", so nothing is written to the cloud by accident
 
 volumes:
   pgdata:

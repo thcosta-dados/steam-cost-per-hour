@@ -37,6 +37,29 @@ docker compose down
 
 O banco local fica acessível pelo Windows (pgAdmin, DBeaver, Power BI) em `localhost:5433`, com o usuário e a senha definidos no `.env`.
 
+## Pipeline
+
+```bash
+docker compose exec app python -m src.create_tables  # cria (ou atualiza) tabelas e views
+docker compose exec app python -m src.collect        # coleta biblioteca e horas do dia
+docker compose exec app python -m src.catalog        # busca preço, capa e gêneros dos jogos novos
+```
+
+## Banco na nuvem (Supabase)
+
+O mesmo código roda contra o Supabase trocando só as variáveis de ambiente. Crie o `.env.cloud` com os dados do *Session pooler* do projeto e `POSTGRES_SSLMODE=require` (veja o `.env.example`), e use o serviço `app-cloud`:
+
+```bash
+docker compose run --rm app-cloud python -m src.create_tables
+docker compose run --rm app-cloud python -m src.collect
+```
+
+As tabelas têm Row Level Security ligado e as views usam `security_invoker`, para que a API pública do Supabase não exponha os dados.
+
+## Painel
+
+O painel do Power BI está em `dashboard/`, salvo como projeto (`.pbip`). Ele lê as views do banco, e o servidor e o banco são parâmetros. Os dados importados não são versionados.
+
 ## Privacidade
 
 Credenciais ficam só no `.env` (ignorado pelo Git) e nos segredos do GitHub. Arquivos de histórico de compras nunca vão para o repositório, e o SteamID só é gravado no banco transformado em hash.

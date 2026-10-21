@@ -41,4 +41,13 @@ CREATE TABLE IF NOT EXISTS playtime_snapshots (
     FOREIGN KEY (user_id, app_id) REFERENCES library (user_id, app_id)
 );
 
+-- Row Level Security with no policies: nobody but the table owner can read or write.
+-- Supabase publishes every table in "public" through an automatic API; this blocks it.
+-- The pipeline and Power BI connect as the owner, which RLS does not restrict.
+-- On the local database it changes nothing (same owner), so one script serves both.
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE games ENABLE ROW LEVEL SECURITY;
+ALTER TABLE library ENABLE ROW LEVEL SECURITY;
+ALTER TABLE playtime_snapshots ENABLE ROW LEVEL SECURITY;
+
 -- Views (analysis layer) are in sql/views.sql.

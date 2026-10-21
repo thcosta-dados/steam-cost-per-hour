@@ -1,10 +1,13 @@
 -- Analysis layer: views read by Power BI. Rules from docs/spec.md.
 -- CREATE OR REPLACE: safe to run again; each view only adds logic over the tables.
+-- security_invoker: a view reads the tables with the permissions of whoever queries it,
+-- not of its owner. Without it, Supabase's public API could read the tables through
+-- the views, bypassing Row Level Security (schema.sql).
 
 -- Classification rule (spec, rule 17). The store marks software and test servers
 -- as "game", so the rule uses the genres. A rule in SQL can be fixed without
 -- querying the store again.
-CREATE OR REPLACE VIEW games_classified AS
+CREATE OR REPLACE VIEW games_classified WITH (security_invoker = true) AS
 SELECT
     app_id,
     name,
@@ -21,7 +24,7 @@ FROM games;
 
 
 -- Cost per hour of each game, one row per user and game (spec, rules 1, 2, 6, 9, 10, 18).
-CREATE OR REPLACE VIEW game_costs AS
+CREATE OR REPLACE VIEW game_costs WITH (security_invoker = true) AS
 WITH latest_snapshot AS (
     -- DISTINCT ON keeps the first row of each (user, game) in the ORDER BY: the latest day
     SELECT DISTINCT ON (user_id, app_id) user_id, app_id, snapshot_date, minutes_played
@@ -77,7 +80,7 @@ JOIN users u USING (user_id);
 
 
 -- Items left out of the metrics, with the reason, so nothing disappears silently (rule 19).
-CREATE OR REPLACE VIEW items_out_of_metrics AS
+CREATE OR REPLACE VIEW items_out_of_metrics WITH (security_invoker = true) AS
 SELECT
     l.user_id,
     l.app_id,

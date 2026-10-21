@@ -2,8 +2,10 @@
 CLAUDE.md
 CLAUDE.local.md
 
-# Credentials: real values live only in .env (template: .env.example)
-.env
+# Credentials: real values live only in .env files (.env = local, .env.cloud = Supabase).
+# Any .env* file is ignored; only the template is versioned.
+.env*
+!.env.example
 
 # Purchase history saved from the browser (personal data, never commit)
 *.html

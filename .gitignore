@@ -10,6 +10,10 @@ CLAUDE.local.md
 # Exception: fictional history used by the tests
 !tests/fixtures/*.html
 
+# Power BI project: imported data cache and local settings (only the report definition is versioned)
+**/.pbi/cache.abf
+**/.pbi/localSettings.json
+
 # Python temporary files
 __pycache__/
 *.pyc

@@ -1,0 +1,61 @@
+/// Items left out of the metrics, with the reason (view public.items_out_of_metrics, spec rule 19).
+table items_out_of_metrics
+	lineageTag: 01cbccef-4464-4dec-96d1-c5fd845d6a3c
+
+	measure 'Itens fora das métricas' = COUNTROWS ( items_out_of_metrics )
+		formatString: 0
+		lineageTag: 2b9395e8-ca73-4692-8272-042f9dab0da8
+
+	column user_id
+		dataType: string
+		lineageTag: faa309cb-dd9d-4fa4-8c9c-d9e8bc2e22c5
+		summarizeBy: none
+		sourceColumn: user_id
+
+	column app_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0a9ec935-a9fc-4cf8-bc0a-fe71b4c6d1c5
+		summarizeBy: none
+		sourceColumn: app_id
+
+	column name
+		dataType: string
+		lineageTag: be587003-7c32-477d-8556-2a3ba76f8f67
+		summarizeBy: none
+		sourceColumn: name
+
+	column item_category
+		dataType: string
+		lineageTag: aa7f7cb8-047d-45af-a9b4-f4e54edf5b13
+		summarizeBy: none
+		sourceColumn: item_category
+
+	column reason
+		dataType: string
+		lineageTag: 986e680f-daa2-47cc-b3b2-b81afda801e2
+		summarizeBy: none
+		sourceColumn: reason
+
+	partition items_out_of_metrics = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(DatabaseServer, DatabaseName),
+				    OutOfMetrics = Source{[Schema = "public", Item = "items_out_of_metrics"]}[Data],
+				    // Portuguese labels; unknown values pass through unchanged
+				    CategoryLabels = [software = "programa", other = "outro"],
+				    ReasonLabels = [
+				        #"Software genre in the store (e.g. Utilities)" = "Gênero de software na loja (ex.: Utilities)",
+				        #"No genres or no store page (test server, playtest or removed item)" = "Sem gêneros ou sem página na loja (servidor de teste, playtest ou item removido)"
+				    ],
+				    Labeled = Table.TransformColumns(OutOfMetrics, {
+				        {"item_category", each Record.FieldOrDefault(CategoryLabels, _, _), type text},
+				        {"reason", each Record.FieldOrDefault(ReasonLabels, _, _), type text}
+				    }),
+				    Typed = Table.TransformColumnTypes(Labeled, {{"app_id", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

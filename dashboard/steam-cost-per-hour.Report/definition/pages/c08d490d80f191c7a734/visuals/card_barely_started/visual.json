@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "card_barely_started",
+  "position": {
+    "x": 495,
+    "y": 20,
+    "z": 1,
+    "width": 455,
+    "height": 150,
+    "tabOrder": 1
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "game_costs"
+                    }
+                  },
+                  "Property": "Valor em jogos mal começados"
+                }
+              },
+              "queryRef": "game_costs.Valor em jogos mal começados",
+              "nativeQueryRef": "Valor em jogos mal começados"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS games (
     app_id            INTEGER PRIMARY KEY,  -- game id on Steam
     name              TEXT NOT NULL,
     store_type        TEXT,                 -- store "type" (not enough to tell games from software)
-    store_genres      TEXT[],               -- store genres, used by the games_classified view
+    store_genres      TEXT[],               -- store genres, used by the games_classified view (views.sql)
     list_price_brl    NUMERIC(10, 2),       -- full list price, without discount; NULL when not on sale
     price_recorded_at DATE,                 -- date the store was checked (set even when there is no price)
     header_image_url  TEXT,
@@ -41,20 +41,4 @@ CREATE TABLE IF NOT EXISTS playtime_snapshots (
     FOREIGN KEY (user_id, app_id) REFERENCES library (user_id, app_id)
 );
 
--- Classification rule (spec, rule 17). The store marks software and test servers
--- as "game", so the rule uses the genres. A rule in SQL can be fixed without
--- querying the store again.
-CREATE OR REPLACE VIEW games_classified AS
-SELECT
-    app_id,
-    name,
-    CASE
-        WHEN store_genres && ARRAY[  -- && = the two lists share at least one item
-            'Utilities', 'Design & Illustration', 'Photo Editing', 'Animation & Modeling',
-            'Video Production', 'Audio Production', 'Software Training', 'Web Publishing',
-            'Accounting', 'Education', 'Game Development'
-        ] THEN 'software'
-        WHEN cardinality(store_genres) > 0 THEN 'game'
-        ELSE 'other'  -- no genres or no store page: test servers, playtests
-    END AS item_category
-FROM games;
+-- Views (analysis layer) are in sql/views.sql.

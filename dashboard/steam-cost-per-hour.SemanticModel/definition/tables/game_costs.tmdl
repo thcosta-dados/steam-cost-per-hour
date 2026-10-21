@@ -1,0 +1,122 @@
+/// Cost per hour of each game (view public.game_costs). Labels translated to Portuguese in Power Query.
+table game_costs
+	lineageTag: bf85bb68-cd73-478d-90cb-92bdadf5e71a
+
+	/// Value of licensed games never opened (spec, rule 9). Unknown values are blank and ignored by SUM (rule 18).
+	measure 'Dinheiro parado' = CALCULATE ( SUM ( game_costs[game_value_brl] ), game_costs[hours_group] = "não jogado" )
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: c893c9ba-a6dc-4117-bd3e-c2e8cbfc3175
+
+	/// Value of games played for less than 1 hour (spec, rule 10).
+	measure 'Valor em jogos mal começados' = CALCULATE ( SUM ( game_costs[game_value_brl] ), game_costs[hours_group] = "mal começado" )
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: bb0eb698-c498-4d92-8c07-8347ed7083ed
+
+	/// Licensed games without a purchase record or store price: out of the ranking and sums (spec, rule 18).
+	measure 'Jogos sem valor conhecido' = CALCULATE ( COUNTROWS ( game_costs ), game_costs[value_origin] = "sem valor conhecido" )
+		formatString: 0
+		lineageTag: dda9c777-cd73-48f8-a136-4deb179ae698
+
+	column user_id
+		dataType: string
+		lineageTag: 5098b67f-b5b2-4624-95de-d58d19e11f48
+		summarizeBy: none
+		sourceColumn: user_id
+
+	column nickname
+		dataType: string
+		lineageTag: daa7129c-6e46-400c-a7fe-957b7c4d38b2
+		summarizeBy: none
+		sourceColumn: nickname
+
+	column app_id
+		dataType: int64
+		formatString: 0
+		lineageTag: f1e5d497-2251-4262-a227-3a854fb8feaf
+		summarizeBy: none
+		sourceColumn: app_id
+
+	column name
+		dataType: string
+		lineageTag: c802a857-69d1-4454-a293-cc17b5c082cf
+		summarizeBy: none
+		sourceColumn: name
+
+	column header_image_url
+		dataType: string
+		lineageTag: 9496f2f3-7d42-4fbb-9105-89bd2aa06e19
+		summarizeBy: none
+		sourceColumn: header_image_url
+
+	column last_snapshot_date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 7bf3aa64-1d53-43f6-9fff-077040e1d253
+		summarizeBy: none
+		sourceColumn: last_snapshot_date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column minutes_played
+		dataType: int64
+		formatString: #,0
+		lineageTag: fe5fdc61-84d5-4a40-bce4-88e6992d14ec
+		summarizeBy: none
+		sourceColumn: minutes_played
+
+	column hours_played
+		dataType: double
+		formatString: #,0.00
+		lineageTag: c4c05576-6490-4e03-b702-ae0680273816
+		summarizeBy: none
+		sourceColumn: hours_played
+
+	column value_origin
+		dataType: string
+		lineageTag: 9b284027-98b9-4deb-81bb-8c4364cbc5fa
+		summarizeBy: none
+		sourceColumn: value_origin
+
+	column game_value_brl
+		dataType: decimal
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: 7afbbfb7-23a8-402b-ac41-e0997d436583
+		summarizeBy: none
+		sourceColumn: game_value_brl
+
+	column cost_per_hour_brl
+		dataType: decimal
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: 244047bd-c962-4858-8e1e-4c2e4b376d2b
+		summarizeBy: none
+		sourceColumn: cost_per_hour_brl
+
+	column hours_group
+		dataType: string
+		lineageTag: 0482705b-f005-4000-9728-33ba3eb04b26
+		summarizeBy: none
+		sourceColumn: hours_group
+
+	partition game_costs = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(DatabaseServer, DatabaseName),
+				    GameCosts = Source{[Schema = "public", Item = "game_costs"]}[Data],
+				    // Portuguese labels for the dashboard; the database keeps the English codes
+				    OriginLabels = [free = "gratuito", estimated = "estimado", unknown = "sem valor conhecido"],
+				    GroupLabels = [played = "jogado", barely_started = "mal começado", not_played = "não jogado"],
+				    Labeled = Table.TransformColumns(GameCosts, {
+				        {"value_origin", each Record.FieldOrDefault(OriginLabels, _, _), type text},
+				        {"hours_group", each Record.FieldOrDefault(GroupLabels, _, _), type text}
+				    }),
+				    // Money as fixed decimal (Currency.Type): exact, like NUMERIC in the database
+				    Typed = Table.TransformColumnTypes(Labeled, {
+				        {"app_id", Int64.Type}, {"minutes_played", Int64.Type}, {"last_snapshot_date", type date},
+				        {"hours_played", type number}, {"game_value_brl", Currency.Type}, {"cost_per_hour_brl", Currency.Type}
+				    })
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

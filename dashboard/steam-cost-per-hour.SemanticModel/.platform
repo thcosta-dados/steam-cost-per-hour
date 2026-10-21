@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "steam-cost-per-hour"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "14ddd7c8-6bcd-407f-aa44-1c0c6617127d"
+  }
+}

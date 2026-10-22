@@ -66,6 +66,28 @@ def test_game_without_license_is_saved_as_unlicensed(conn):
     assert rows == [(900001, True), (900002, False)]
 
 
+def test_game_missing_from_the_library_is_marked_removed_and_keeps_its_history(conn):
+    user_id = hash_steam_id(FAKE_STEAM_ID, "secret-key")
+    removed = lambda: dict(conn.execute(
+        "SELECT app_id, is_removed FROM library WHERE user_id = %s", (user_id,)
+    ).fetchall())
+
+    save_collection(conn, user_id, "fake_user", FAKE_GAMES, LICENSED, datetime.date(2026, 1, 1))
+    assert removed() == {900001: False, 900002: False}
+
+    # Day 2: game two is no longer returned by the API
+    save_collection(conn, user_id, "fake_user", FAKE_GAMES[:1], LICENSED, datetime.date(2026, 1, 2))
+    assert removed() == {900001: False, 900002: True}
+    history = conn.execute(
+        "SELECT count(*) FROM playtime_snapshots WHERE user_id = %s AND app_id = 900002", (user_id,)
+    ).fetchone()[0]
+    assert history == 1  # the day-1 snapshot is kept
+
+    # Day 3: game two is back (e.g. bought again)
+    save_collection(conn, user_id, "fake_user", FAKE_GAMES, LICENSED, datetime.date(2026, 1, 3))
+    assert removed() == {900001: False, 900002: False}
+
+
 def test_private_profile_raises_error():
     with pytest.raises(RuntimeError, match="public"):
         games_from_response({})  # what the API returns for a private profile

@@ -43,6 +43,13 @@ def save_collection(conn, user_id, nickname, games, licensed_app_ids, snapshot_d
                ON CONFLICT (user_id, app_id) DO UPDATE SET has_license = EXCLUDED.has_license""",
             [(user_id, g["appid"], snapshot_date, g["appid"] in licensed_app_ids) for g in games],
         )
+        # Removed games (rule 14): missing from today's response -> removed; back again -> not removed.
+        # Only reached when the API answered normally (a private profile raises an error before),
+        # so a failure never marks the whole library as removed. History stays untouched.
+        cur.execute(
+            "UPDATE library SET is_removed = NOT (app_id = ANY(%s)) WHERE user_id = %s",
+            ([g["appid"] for g in games], user_id),
+        )
         # Snapshot: one row per user, game and day; a second run that day keeps the latest value
         cur.executemany(
             """INSERT INTO playtime_snapshots (user_id, app_id, snapshot_date, minutes_played)

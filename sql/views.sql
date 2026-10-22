@@ -79,6 +79,80 @@ FROM valued v
 JOIN users u USING (user_id);
 
 
+-- Minutes played between each snapshot and the previous one (spec, rules 11 to 13).
+-- Shared by daily_playtime (increases) and collection_quarantine (decreases).
+CREATE OR REPLACE VIEW snapshot_intervals WITH (security_invoker = true) AS
+WITH user_collections AS (
+    -- Previous collection of the user (any game): tells a new game from the first collection ever
+    SELECT user_id, snapshot_date,
+           LAG(snapshot_date) OVER (PARTITION BY user_id ORDER BY snapshot_date) AS previous_collection_date
+    FROM (SELECT DISTINCT user_id, snapshot_date FROM playtime_snapshots) AS days
+),
+with_previous AS (
+    -- LAG looks at the previous row of the same user and game
+    SELECT s.user_id, s.app_id, s.snapshot_date, s.minutes_played,
+           LAG(s.snapshot_date) OVER w AS previous_game_date,
+           LAG(s.minutes_played) OVER w AS previous_game_minutes,
+           c.previous_collection_date
+    FROM playtime_snapshots s
+    JOIN user_collections c USING (user_id, snapshot_date)
+    WINDOW w AS (PARTITION BY s.user_id, s.app_id ORDER BY s.snapshot_date)
+)
+SELECT
+    user_id,
+    app_id,
+    snapshot_date,
+    -- Game seen before: compare with its own previous snapshot.
+    -- New game: it was not in the previous collection, so it had 0 minutes then (rule 12).
+    coalesce(previous_game_date, previous_collection_date) AS previous_snapshot_date,
+    coalesce(previous_game_minutes, 0) AS previous_minutes,
+    minutes_played AS minutes,
+    minutes_played - coalesce(previous_game_minutes, 0) AS minutes_difference
+FROM with_previous
+-- First collection ever of the user: nothing to compare with, so no interval
+WHERE coalesce(previous_game_date, previous_collection_date) IS NOT NULL;
+
+
+-- Hours played per day and game, games only (rules 11, 12 and 17).
+-- The collection runs at 03:17, so a snapshot taken on day N covers the play of day N-1
+-- (a "play day" that ends at 3 a.m.). With a missing collection day, the whole interval goes
+-- to the last day and days_covered tells how many days it spans: nothing is invented.
+CREATE OR REPLACE VIEW daily_playtime WITH (security_invoker = true) AS
+SELECT
+    i.user_id,
+    i.app_id,
+    g.name,
+    i.snapshot_date - 1 AS play_date,
+    i.previous_snapshot_date,
+    i.snapshot_date,
+    i.snapshot_date - i.previous_snapshot_date AS days_covered,
+    i.minutes_difference AS minutes_played,
+    round(i.minutes_difference / 60.0, 2) AS hours_played
+FROM snapshot_intervals i
+JOIN games g USING (app_id)
+JOIN games_classified c USING (app_id)
+WHERE c.item_category = 'game'
+  AND i.minutes_difference > 0;  -- days without play are left out; decreases go to the quarantine
+
+
+-- Collection quarantine: a total that decreased is kept out of the hours, with the reason (rule 13).
+-- The original snapshots stay untouched in playtime_snapshots.
+CREATE OR REPLACE VIEW collection_quarantine WITH (security_invoker = true) AS
+SELECT
+    i.user_id,
+    'collection' AS origin,
+    i.app_id,
+    g.name,
+    i.previous_snapshot_date,
+    i.snapshot_date,
+    i.previous_minutes,
+    i.minutes,
+    format('Playtime decreased from %s to %s minutes', i.previous_minutes, i.minutes) AS reason
+FROM snapshot_intervals i
+JOIN games g USING (app_id)
+WHERE i.minutes_difference < 0;
+
+
 -- Items left out of the metrics, with the reason, so nothing disappears silently (rule 19).
 CREATE OR REPLACE VIEW items_out_of_metrics WITH (security_invoker = true) AS
 SELECT

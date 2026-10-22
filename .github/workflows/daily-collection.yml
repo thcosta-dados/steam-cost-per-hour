@@ -1,0 +1,49 @@
+# Daily collection: runs the pipeline (collection + catalog) against Supabase every day.
+# A failed run (including a partial one) marks the run red and GitHub e-mails the repository owner.
+name: Daily collection
+
+on:
+  schedule:
+    # 06:17 UTC = 03:17 in Brasília. Early morning: if GitHub delays the start (it can at busy
+    # times), the run still falls on the same day. An odd minute avoids the busiest moments.
+    - cron: "17 6 * * *"
+  workflow_dispatch: # "Run workflow" button for manual runs
+
+permissions:
+  contents: read # the job only reads the code
+
+concurrency: # never two runs at the same time (e.g. scheduled + manual)
+  group: daily-collection
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Install Python 3.12 (same version as the Docker environment)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run the daily pipeline
+        run: python -m src.run_daily
+        env:
+          # Sensitive values come from the repository secrets (never written here)
+          STEAM_API_KEY: ${{ secrets.STEAM_API_KEY }}
+          STEAM_USERS: ${{ secrets.STEAM_USERS }}
+          STEAM_ID_HASH_KEY: ${{ secrets.STEAM_ID_HASH_KEY }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          # Not secret: Supabase session pooler port, database name and required encryption
+          POSTGRES_PORT: "5432"
+          POSTGRES_DB: postgres
+          POSTGRES_SSLMODE: require

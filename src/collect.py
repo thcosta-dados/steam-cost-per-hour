@@ -1,11 +1,9 @@
-"""Collect the Steam library and playtime. Usage: python -m src.collect"""
+"""Collect the Steam library and playtime of one user. Run for all users by src.run_daily."""
 import hashlib
 import hmac
-import os
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from src.db import get_connection
 from src.steam_api import get_owned_games
 
 
@@ -55,25 +53,18 @@ def save_collection(conn, user_id, nickname, games, licensed_app_ids, snapshot_d
         )
 
 
-def main():
-    steam_id = os.environ["STEAM_ID"]
-    user_id = hash_steam_id(steam_id, os.environ["STEAM_ID_HASH_KEY"])
-    nickname = os.environ["STEAM_NICKNAME"]
+def today_in_brazil():
+    """Brazil's date, not the server's (GitHub Actions runs in UTC)."""
+    return datetime.now(ZoneInfo("America/Sao_Paulo")).date()
 
-    api_key = os.environ["STEAM_API_KEY"]
-    # Two queries: all games (with free ones played) and only licensed games.
-    # A game in the first list but not in the second is played without a license.
+
+def collect_user(conn, api_key, hash_key, steam_id, nickname, snapshot_date):
+    """Collect one user's library and playtime. Returns the number of games.
+
+    Two queries: all games (with free ones played) and only licensed games.
+    A game in the first list but not in the second is played without a license.
+    """
     games = get_owned_games(api_key, steam_id, include_played_free_games=True)
     licensed_app_ids = {g["appid"] for g in get_owned_games(api_key, steam_id, include_played_free_games=False)}
-    # Brazil's date, not the server's (GitHub Actions runs in UTC)
-    today = datetime.now(ZoneInfo("America/Sao_Paulo")).date()
-
-    # The connection block commits only if everything works (all or nothing)
-    with get_connection() as conn:
-        save_collection(conn, user_id, nickname, games, licensed_app_ids, today)
-    print(f"{len(games)} games collected for {nickname} on {today} "
-          f"({len(licensed_app_ids)} with a license, {len(games) - len(licensed_app_ids)} played for free).")
-
-
-if __name__ == "__main__":
-    main()
+    save_collection(conn, hash_steam_id(steam_id, hash_key), nickname, games, licensed_app_ids, snapshot_date)
+    return len(games)

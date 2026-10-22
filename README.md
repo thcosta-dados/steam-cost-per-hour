@@ -41,9 +41,11 @@ O banco local fica acessível pelo Windows (pgAdmin, DBeaver, Power BI) em `loca
 
 ```bash
 docker compose exec app python -m src.create_tables  # cria (ou atualiza) tabelas e views
-docker compose exec app python -m src.collect        # coleta biblioteca e horas do dia
-docker compose exec app python -m src.catalog        # busca preço, capa e gêneros dos jogos novos
+docker compose exec app python -m src.run_daily      # coleta todos os usuários e atualiza o catálogo
+docker compose exec app python -m src.catalog        # só o catálogo, com a lista de jogos sem preço
 ```
+
+Os usuários coletados ficam na variável `STEAM_USERS` (`steamid:apelido`, separados por `;`), só de pessoas que concordaram. Cada execução fica registrada na tabela `pipeline_runs`.
 
 ## Banco na nuvem (Supabase)
 
@@ -51,8 +53,14 @@ O mesmo código roda contra o Supabase trocando só as variáveis de ambiente. C
 
 ```bash
 docker compose run --rm app-cloud python -m src.create_tables
-docker compose run --rm app-cloud python -m src.collect
+docker compose run --rm app-cloud python -m src.run_daily
 ```
+
+## Coleta automática (GitHub Actions)
+
+O workflow `.github/workflows/daily-collection.yml` roda o pipeline contra o Supabase todo dia às 03:17 (horário de Brasília), e também pelo botão *Run workflow*. As credenciais ficam nos segredos do repositório. Se a execução falhar, ou falhar para algum usuário, ela fica vermelha na aba Actions e o GitHub envia um e-mail.
+
+O GitHub desativa agendamentos em repositórios sem commits há 60 dias. Se isso acontecer, basta reativar o workflow na aba Actions.
 
 As tabelas têm Row Level Security ligado e as views usam `security_invoker`, para que a API pública do Supabase não exponha os dados.
 

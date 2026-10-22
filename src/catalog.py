@@ -53,15 +53,24 @@ def save_details(conn, app_id, details, recorded_at):
     )
 
 
+def update_catalog(conn, recorded_at):
+    """Check every new game in the store, once. Returns the number of games checked."""
+    with conn.transaction():
+        app_ids = games_to_check(conn)
+    print(f"{len(app_ids)} games to check in the store.")
+    for app_id in app_ids:
+        details = parse_app_details(get_app_details(app_id))
+        # Each game in its own transaction: progress is kept if a later request fails
+        with conn.transaction():
+            save_details(conn, app_id, details, recorded_at)
+        time.sleep(REQUEST_INTERVAL_SECONDS)
+    return len(app_ids)
+
+
 def main():
     today = datetime.now(ZoneInfo("America/Sao_Paulo")).date()
     with get_connection() as conn:
-        app_ids = games_to_check(conn)
-        print(f"{len(app_ids)} games to check in the store.")
-        for app_id in app_ids:
-            save_details(conn, app_id, parse_app_details(get_app_details(app_id)), today)
-            conn.commit()  # each game is independent: keep progress if a later request fails
-            time.sleep(REQUEST_INTERVAL_SECONDS)
+        update_catalog(conn, today)
 
         # Games without a list price: input for the open question on games no longer sold
         without_price = conn.execute(

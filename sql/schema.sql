@@ -41,6 +41,19 @@ CREATE TABLE IF NOT EXISTS playtime_snapshots (
     FOREIGN KEY (user_id, app_id) REFERENCES library (user_id, app_id)
 );
 
+-- One row per pipeline execution (spec, rule 15). Status: running while it works, then
+-- success (no errors), partial (some user or step failed, some data collected) or failed.
+CREATE TABLE IF NOT EXISTS pipeline_runs (
+    run_id          BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,  -- automatic increasing number
+    started_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    finished_at     TIMESTAMPTZ,
+    status          TEXT NOT NULL CHECK (status IN ('running', 'success', 'partial', 'failed')),
+    users_total     INTEGER,
+    users_failed    INTEGER,
+    games_collected INTEGER,
+    error_message   TEXT  -- nicknames only, never SteamIDs
+);
+
 -- Row Level Security with no policies: nobody but the table owner can read or write.
 -- Supabase publishes every table in "public" through an automatic API; this blocks it.
 -- The pipeline and Power BI connect as the owner, which RLS does not restrict.
@@ -49,5 +62,6 @@ ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE games ENABLE ROW LEVEL SECURITY;
 ALTER TABLE library ENABLE ROW LEVEL SECURITY;
 ALTER TABLE playtime_snapshots ENABLE ROW LEVEL SECURITY;
+ALTER TABLE pipeline_runs ENABLE ROW LEVEL SECURITY;
 
 -- Views (analysis layer) are in sql/views.sql.

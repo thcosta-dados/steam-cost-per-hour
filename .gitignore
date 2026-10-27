@@ -7,7 +7,9 @@ CLAUDE.local.md
 .env*
 !.env.example
 
-# Purchase history saved from the browser (personal data, never commit)
+# Purchase history saved from the browser (personal data, never commit).
+# data/private/ also covers the "_files" folder some browsers save next to the page.
+data/private/
 *.html
 # Exception: fictional history used by the tests
 !tests/fixtures/*.html

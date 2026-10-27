@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!-- FICTIONAL purchase history used by the tests. Same HTML structure as the Steam page
+     (October 2026); every game, value, transaction id and person in it is invented. -->
+<html>
+<head><meta charset="utf-8"><title>Fictional account</title></head>
+<body>
+<table class="wallet_history_table">
+<thead>
+<tr>
+<th class="wht_date">Date</th><th class="wht_items">Items</th><th class="wht_type">Type</th>
+<th class="wht_baseprice">Price</th><th class="wht_tax">Tax</th><th class="wht_shipping">Shipping</th>
+<th class="wht_total">Total</th><th class="wht_wallet">Wallet</th><th class="wht_wallet_change">Change</th><th class="wht_wallet_balance">Balance</th>
+</tr>
+</thead>
+<tbody>
+
+<!-- 1. DLC bought with a discount -->
+<tr role="button" class="wallet_table_row wallet_table_row_amt_change" onclick="location.href='https://help.steampowered.com/en/wizard/HelpWithTransaction?transid=9000000000000000001'">
+<td class="wht_date">25 Aug, 2026</td>
+<td class="wht_items "><div style="clear: both"> Fake Quest - Bonus Chapter </div></td>
+<td class="wht_type "><div>Purchase</div><div class="wth_payment">Visa</div></td>
+<td class="wht_base_price"><div class="wht_base_price_discounted"><div class="wht_discount_pct">-30%</div><div><span class="wht_original_price">R$ 20,00</span> <span class="wht_discounted_price">R$ 14,00</span></div></div></td>
+<td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 14,00 </td>
+<td class="wht_wallet_change wallet_column">-R$ 14,00</td><td class="wht_wallet_balance wallet_column"> R$ 312,27</td>
+</tr>
+
+<!-- 2. In-game purchase: the game number is in the help link -->
+<tr role="button" class="wallet_table_row wallet_table_row_amt_change" onclick="location.href='https://help.steampowered.com/en/wizard/HelpWithItemPurchase?transid=9000000000000000002&appid=900003'">
+<td class="wht_date">18 Aug, 2026</td>
+<td class="wht_items "><div>Fake Shooter</div><div class="wth_payment">100 Fake Coins</div></td>
+<td class="wht_type "><div>In-Game Purchase</div><div class="wth_payment">Wallet</div></td>
+<td class="wht_base_price"> R$ 9,90 </td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 9,90 </td>
+<td class="wht_wallet_change wallet_column">-R$ 9,90</td><td class="wht_wallet_balance wallet_column"> R$ 326,27</td>
+</tr>
+
+<!-- 3. Two items in one row (split in ticket 09); must go to Fake Racer 2, not Fake Racer.
+     Trademark sign double-encoded in the first item, as on the real page -->
+<tr role="button" class="wallet_table_row wallet_table_row_amt_change" onclick="location.href='https://help.steampowered.com/en/wizard/HelpWithTransaction?transid=9000000000000000003'">
+<td class="wht_date">10 Aug, 2026</td>
+<td class="wht_items "><div style="clear: both"> Fake Racer&amp;trade;&amp;nbsp;2 - Track Pack A </div><div style="clear: both"> Fake Racer™ 2 - Track Pack B </div></td>
+<td class="wht_type "><div>Purchase</div><div class="wth_payment">Visa</div></td>
+<td class="wht_base_price"> R$ 30,00 </td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 30,00 </td>
+<td class="wht_wallet_change wallet_column"></td><td class="wht_wallet_balance wallet_column"></td>
+</tr>
+
+<!-- 4. Old product name, identified through an alias -->
+<tr role="button" class="wallet_table_row wallet_table_row_amt_change" onclick="location.href='https://help.steampowered.com/en/wizard/HelpWithTransaction?transid=9000000000000000004'">
+<td class="wht_date">1 Aug, 2026</td>
+<td class="wht_items "><div style="clear: both"> FAKEUNKNOWN&#39;S BATTLEGROUNDS - Worldwide Package </div></td>
+<td class="wht_type "><div>Purchase</div><div class="wth_payment">Visa</div></td>
+<td class="wht_base_price"> R$ 60,00 </td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 60,00 </td>
+<td class="wht_wallet_change wallet_column"></td><td class="wht_wallet_balance wallet_column"></td>
+</tr>
+
+<!-- 5. Product that matches no game of the library -->
+<tr role="button" class="wallet_table_row wallet_table_row_amt_change" onclick="location.href='https://help.steampowered.com/en/wizard/HelpWithTransaction?transid=9000000000000000005'">
+<td class="wht_date">20 Jul, 2026</td>
+<td class="wht_items "><div style="clear: both"> Unknown Indie Game </div></td>
+<td class="wht_type "><div>Purchase</div><div class="wth_payment">Visa</div></td>
+<td class="wht_base_price"> R$ 10,00 </td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 10,00 </td>
+<td class="wht_wallet_change wallet_column"></td><td class="wht_wallet_balance wallet_column"></td>
+</tr>
+
+<!-- 6. Wallet credit bought (shown as a purchase); text directly in the cell, as on the real page -->
+<tr role="button" class="wallet_table_row wallet_table_row_amt_change" onclick="location.href='https://help.steampowered.com/en/wizard/HelpWithTransaction?transid=9000000000000000006'">
+<td class="wht_date">15 Jul, 2026</td>
+<td class="wht_items "> Purchased R$ 50,00 Wallet Credit </td>
+<td class="wht_type "><div>Purchase</div><div class="wth_payment">Visa</div></td>
+<td class="wht_base_price"> R$ 50,00 </td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 50,00 </td>
+<td class="wht_wallet_change wallet_column">+R$ 50,00</td><td class="wht_wallet_balance wallet_column"> R$ 335,27</td>
+</tr>
+
+<!-- 7. Gift sent to another person: the recipient's name and profile (with a SteamID) are inside
+     the payment block, as on the real page -->
+<tr role="button" class="wallet_table_row wallet_table_row_amt_change" onclick="location.href='https://help.steampowered.com/en/wizard/HelpWithTransaction?transid=9000000000000000007'">
+<td class="wht_date">10 Jul, 2026</td>
+<td class="wht_items "><div style="clear: both"> Fake Quest </div><div class="wth_payment" style="padding-left: 8px;"><div><div class="help_purchase_img"><img src="icon_gift.png"/></div> Gift sent to <a data-miniprofile="999" href="https://steamcommunity.com/profiles/76561190000000999/">friendname</a></div></div></td>
+<td class="wht_type "><div>Gift Purchase</div><div class="wth_payment">Wallet</div></td>
+<td class="wht_base_price"> R$ 25,00 </td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 25,00 </td>
+<td class="wht_wallet_change wallet_column">-R$ 25,00</td><td class="wht_wallet_balance wallet_column"> R$ 285,27</td>
+</tr>
+
+<!-- 8 and 9. Two identical Community Market rows on the same day (no transaction id) -->
+<tr class="wallet_table_row wallet_table_row_amt_change">
+<td class="wht_date">7 Jul, 2026</td>
+<td class="wht_items "><div>Steam Community Market</div></td>
+<td class="wht_type "><div>Market Transaction</div><div class="wth_payment">Wallet</div></td>
+<td class="wht_base_price"></td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 0,05 <div class="wth_payment">Credit</div></td>
+<td class="wht_wallet_change wallet_column">+R$ 0,05</td><td class="wht_wallet_balance wallet_column"> R$ 310,27</td>
+</tr>
+<tr class="wallet_table_row wallet_table_row_amt_change">
+<td class="wht_date">7 Jul, 2026</td>
+<td class="wht_items "><div>Steam Community Market</div></td>
+<td class="wht_type "><div>Market Transaction</div><div class="wth_payment">Wallet</div></td>
+<td class="wht_base_price"></td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 0,05 <div class="wth_payment">Credit</div></td>
+<td class="wht_wallet_change wallet_column">+R$ 0,05</td><td class="wht_wallet_balance wallet_column"> R$ 310,22</td>
+</tr>
+
+<!-- 10. Several Community Market transactions grouped -->
+<tr class="wallet_table_row wallet_table_row_amt_change">
+<td class="wht_date">1 Jul, 2026</td>
+<td class="wht_items "><div>Steam Community Market</div></td>
+<td class="wht_type "><div>3 Market Transactions</div><div class="wth_payment">Wallet</div></td>
+<td class="wht_base_price"></td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 1,50 <div class="wth_payment">Credit</div></td>
+<td class="wht_wallet_change wallet_column">+R$ 1,50</td><td class="wht_wallet_balance wallet_column"> R$ 310,17</td>
+</tr>
+
+<!-- 11. Purchase in another currency -->
+<tr role="button" class="wallet_table_row wallet_table_row_amt_change" onclick="location.href='https://help.steampowered.com/en/wizard/HelpWithTransaction?transid=9000000000000000011'">
+<td class="wht_date">5 Jun, 2026</td>
+<td class="wht_items "><div style="clear: both"> Fake Quest - Soundtrack </div></td>
+<td class="wht_type "><div>Purchase</div><div class="wth_payment">Visa</div></td>
+<td class="wht_base_price"> $4.99 USD </td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> $4.99 USD </td>
+<td class="wht_wallet_change wallet_column"></td><td class="wht_wallet_balance wallet_column"></td>
+</tr>
+
+<!-- 12. Unknown transaction type -->
+<tr role="button" class="wallet_table_row wallet_table_row_amt_change" onclick="location.href='https://help.steampowered.com/en/wizard/HelpWithTransaction?transid=9000000000000000012'">
+<td class="wht_date">1 May, 2026</td>
+<td class="wht_items "><div style="clear: both"> Fake Streaming Service </div></td>
+<td class="wht_type "><div>Subscription</div><div class="wth_payment">Visa</div></td>
+<td class="wht_base_price"> R$ 19,90 </td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 19,90 </td>
+<td class="wht_wallet_change wallet_column"></td><td class="wht_wallet_balance wallet_column"></td>
+</tr>
+
+<!-- 13. Refund of the purchase in row 14 (netting is ticket 09). Same transaction id as the
+     purchase it refunds, as on the real page -->
+<tr role="button" class="wallet_table_row wallet_table_row_amt_change" onclick="location.href='https://help.steampowered.com/en/wizard/HelpWithTransaction?transid=9000000000000000014'">
+<td class="wht_date">17 Sep, 2025</td>
+<td class="wht_items "><div style="clear: both"> Fake Racer </div><div class="wth_item_refunded"> Refund </div></td>
+<td class="wht_type "><div>Refund</div><div class="wth_payment">Wallet</div></td>
+<td class="wht_base_price"></td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 40,00 </td>
+<td class="wht_wallet_change wallet_column">+R$ 40,00</td><td class="wht_wallet_balance wallet_column"> R$ 340,00</td>
+</tr>
+
+<!-- 14. Purchase later refunded -->
+<tr role="button" class="wallet_table_row wallet_table_row_amt_change" onclick="location.href='https://help.steampowered.com/en/wizard/HelpWithTransaction?transid=9000000000000000014'">
+<td class="wht_date">10 Sep, 2025</td>
+<td class="wht_items "><div style="clear: both"> Fake Racer </div></td>
+<td class="wht_type "><div>Purchase</div><div class="wth_payment">Wallet</div></td>
+<td class="wht_base_price"> R$ 40,00 </td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 40,00 </td>
+<td class="wht_wallet_change wallet_column">-R$ 40,00</td><td class="wht_wallet_balance wallet_column"> R$ 300,00</td>
+</tr>
+
+<!-- 15. Gift card redemption: wallet credit, no type; text directly in the cell -->
+<tr class="wallet_table_row ">
+<td class="wht_date">29 Oct, 2024</td>
+<td class="wht_items "> Digital Gift Card Redemption </td>
+<td class="wht_type "></td>
+<td class="wht_base_price"></td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "></td>
+<td class="wht_wallet_change wallet_column">+R$ 50,00</td><td class="wht_wallet_balance wallet_column"> R$ 340,00</td>
+</tr>
+
+<!-- 16. First purchase of Fake Quest (exact name) -->
+<tr role="button" class="wallet_table_row wallet_table_row_amt_change" onclick="location.href='https://help.steampowered.com/en/wizard/HelpWithTransaction?transid=9000000000000000016'">
+<td class="wht_date">5 Jan, 2024</td>
+<td class="wht_items "><div style="clear: both"> Fake Quest </div></td>
+<td class="wht_type "><div>Purchase</div><div class="wth_payment">Visa</div></td>
+<td class="wht_base_price"> R$ 50,00 </td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 50,00 </td>
+<td class="wht_wallet_change wallet_column"></td><td class="wht_wallet_balance wallet_column"></td>
+</tr>
+
+</tbody>
+</table>
+<div class="load_more_history_area">
+<div role="button" id="load_more_button" class="btnv6_blue_hoverfade btn_medium" onclick="WalletHistory_LoadMore(); return false;" style="display: none;"><span>Load More Transactions</span></div>
+</div>
+</body>
+</html>

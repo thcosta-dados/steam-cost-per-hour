@@ -114,8 +114,9 @@ WHERE coalesce(previous_game_date, previous_collection_date) IS NOT NULL;
 
 
 -- Hours played per day and game, games only (rules 11, 12 and 17).
--- The collection runs at 03:17, so a snapshot taken on day N covers the play of day N-1
--- (a "play day" that ends at 3 a.m.). With a missing collection day, the whole interval goes
+-- The collection runs in the morning (scheduled at 03:17, usually started by GitHub between
+-- 08:00 and 10:00), so a snapshot taken on day N covers the play of day N-1: a "play day"
+-- that ends in the morning, like the play of a night owl. With a missing collection day, the whole interval goes
 -- to the last day and days_covered tells how many days it spans: nothing is invented.
 CREATE OR REPLACE VIEW daily_playtime WITH (security_invoker = true) AS
 SELECT

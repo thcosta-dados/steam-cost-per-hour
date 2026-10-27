@@ -96,10 +96,10 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Blocked by:** 03, 05.
 
 **Acceptance criteria:**
-- [ ] A coleta roda no horário agendado sem nenhuma ação manual, e a execução aparece na aba de ações do repositório.
+- [x] A coleta roda no horário agendado sem nenhuma ação manual, e a execução aparece na aba de ações do repositório. Conferido: 5 execuções seguidas com gatilho schedule e sucesso (23 a 27/10/2026). O GitHub atrasou o início em 5 a 7 horas (rodaram entre 08:05 e 10:07), sem mudar a data dos snapshots.
 - [x] Cada execução gera um registro na tabela de execuções, com status e quantidade de jogos. Conferido em 22/10/2026: as execuções no GitHub batem com as linhas de pipeline_runs no Supabase (status, horário e 79 jogos).
 - [x] Uma falha forçada de teste (por exemplo, chave inválida) gera registro de falha e e-mail do GitHub. Conferido em 22/10/2026: HTTP 401 registrado como failed, execução vermelha e e-mail recebido pelo dono.
-- [ ] Um usuário de teste com perfil privado gera registro de falha só para ele, sem derrubar a execução. Coberto por teste automático com usuários fictícios (status partial). Falta o teste real com uma segunda conta do dono (com consentimento).
+- [x] Um usuário de teste com perfil privado gera registro de falha só para ele, sem derrubar a execução. Coberto por teste automático com usuários fictícios e conferido em 27/10/2026 com uma conta real de familiar, que consentiu e estava com perfil privado: execução partial (79 jogos do dono, falha só da conta de teste), nenhum dado dela gravado e conta removida dos segredos logo depois.
 - [x] A chave da API e as credenciais do banco estão guardadas como segredos do GitHub. Seis segredos cadastrados pelo gh a partir do .env.cloud, mascarados como *** nos logs e ausentes dos arquivos do repositório.
 
 ---

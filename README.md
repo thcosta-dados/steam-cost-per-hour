@@ -58,7 +58,7 @@ docker compose run --rm app-cloud python -m src.run_daily
 
 ## Coleta automática (GitHub Actions)
 
-O workflow `.github/workflows/daily-collection.yml` roda o pipeline contra o Supabase todo dia às 03:17 (horário de Brasília), e também pelo botão *Run workflow*. As credenciais ficam nos segredos do repositório. Se a execução falhar, ou falhar para algum usuário, ela fica vermelha na aba Actions e o GitHub envia um e-mail.
+O workflow `.github/workflows/daily-collection.yml` roda o pipeline contra o Supabase uma vez por dia, agendado para as 03:17 (horário de Brasília), e também pelo botão *Run workflow*. Na prática, o GitHub costuma iniciar execuções agendadas com horas de atraso (entre 8h e 10h, em outubro de 2026), o que não muda a data do snapshot. As credenciais ficam nos segredos do repositório. Se a execução falhar, ou falhar para algum usuário, ela fica vermelha na aba Actions e o GitHub envia um e-mail.
 
 O GitHub desativa agendamentos em repositórios sem commits há 60 dias. Se isso acontecer, basta reativar o workflow na aba Actions.
 

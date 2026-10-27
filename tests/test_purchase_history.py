@@ -132,6 +132,15 @@ def test_every_quarantined_row_has_the_right_reason(conn):
     assert sum("Wallet credit" in r for r in reasons) == 2     # wallet credit purchase + gift card
 
 
+def test_loading_marks_the_user_as_having_the_complete_history(conn):
+    marked = lambda: conn.execute(
+        "SELECT purchase_history_loaded_at IS NOT NULL FROM users WHERE user_id = %s", (USER,)
+    ).fetchone()[0]
+    assert marked() is False
+    load(conn)
+    assert marked() is True  # rule 24 applies from now on (the loader refuses incomplete pages)
+
+
 def test_loading_the_same_page_twice_does_not_duplicate(conn):
     load(conn)
     assert load(conn) == {"rows": 16, "accepted": 7, "quarantined": 9}

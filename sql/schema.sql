@@ -9,6 +9,11 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- Store columns are filled once by the catalog (src/catalog.py), raw as the store returns them.
+-- Migration (ticket 08b): column added to a table that already has data in Supabase.
+-- ADD COLUMN IF NOT EXISTS keeps the data and does nothing when the column is already there.
+-- Set when the user loads the complete purchase history: enables rule 24 (spec).
+ALTER TABLE users ADD COLUMN IF NOT EXISTS purchase_history_loaded_at TIMESTAMPTZ;
+
 CREATE TABLE IF NOT EXISTS games (
     app_id            INTEGER PRIMARY KEY,  -- game id on Steam
     name              TEXT NOT NULL,

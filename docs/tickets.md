@@ -137,17 +137,17 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 
 ---
 
-# 08b: Licenças da conta (presentes recebidos e cortesias)
+# 08b: Jogos sem compra na Steam (presentes, cortesias e promoções)
 
-**What to build:** um script rodado no computador da pessoa lê a página de Licenças e ativações de produtos salva da Steam e registra como cada jogo entrou na conta: compra na loja, presente recebido, chave de outra loja ou cortesia. Presentes recebidos passam a ter origem "presente" (valor zero, no ranking de gratuitos e presentes). Licenças de cortesia, como as edições Enhanced, deixam de ser tratadas como compradas (pergunta em aberto 6).
+**What to build:** com o histórico de compras completo carregado, os jogos com licença e sem nenhuma compra recebem a origem "sem compra na Steam" (spec, regra 24): valor zero, no ranking de gratuitos e presentes e fora do dinheiro parado. Responde a pergunta em aberto 6 sem a página de licenças, que foi avaliada e descartada por ser paginada (muito trabalho manual).
 
 **Blocked by:** 08.
 
 **Acceptance criteria:**
-- [ ] Linhas aceitas mais linhas na quarentena somam exatamente o total de linhas da página de licenças.
-- [ ] Presentes recebidos ficam com custo zero, marcados como presente, e aparecem no ranking de gratuitos e presentes. Conferido com 1 presente real na página de licenças.
-- [ ] Para 2 licenças de cortesia reais (por exemplo, GTA V Enhanced), a origem no banco confere com a página de licenças, e elas deixam de inflar o dinheiro parado.
-- [ ] Testes automáticos usam uma página de licenças fictícia, e nenhuma página real está no repositório.
+- [x] A carga do histórico registra que o usuário tem histórico completo, e só a partir disso a regra 24 vale para ele. Coluna users.purchase_history_loaded_at, gravada pela carga, nos dois bancos.
+- [x] Os jogos "sem compra na Steam" do autor são exatamente os 9 da lista revisada por ele em 27/10/2026, com valor zero, no ranking de gratuitos e presentes. Conferido nos dois bancos (9 de 9, sem sobras nem faltas) e no painel.
+- [x] GTA V Enhanced, Metro Exodus Enhanced e Company of Heroes 2 saem do dinheiro parado, que é conferido por uma soma manual. Dinheiro parado: de R$ 431,89 para R$ 0,00 (soma manual: 0 + 0 + 0), igual no painel.
+- [x] Testes automáticos cobrem: jogo sem compra com histórico carregado, jogo com compra e usuário sem histórico carregado (continua estimado).
 
 ---
 

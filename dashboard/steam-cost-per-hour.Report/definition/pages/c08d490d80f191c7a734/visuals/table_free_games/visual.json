@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "table_free_games",
   "position": {
     "x": 970,
     "y": 190,
     "z": 11,
-    "width": 930,
     "height": 400,
+    "width": 930,
     "tabOrder": 11
   },
   "visual": {
@@ -78,8 +78,7 @@
             },
             "direction": "Descending"
           }
-        ],
-        "isDefaultSort": false
+        ]
       }
     },
     "visualContainerObjects": {

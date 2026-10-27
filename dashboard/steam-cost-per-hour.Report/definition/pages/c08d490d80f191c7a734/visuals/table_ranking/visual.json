@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "table_ranking",
   "position": {
     "x": 20,
     "y": 190,
     "z": 10,
-    "width": 930,
     "height": 870,
+    "width": 930,
     "tabOrder": 10
   },
   "visual": {
@@ -93,8 +93,7 @@
             },
             "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": false
+        ]
       }
     },
     "visualContainerObjects": {

@@ -230,6 +230,8 @@ def load_history(conn, user_id, page, games, aliases):
                     (key, position, item, app_id, value),
                 )
             accepted += 1
+        # parse_history refuses incomplete pages, so the user now has the complete history (rule 24)
+        conn.execute("UPDATE users SET purchase_history_loaded_at = now() WHERE user_id = %s", (user_id,))
     return {"rows": len(rows), "accepted": accepted, "quarantined": quarantined}
 
 

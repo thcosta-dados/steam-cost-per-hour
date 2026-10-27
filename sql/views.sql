@@ -23,7 +23,7 @@ SELECT
 FROM games;
 
 
--- Cost per hour of each game, one row per user and game (spec, rules 1, 2, 6, 9, 10, 18).
+-- Cost per hour of each game, one row per user and game (spec, rules 1, 2, 6, 9, 10, 18, 24).
 CREATE OR REPLACE VIEW game_costs WITH (security_invoker = true) AS
 WITH latest_snapshot AS (
     -- DISTINCT ON keeps the first row of each (user, game) in the ORDER BY: the latest day
@@ -31,28 +31,50 @@ WITH latest_snapshot AS (
     FROM playtime_snapshots
     ORDER BY user_id, app_id, snapshot_date DESC
 ),
-valued AS (
+purchased_games AS (
+    -- Games bought at least once (in-game purchases do not buy the game itself)
+    SELECT DISTINCT p.user_id, i.app_id
+    FROM purchases p
+    JOIN purchase_items i USING (purchase_key)
+    WHERE p.purchase_type = 'purchase'
+),
+origins AS (
     SELECT
         l.user_id,
         l.app_id,
         g.name,
         g.header_image_url,
+        g.list_price_brl,
         s.snapshot_date,
         s.minutes_played,
-        -- Value origin (rule 2). "paid" and "gift" come with the purchase history (ticket 10).
+        -- Value origin (rule 2). "paid" comes with the paid value (ticket 10).
         CASE
             WHEN NOT l.has_license THEN 'free'              -- played without a license (rule 6)
+            -- Complete history loaded and no purchase of the game: gift, complimentary or
+            -- promotion, nothing paid on Steam (rule 24). LEFT JOIN below: no match = no purchase.
+            WHEN u.purchase_history_loaded_at IS NOT NULL AND pg.app_id IS NULL THEN 'no_purchase'
             WHEN g.list_price_brl IS NOT NULL THEN 'estimated'
             ELSE 'unknown'                                  -- licensed, no store price (rule 18)
-        END AS value_origin,
-        -- NULL (not 0) for unknown value: sums ignore it instead of counting it as free
-        CASE WHEN NOT l.has_license THEN 0 ELSE g.list_price_brl END AS game_value_brl
+        END AS value_origin
     FROM library l
+    JOIN users u USING (user_id)
     JOIN games g USING (app_id)
     JOIN games_classified c USING (app_id)
     -- Inner join: every library row has a snapshot (both are saved in the same transaction)
     JOIN latest_snapshot s USING (user_id, app_id)
+    LEFT JOIN purchased_games pg ON pg.user_id = l.user_id AND pg.app_id = l.app_id
     WHERE c.item_category = 'game'  -- software and other items are out of metrics (rule 17)
+),
+valued AS (
+    SELECT
+        o.*,
+        -- NULL (not 0) for unknown value: sums ignore it instead of counting it as free
+        CASE o.value_origin
+            WHEN 'free' THEN 0
+            WHEN 'no_purchase' THEN 0
+            WHEN 'estimated' THEN o.list_price_brl
+        END AS game_value_brl
+    FROM origins o
 )
 SELECT
     v.user_id,

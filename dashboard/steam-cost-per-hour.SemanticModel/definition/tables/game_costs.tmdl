@@ -104,7 +104,7 @@ table game_costs
 				    Source = PostgreSQL.Database(DatabaseServer, DatabaseName),
 				    GameCosts = Source{[Schema = "public", Item = "game_costs"]}[Data],
 				    // Portuguese labels for the dashboard; the database keeps the English codes
-				    OriginLabels = [free = "gratuito", estimated = "estimado", unknown = "sem valor conhecido"],
+				    OriginLabels = [free = "gratuito", no_purchase = "sem compra na Steam", estimated = "estimado", unknown = "sem valor conhecido"],
 				    GroupLabels = [played = "jogado", barely_started = "mal começado", not_played = "não jogado"],
 				    Labeled = Table.TransformColumns(GameCosts, {
 				        {"value_origin", each Record.FieldOrDefault(OriginLabels, _, _), type text},

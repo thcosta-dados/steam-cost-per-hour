@@ -77,6 +77,27 @@ def test_licensed_game_without_store_price_has_unknown_value(conn):
     assert game_costs(conn)["No Price"] == ("unknown", None, 600, None, "played")
 
 
+def test_with_complete_history_a_licensed_game_without_purchase_costs_zero(conn):
+    # The user loaded the complete purchase history, which has a purchase of "Paid Played" only
+    conn.execute("UPDATE users SET purchase_history_loaded_at = now() WHERE user_id = %s", (USER,))
+    conn.execute(
+        """INSERT INTO purchases (purchase_key, user_id, purchase_date, purchase_type, total_brl)
+           VALUES ('fake_purchase', %s, %s, 'purchase', 80.00)""",
+        (USER, OLD_DAY),
+    )
+    conn.execute(
+        "INSERT INTO purchase_items VALUES ('fake_purchase', 1, 'Paid Played', 900001, 80.00)"
+    )
+    costs = game_costs(conn)
+    # No purchase: gift, complimentary or promotion -> R$ 0, out of the money parked (rule 24)
+    assert costs["Never Played"] == ("no_purchase", Decimal("0"), 0, None, "not_played")
+    assert costs["No Price"][:2] == ("no_purchase", Decimal("0"))
+    # With a purchase: still the store price until the paid value arrives (ticket 10)
+    assert costs["Paid Played"][:2] == ("estimated", Decimal("100.00"))
+    # Played without a license: still free
+    assert costs["Free Played"][0] == "free"
+
+
 def test_software_and_other_items_are_out_of_metrics(conn):
     costs = game_costs(conn)
     assert "Some Software" not in costs

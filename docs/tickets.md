@@ -158,10 +158,10 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Blocked by:** 03, 08.
 
 **Acceptance criteria:**
-- [ ] Testes automáticos cobrem: pacote com jogos de preços diferentes, pacote com jogo gratuito, pacote com jogo sem preço de tabela (divisão igual), reembolso simples e jogo reembolsado e depois recebido de presente.
-- [ ] A soma dos valores atribuídos aos jogos de um pacote é exatamente igual ao valor pago pelo pacote (sem perda de centavos).
-- [ ] Para 1 pacote e 1 reembolso reais, o resultado no banco confere com a página de Histórico de compras da Steam.
-- [ ] Nenhum valor pago negativo existe no banco.
+- [x] Testes automáticos cobrem: pacote com jogos de preços diferentes, pacote com jogo gratuito, pacote com jogo sem preço de tabela (divisão igual), reembolso simples e jogo reembolsado e depois recebido de presente. Tests em tests/test_split.py, tests/test_purchase_history.py e tests/test_views.py, com valores calculados à mão.
+- [x] A soma dos valores atribuídos aos jogos de um pacote é exatamente igual ao valor pago pelo pacote (sem perda de centavos). Método dos maiores restos, em centavos inteiros. Conferido nos dois bancos: 0 compras com soma das partes diferente do total.
+- [x] Para 1 pacote e 1 reembolso reais, o resultado no banco confere com a página de Histórico de compras da Steam. Conferido pelo dono em 27/10/2026: o pacote de 03/01/2019 (Dead by Daylight + The Halloween Chapter, R$ 22,62 = 11,31 + 11,31) e o reembolso do The Witcher 3 de 17/09/2020 (compra riscada na página, compra e estorno se anulam).
+- [x] Nenhum valor pago negativo existe no banco. Conferido nos dois bancos: itens, compras e valor líquido (net_purchases, que usa GREATEST(..., 0)).
 
 ---
 

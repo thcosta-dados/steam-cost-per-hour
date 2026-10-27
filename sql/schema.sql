@@ -41,6 +41,41 @@ CREATE TABLE IF NOT EXISTS playtime_snapshots (
     FOREIGN KEY (user_id, app_id) REFERENCES library (user_id, app_id)
 );
 
+-- Purchase history (ticket 08), loaded from the page saved by the user (src/load_purchases.py).
+-- purchase_key: SHA-256 "fingerprint" of the row (Steam transaction id, or the row content):
+-- loading the same file twice never duplicates a purchase. The transaction id itself is not stored.
+CREATE TABLE IF NOT EXISTS purchases (
+    purchase_key       TEXT PRIMARY KEY,
+    user_id            TEXT NOT NULL REFERENCES users (user_id),
+    purchase_date      DATE NOT NULL,
+    purchase_type      TEXT NOT NULL CHECK (purchase_type IN ('purchase', 'in_game', 'refund')),
+    total_brl          NUMERIC(10, 2) NOT NULL CHECK (total_brl >= 0),
+    original_price_brl NUMERIC(10, 2),  -- price at purchase time, before the discount (when there was one)
+    discount_pct       INTEGER CHECK (discount_pct BETWEEN 0 AND 100)
+);
+
+-- Items of each purchase, each one linked to a game of the library (spec, rule 22).
+CREATE TABLE IF NOT EXISTS purchase_items (
+    purchase_key  TEXT    NOT NULL REFERENCES purchases (purchase_key),
+    item_position INTEGER NOT NULL,           -- order of the item in the row
+    item_name     TEXT    NOT NULL,           -- product name as shown by Steam
+    app_id        INTEGER NOT NULL REFERENCES games (app_id),
+    value_brl     NUMERIC(10, 2),             -- NULL while a row with several items is not split (ticket 09)
+    PRIMARY KEY (purchase_key, item_position)
+);
+
+-- Rows rejected on load, with the reason (spec, rules 7 and 8). Nothing is dropped silently.
+-- original_content never includes payment method, wallet balance or gift recipient.
+CREATE TABLE IF NOT EXISTS quarantine (
+    quarantine_key   TEXT PRIMARY KEY,        -- same fingerprint as purchase_key
+    user_id          TEXT NOT NULL REFERENCES users (user_id),
+    origin           TEXT NOT NULL CHECK (origin IN ('purchase_history', 'licenses')),
+    row_date         DATE,
+    original_content TEXT NOT NULL,
+    reason           TEXT NOT NULL CHECK (reason <> ''),
+    loaded_at        TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 -- One row per pipeline execution (spec, rule 15). Status: running while it works, then
 -- success (no errors), partial (some user or step failed, some data collected) or failed.
 CREATE TABLE IF NOT EXISTS pipeline_runs (
@@ -63,5 +98,8 @@ ALTER TABLE games ENABLE ROW LEVEL SECURITY;
 ALTER TABLE library ENABLE ROW LEVEL SECURITY;
 ALTER TABLE playtime_snapshots ENABLE ROW LEVEL SECURITY;
 ALTER TABLE pipeline_runs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE purchases ENABLE ROW LEVEL SECURITY;
+ALTER TABLE purchase_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE quarantine ENABLE ROW LEVEL SECURITY;
 
 -- Views (analysis layer) are in sql/views.sql.

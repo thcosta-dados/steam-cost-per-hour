@@ -127,11 +127,27 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Acceptance criteria:**
 - [ ] Linhas aceitas mais linhas na quarentena somam exatamente o total de linhas do arquivo de histórico.
 - [ ] Toda linha na quarentena tem motivo preenchido.
-- [ ] Para 3 compras normais e 1 presente, o valor e a data no banco batem com a página de Histórico de compras da Steam.
-- [ ] Presentes recebidos ficam com custo zero e marcados como presente.
+- [ ] Para 3 compras normais e 1 DLC, o valor, a data e o jogo no banco batem com a página de Histórico de compras da Steam.
+- [ ] Todo item aceito está ligado a um jogo da biblioteca (spec, regra 22). Os produtos não identificados ficam na quarentena com o nome.
+- [ ] Para 2 compras com desconto, o preço original e o percentual gravados batem com a página.
+- [ ] Forma de pagamento, saldo da carteira, destinatário de presente e número da transação não são gravados no banco.
 - [ ] Para 2 compras no jogo (pelo menos uma em jogo gratuito), o valor, a data e o jogo no banco batem com a página de Histórico de compras, e nenhum crédito de carteira é contado como gasto.
 - [ ] Testes automáticos usam um histórico fictício com todos os tipos de linha, e nenhum histórico real está no repositório.
 - [ ] Carregar o mesmo arquivo duas vezes não duplica compras.
+
+---
+
+# 08b: Licenças da conta (presentes recebidos e cortesias)
+
+**What to build:** um script rodado no computador da pessoa lê a página de Licenças e ativações de produtos salva da Steam e registra como cada jogo entrou na conta: compra na loja, presente recebido, chave de outra loja ou cortesia. Presentes recebidos passam a ter origem "presente" (valor zero, no ranking de gratuitos e presentes). Licenças de cortesia, como as edições Enhanced, deixam de ser tratadas como compradas (pergunta em aberto 6).
+
+**Blocked by:** 08.
+
+**Acceptance criteria:**
+- [ ] Linhas aceitas mais linhas na quarentena somam exatamente o total de linhas da página de licenças.
+- [ ] Presentes recebidos ficam com custo zero, marcados como presente, e aparecem no ranking de gratuitos e presentes. Conferido com 1 presente real na página de licenças.
+- [ ] Para 2 licenças de cortesia reais (por exemplo, GTA V Enhanced), a origem no banco confere com a página de licenças, e elas deixam de inflar o dinheiro parado.
+- [ ] Testes automáticos usam uma página de licenças fictícia, e nenhuma página real está no repositório.
 
 ---
 
@@ -153,7 +169,7 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 
 **What to build:** o Power BI passa a ler do Supabase e o custo por hora usa o preço pago quando existe no histórico e o estimado quando não existe, sempre mostrando a origem. O painel ganha a visão de horas jogadas por dia e por jogo.
 
-**Blocked by:** 04, 05, 09.
+**Blocked by:** 04, 05, 08b, 09.
 
 **Acceptance criteria:**
 - [ ] O Power BI se conecta ao Supabase em modo de importação e atualiza com um clique.

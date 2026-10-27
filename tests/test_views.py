@@ -98,6 +98,29 @@ def test_with_complete_history_a_licensed_game_without_purchase_costs_zero(conn)
     assert costs["Free Played"][0] == "free"
 
 
+def test_refunded_game_still_in_the_library_without_other_purchase_costs_zero(conn):
+    # Bought, refunded, and still in the library (e.g. received later as a gift): rule 5 + rule 24
+    conn.execute("UPDATE users SET purchase_history_loaded_at = now() WHERE user_id = %s", (USER,))
+    conn.execute(
+        """INSERT INTO purchases (purchase_key, user_id, purchase_date, purchase_type, total_brl)
+           VALUES ('fake_purchase', %s, %s, 'purchase', 80.00)""",
+        (USER, OLD_DAY),
+    )
+    conn.execute("INSERT INTO purchase_items VALUES ('fake_purchase', 1, 'Paid Played', 900001, 80.00)")
+    conn.execute(
+        """INSERT INTO purchases (purchase_key, user_id, purchase_date, purchase_type, total_brl, refunded_purchase_key)
+           VALUES ('fake_refund', %s, %s, 'refund', 80.00, 'fake_purchase')""",
+        (USER, DAY),
+    )
+    conn.execute("INSERT INTO purchase_items VALUES ('fake_refund', 1, 'Paid Played', 900001, 80.00)")
+
+    assert game_costs(conn)["Paid Played"][:2] == ("no_purchase", Decimal("0"))
+    net = conn.execute(
+        "SELECT total_brl, refunded_brl, net_total_brl FROM net_purchases WHERE purchase_key = 'fake_purchase'"
+    ).fetchone()
+    assert net == (Decimal("80.00"), Decimal("80.00"), Decimal("0.00"))
+
+
 def test_software_and_other_items_are_out_of_metrics(conn):
     costs = game_costs(conn)
     assert "Some Software" not in costs

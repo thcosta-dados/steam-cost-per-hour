@@ -58,6 +58,8 @@ CREATE TABLE IF NOT EXISTS purchases (
     original_price_brl NUMERIC(10, 2),  -- price at purchase time, before the discount (when there was one)
     discount_pct       INTEGER CHECK (discount_pct BETWEEN 0 AND 100)
 );
+-- Migration (ticket 09): a refund points to the purchase it cancels (spec, rule 5)
+ALTER TABLE purchases ADD COLUMN IF NOT EXISTS refunded_purchase_key TEXT;
 
 -- Items of each purchase, each one linked to a game of the library (spec, rule 22).
 CREATE TABLE IF NOT EXISTS purchase_items (
@@ -65,7 +67,7 @@ CREATE TABLE IF NOT EXISTS purchase_items (
     item_position INTEGER NOT NULL,           -- order of the item in the row
     item_name     TEXT    NOT NULL,           -- product name as shown by Steam
     app_id        INTEGER NOT NULL REFERENCES games (app_id),
-    value_brl     NUMERIC(10, 2),             -- NULL while a row with several items is not split (ticket 09)
+    value_brl     NUMERIC(10, 2),             -- share of the row total (rule 4)
     PRIMARY KEY (purchase_key, item_position)
 );
 

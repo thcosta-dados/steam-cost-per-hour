@@ -35,11 +35,12 @@
 <td class="wht_wallet_change wallet_column">-R$ 9,90</td><td class="wht_wallet_balance wallet_column"> R$ 326,27</td>
 </tr>
 
-<!-- 3. Two items in one row (split in ticket 09); must go to Fake Racer 2, not Fake Racer.
+<!-- 3. Two items of two different games in one row, split by list price (ticket 09);
+     the first must go to Fake Racer 2, not Fake Racer.
      Trademark sign double-encoded in the first item, as on the real page -->
 <tr role="button" class="wallet_table_row wallet_table_row_amt_change" onclick="location.href='https://help.steampowered.com/en/wizard/HelpWithTransaction?transid=9000000000000000003'">
 <td class="wht_date">10 Aug, 2026</td>
-<td class="wht_items "><div style="clear: both"> Fake Racer&amp;trade;&amp;nbsp;2 - Track Pack A </div><div style="clear: both"> Fake Racer™ 2 - Track Pack B </div></td>
+<td class="wht_items "><div style="clear: both"> Fake Racer&amp;trade;&amp;nbsp;2 - Track Pack A </div><div style="clear: both"> Fake Quest - Map Pack </div></td>
 <td class="wht_type "><div>Purchase</div><div class="wth_payment">Visa</div></td>
 <td class="wht_base_price"> R$ 30,00 </td><td class="wht_tax"></td><td class="wht_shipping"></td>
 <td class="wht_total "> R$ 30,00 </td>
@@ -173,6 +174,26 @@
 <td class="wht_type "><div>Purchase</div><div class="wth_payment">Visa</div></td>
 <td class="wht_base_price"> R$ 50,00 </td><td class="wht_tax"></td><td class="wht_shipping"></td>
 <td class="wht_total "> R$ 50,00 </td>
+<td class="wht_wallet_change wallet_column"></td><td class="wht_wallet_balance wallet_column"></td>
+</tr>
+
+<!-- 17. Refund of row 18: the game was removed from the library after the refund -->
+<tr role="button" class="wallet_table_row wallet_table_row_amt_change" onclick="location.href='https://help.steampowered.com/en/wizard/HelpWithTransaction?transid=9000000000000000018'">
+<td class="wht_date">3 Jan, 2024</td>
+<td class="wht_items "><div style="clear: both"> Old Refunded Game </div><div class="wth_item_refunded"> Refund </div></td>
+<td class="wht_type "><div>Refund</div><div class="wth_payment">Wallet</div></td>
+<td class="wht_base_price"></td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 35,00 </td>
+<td class="wht_wallet_change wallet_column">+R$ 35,00</td><td class="wht_wallet_balance wallet_column"> R$ 35,00</td>
+</tr>
+
+<!-- 18. Purchase refunded in row 17 -->
+<tr role="button" class="wallet_table_row wallet_table_row_amt_change" onclick="location.href='https://help.steampowered.com/en/wizard/HelpWithTransaction?transid=9000000000000000018'">
+<td class="wht_date">2 Jan, 2024</td>
+<td class="wht_items "><div style="clear: both"> Old Refunded Game </div></td>
+<td class="wht_type "><div>Purchase</div><div class="wth_payment">Visa</div></td>
+<td class="wht_base_price"> R$ 35,00 </td><td class="wht_tax"></td><td class="wht_shipping"></td>
+<td class="wht_total "> R$ 35,00 </td>
 <td class="wht_wallet_change wallet_column"></td><td class="wht_wallet_balance wallet_column"></td>
 </tr>
 

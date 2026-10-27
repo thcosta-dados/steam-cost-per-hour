@@ -18,6 +18,8 @@ GAMES = {
     900004: "Fake Battlegrounds",
     900005: "Fake Racer™ 2: Turbo Edition",  # trademark sign, like HITMAN™ 2
 }
+# Fictional list prices used to split row 3 (Fake Racer 2 and Fake Quest)
+PRICES = {900005: Decimal("60.00"), 900001: Decimal("20.00")}
 # Fictional alias: old product name -> game
 ALIASES = {"FAKEUNKNOWN'S BATTLEGROUNDS": 900004}
 
@@ -25,7 +27,7 @@ ALIASES = {"FAKEUNKNOWN'S BATTLEGROUNDS": 900004}
 # --- Reading the page -------------------------------------------------------------------
 
 def test_every_row_of_the_page_is_read():
-    assert len(parse_history(PAGE)) == 16
+    assert len(parse_history(PAGE)) == 18
 
 
 def test_row_with_discount_keeps_date_total_original_price_and_percentage():
@@ -58,7 +60,8 @@ def conn():
     connection = get_connection()
     connection.execute("INSERT INTO users (user_id, nickname) VALUES (%s, 'fake_user')", (USER,))
     for app_id, name in GAMES.items():
-        connection.execute("INSERT INTO games (app_id, name) VALUES (%s, %s)", (app_id, name))
+        connection.execute("INSERT INTO games (app_id, name, list_price_brl) VALUES (%s, %s, %s)",
+                           (app_id, name, PRICES.get(app_id)))
     yield connection
     connection.rollback()
     connection.close()
@@ -80,9 +83,9 @@ def accepted_items(conn):
 
 def test_accepted_plus_quarantined_rows_equal_the_rows_of_the_page(conn):
     summary = load(conn)
-    assert summary == {"rows": 16, "accepted": 7, "quarantined": 9}
+    assert summary == {"rows": 18, "accepted": 7, "quarantined": 11}
     count = lambda table: conn.execute(f"SELECT count(*) FROM {table} WHERE user_id = %s", (USER,)).fetchone()[0]
-    assert (count("purchases"), count("quarantine")) == (7, 9)
+    assert (count("purchases"), count("quarantine")) == (7, 11)
 
 
 def test_each_accepted_item_is_linked_to_the_right_game(conn):
@@ -94,18 +97,31 @@ def test_each_accepted_item_is_linked_to_the_right_game(conn):
         ("Fake Racer", "refund"): 900002,                         # refund of the same game
         ("FAKEUNKNOWN'S BATTLEGROUNDS - Worldwide Package", "purchase"): 900004,  # alias
         ("Fake Racer™ 2 - Track Pack A", "purchase"): 900005,     # longest prefix: Fake Racer 2, not Fake Racer
-        ("Fake Racer™ 2 - Track Pack B", "purchase"): 900005,     # (trademark sign double-encoded on the page)
+                                                                  # (trademark sign double-encoded on the page)
+        ("Fake Quest - Map Pack", "purchase"): 900001,            # second game of the same row
         ("Fake Shooter", "in_game"): 900003,                      # game number from the link
         ("Fake Quest - Bonus Chapter", "purchase"): 900001,       # DLC: starts with the game name
     }
 
 
-def test_single_item_gets_the_row_total_and_several_items_wait_for_the_split(conn):
+def test_single_item_gets_the_row_total_and_several_items_are_split_by_list_price(conn):
     load(conn)
     values = {name: value for _, _, name, _, value in accepted_items(conn)}
     assert values["Fake Quest - Bonus Chapter"] == Decimal("14.00")
-    assert values["Fake Racer™ 2 - Track Pack A"] is None  # split in ticket 09
-    assert values["Fake Racer™ 2 - Track Pack B"] is None
+    # R$ 30.00 between Fake Racer 2 (R$ 60) and Fake Quest (R$ 20): 3/4 and 1/4 (rule 4)
+    assert values["Fake Racer™ 2 - Track Pack A"] == Decimal("22.50")
+    assert values["Fake Quest - Map Pack"] == Decimal("7.50")
+
+
+def test_refund_is_linked_to_the_purchase_it_cancels(conn):
+    load(conn)
+    refund_link, purchase_key = conn.execute(
+        """SELECT r.refunded_purchase_key, p.purchase_key FROM purchases r
+           JOIN purchases p ON p.user_id = r.user_id AND p.purchase_date = '2025-09-10'
+           WHERE r.user_id = %s AND r.purchase_type = 'refund'""",
+        (USER,),
+    ).fetchone()
+    assert refund_link == purchase_key
 
 
 def test_discount_at_purchase_time_is_stored(conn):
@@ -130,6 +146,8 @@ def test_every_quarantined_row_has_the_right_reason(conn):
         assert expected in joined, expected
     assert sum("Community Market" in r for r in reasons) == 3  # the two identical rows are both kept
     assert sum("Wallet credit" in r for r in reasons) == 2     # wallet credit purchase + gift card
+    # Purchase and refund of a game no longer in the library: both kept, with the right reason
+    assert sum(r.startswith("Refunded purchase") for r in reasons) == 2
 
 
 def test_loading_marks_the_user_as_having_the_complete_history(conn):
@@ -143,9 +161,9 @@ def test_loading_marks_the_user_as_having_the_complete_history(conn):
 
 def test_loading_the_same_page_twice_does_not_duplicate(conn):
     load(conn)
-    assert load(conn) == {"rows": 16, "accepted": 7, "quarantined": 9}
+    assert load(conn) == {"rows": 18, "accepted": 7, "quarantined": 11}
     count = lambda table: conn.execute(f"SELECT count(*) FROM {table} WHERE user_id = %s", (USER,)).fetchone()[0]
-    assert (count("purchases"), count("quarantine")) == (7, 9)
+    assert (count("purchases"), count("quarantine")) == (7, 11)
 
 
 def test_payment_method_recipient_wallet_balance_and_transaction_id_are_not_stored(conn):

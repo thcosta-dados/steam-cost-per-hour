@@ -143,6 +143,43 @@ def identify(item, index):
     return best[1] if best else None
 
 
+# --- 2b. Splitting a row with several items (spec, rule 4) -----------------------------------
+
+def split_total(total, weights):
+    """Split a total proportionally to the weights, summing exactly to the total.
+
+    Works in whole cents with the largest remainder method: every part is rounded down, and the
+    cents left over go to the parts with the largest remainders. Weights all zero: equal parts.
+    """
+    cents = int(total * 100)
+    if sum(weights) == 0:
+        weights = [1] * len(weights)
+    exact = [Decimal(cents) * Decimal(w) / Decimal(sum(weights)) for w in weights]
+    parts = [int(x) for x in exact]  # rounded down
+    leftover = cents - sum(parts)
+    by_remainder = sorted(range(len(parts)), key=lambda i: exact[i] - parts[i], reverse=True)
+    for i in by_remainder[:leftover]:
+        parts[i] += 1
+    return [Decimal(p) / 100 for p in parts]
+
+
+def item_values(total, app_ids, prices):
+    """Value of each item of a row: split between games by list price, then equally between the
+    items of the same game. A free game has price 0 (gets nothing); any game without a list price
+    makes the split between games equal."""
+    games = list(dict.fromkeys(app_ids))  # distinct games, in order
+    if any(prices.get(game) is None for game in games):
+        game_parts = split_total(total, [1] * len(games))
+    else:
+        game_parts = split_total(total, [prices[game] for game in games])
+    values = [None] * len(app_ids)
+    for game, game_part in zip(games, game_parts):
+        positions = [i for i, app_id in enumerate(app_ids) if app_id == game]
+        for position, value in zip(positions, split_total(game_part, [1] * len(positions))):
+            values[position] = value
+    return values
+
+
 # --- 3. Accepted or quarantined -------------------------------------------------------------
 
 def classify(row, index, games):
@@ -173,10 +210,15 @@ def classify(row, index, games):
     return purchase_type, app_ids, None
 
 
+def transaction_key(user_id, transaction_id, type_text):
+    """SHA-256 key of a row with a transaction id. The type is part of it because a refund reuses
+    the transaction id of the purchase it refunds."""
+    return hashlib.sha256(f"{user_id}|transaction|{transaction_id}|{type_text}".encode()).hexdigest()
+
+
 def fingerprints(user_id, rows):
     """SHA-256 key of each row: from the transaction id and type, or from the row content.
 
-    The type is part of the key because a refund reuses the transaction id of the purchase it refunds.
     Identical rows without a transaction id (e.g. two Market sales on the same day) get their order
     of appearance, counted from the oldest row: new rows appear at the top of the page, so the keys
     of old rows never change.
@@ -186,12 +228,11 @@ def fingerprints(user_id, rows):
     for position in reversed(range(len(rows))):
         row = rows[position]
         if row["transaction_id"]:
-            base = f"{user_id}|transaction|{row['transaction_id']}|{row['type_text']}"
+            keys[position] = transaction_key(user_id, row["transaction_id"], row["type_text"])
         else:
             content = "|".join([row["date_text"], row["type_text"], ";".join(row["items"]), row["total_text"]])
             seen[content] += 1
-            base = f"{user_id}|row|{content}|{seen[content]}"
-        keys[position] = hashlib.sha256(base.encode()).hexdigest()
+            keys[position] = hashlib.sha256(f"{user_id}|row|{content}|{seen[content]}".encode()).hexdigest()
     return keys
 
 
@@ -201,32 +242,48 @@ def load_history(conn, user_id, page, games, aliases):
     """Load every row: accepted rows to purchases, the others to quarantine. All or nothing."""
     rows = parse_history(page)
     index = build_name_index(games, aliases)
+    # List prices to split rows with several items; a free game counts as 0 (rule 4)
+    prices = {app_id: (Decimal(0) if is_free else price)
+              for app_id, price, is_free in conn.execute("SELECT app_id, list_price_brl, is_free FROM games")}
+    # Transactions refunded in the page (a refund reuses the transaction id of its purchase)
+    refunded = {row["transaction_id"] for row in rows if row["type_text"] == "Refund" and row["transaction_id"]}
     accepted = quarantined = 0
+    # DO UPDATE (not DO NOTHING) on values, links and reasons: loading again applies new rules
+    # to rows already stored, still without duplicating anything
     with conn.transaction():
         for row, key in zip(rows, fingerprints(user_id, rows)):
             purchase_type, app_ids, reason = classify(row, index, games)
+            if reason and reason.startswith("Product not linked") and row["transaction_id"] in refunded:
+                reason = "Refunded purchase: purchase and refund cancel each other (product no longer in the library)"
             if reason:
                 content = " | ".join([row["date_text"], row["type_text"] or "(no type)",
                                       "; ".join(row["items"]), row["total_text"] or "(no total)"])
                 conn.execute(
                     """INSERT INTO quarantine (quarantine_key, user_id, origin, row_date, original_content, reason)
-                       VALUES (%s, %s, 'purchase_history', %s, %s, %s) ON CONFLICT (quarantine_key) DO NOTHING""",
+                       VALUES (%s, %s, 'purchase_history', %s, %s, %s)
+                       ON CONFLICT (quarantine_key) DO UPDATE
+                       SET original_content = EXCLUDED.original_content, reason = EXCLUDED.reason""",
                     (key, user_id, row["date"], content, reason),
                 )
                 quarantined += 1
                 continue
+            # A refund points to the purchase it cancels (rule 5): same transaction id, type Purchase
+            refunded_key = (transaction_key(user_id, row["transaction_id"], "Purchase")
+                            if purchase_type == "refund" and row["transaction_id"] else None)
             conn.execute(
                 """INSERT INTO purchases (purchase_key, user_id, purchase_date, purchase_type, total_brl,
-                                          original_price_brl, discount_pct)
-                   VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (purchase_key) DO NOTHING""",
-                (key, user_id, row["date"], purchase_type, row["total"], row["original_price"], row["discount_pct"]),
+                                          original_price_brl, discount_pct, refunded_purchase_key)
+                   VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                   ON CONFLICT (purchase_key) DO UPDATE SET refunded_purchase_key = EXCLUDED.refunded_purchase_key""",
+                (key, user_id, row["date"], purchase_type, row["total"], row["original_price"],
+                 row["discount_pct"], refunded_key),
             )
-            for position, (item, app_id) in enumerate(zip(row["items"], app_ids), start=1):
-                # One item: the item is the whole total. Several: split later (ticket 09)
-                value = row["total"] if len(row["items"]) == 1 else None
+            values = item_values(row["total"], app_ids, prices)
+            for position, (item, app_id, value) in enumerate(zip(row["items"], app_ids, values), start=1):
                 conn.execute(
                     """INSERT INTO purchase_items (purchase_key, item_position, item_name, app_id, value_brl)
-                       VALUES (%s, %s, %s, %s, %s) ON CONFLICT (purchase_key, item_position) DO NOTHING""",
+                       VALUES (%s, %s, %s, %s, %s)
+                       ON CONFLICT (purchase_key, item_position) DO UPDATE SET value_brl = EXCLUDED.value_brl""",
                     (key, position, item, app_id, value),
                 )
             accepted += 1

@@ -23,7 +23,28 @@ SELECT
 FROM games;
 
 
--- Cost per hour of each game, one row per user and game (spec, rules 1, 2, 6, 9, 10, 18, 24).
+-- Net value of each purchase after its refunds (spec, rule 5). A fully refunded purchase nets 0;
+-- GREATEST keeps it from ever going below zero.
+CREATE OR REPLACE VIEW net_purchases WITH (security_invoker = true) AS
+SELECT
+    p.purchase_key,
+    p.user_id,
+    p.purchase_date,
+    p.purchase_type,
+    p.total_brl,
+    coalesce(r.refunded_brl, 0) AS refunded_brl,
+    GREATEST(p.total_brl - coalesce(r.refunded_brl, 0), 0) AS net_total_brl
+FROM purchases p
+LEFT JOIN (
+    SELECT refunded_purchase_key, sum(total_brl) AS refunded_brl
+    FROM purchases
+    WHERE purchase_type = 'refund'
+    GROUP BY refunded_purchase_key
+) r ON r.refunded_purchase_key = p.purchase_key
+WHERE p.purchase_type <> 'refund';
+
+
+-- Cost per hour of each game, one row per user and game (spec, rules 1, 2, 5, 6, 9, 10, 18, 24).
 CREATE OR REPLACE VIEW game_costs WITH (security_invoker = true) AS
 WITH latest_snapshot AS (
     -- DISTINCT ON keeps the first row of each (user, game) in the ORDER BY: the latest day
@@ -32,11 +53,11 @@ WITH latest_snapshot AS (
     ORDER BY user_id, app_id, snapshot_date DESC
 ),
 purchased_games AS (
-    -- Games bought at least once (in-game purchases do not buy the game itself)
+    -- Games bought at least once and not refunded (in-game purchases do not buy the game itself)
     SELECT DISTINCT p.user_id, i.app_id
-    FROM purchases p
+    FROM net_purchases p
     JOIN purchase_items i USING (purchase_key)
-    WHERE p.purchase_type = 'purchase'
+    WHERE p.purchase_type = 'purchase' AND p.net_total_brl > 0
 ),
 origins AS (
     SELECT

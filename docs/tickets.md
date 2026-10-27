@@ -125,15 +125,15 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Blocked by:** 02.
 
 **Acceptance criteria:**
-- [ ] Linhas aceitas mais linhas na quarentena somam exatamente o total de linhas do arquivo de histórico.
-- [ ] Toda linha na quarentena tem motivo preenchido.
-- [ ] Para 3 compras normais e 1 DLC, o valor, a data e o jogo no banco batem com a página de Histórico de compras da Steam.
-- [ ] Todo item aceito está ligado a um jogo da biblioteca (spec, regra 22). Os produtos não identificados ficam na quarentena com o nome.
-- [ ] Para 2 compras com desconto, o preço original e o percentual gravados batem com a página.
-- [ ] Forma de pagamento, saldo da carteira, destinatário de presente e número da transação não são gravados no banco.
-- [ ] Para 2 compras no jogo (pelo menos uma em jogo gratuito), o valor, a data e o jogo no banco batem com a página de Histórico de compras, e nenhum crédito de carteira é contado como gasto.
-- [ ] Testes automáticos usam um histórico fictício com todos os tipos de linha, e nenhum histórico real está no repositório.
-- [ ] Carregar o mesmo arquivo duas vezes não duplica compras.
+- [x] Linhas aceitas mais linhas na quarentena somam exatamente o total de linhas do arquivo de histórico. Conferido em 27/10/2026 nos dois bancos: 105 aceitas + 86 na quarentena = 191, igual à contagem independente das linhas do arquivo (grep).
+- [x] Toda linha na quarentena tem motivo preenchido.
+- [x] Para 3 compras normais e 1 DLC, o valor, a data e o jogo no banco batem com a página de Histórico de compras da Steam. Conferido pelo dono: Subnautica 2, Battlefield 6, Hades II e a DLC Dead by Daylight: Jason.
+- [x] Todo item aceito está ligado a um jogo da biblioteca (spec, regra 22). Os produtos não identificados ficam na quarentena com o nome.
+- [x] Para 2 compras com desconto, o preço original e o percentual gravados batem com a página. Conferido: Machine Party e MECCHA CHAMELEON (-15%).
+- [x] Forma de pagamento, saldo da carteira, destinatário de presente e número da transação não são gravados no banco. Conferido por varredura: 0 de 116 números de transação, nenhuma bandeira de cartão e 0 de 6 destinatários de presente (nomes, SteamIDs e ids de perfil) gravados.
+- [x] Para 2 compras no jogo (pelo menos uma em jogo gratuito), o valor, a data e o jogo no banco batem com a página de Histórico de compras, e nenhum crédito de carteira é contado como gasto. Conferido: Warframe (gratuito para o dono, 2020) e Dead by Daylight (2026). Os 5 créditos de carteira ficaram na quarentena.
+- [x] Testes automáticos usam um histórico fictício com todos os tipos de linha, e nenhum histórico real está no repositório.
+- [x] Carregar o mesmo arquivo duas vezes não duplica compras. Conferido nos dois bancos. A página real reutiliza o número da transação no reembolso, e por isso o tipo da linha entra na impressão digital.
 
 ---
 

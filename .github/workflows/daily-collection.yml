@@ -4,8 +4,9 @@ name: Daily collection
 
 on:
   schedule:
-    # 06:17 UTC = 03:17 in Brasília. Early morning: if GitHub delays the start (it can at busy
-    # times), the run still falls on the same day. An odd minute avoids the busiest moments.
+    # 06:17 UTC = 03:17 in Brasília. GitHub often starts scheduled runs hours late (observed
+    # between 08:05 and 10:07 in Brasília in October 2026); scheduling early keeps the run on
+    # the same day even so. An odd minute avoids the busiest moments.
     - cron: "17 6 * * *"
   workflow_dispatch: # "Run workflow" button for manual runs
 

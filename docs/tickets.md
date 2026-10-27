@@ -111,10 +111,10 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Blocked by:** 02.
 
 **Acceptance criteria:**
-- [ ] Testes automáticos cobrem: dia normal, jogo novo, jogo removido, total que diminui e dia sem coleta.
-- [ ] Nenhum valor de horas por dia é negativo.
-- [ ] Com dados reais de pelo menos 2 dias, as horas de um jogo jogado no período batem com a diferença das horas exibidas na biblioteca da Steam nos dois dias (anotadas à mão). Primeira anotação: Deadlock com 430,5 h na biblioteca em 22/10/2026 às 17:22, sem jogar depois da coleta das 17:05. Falta a segunda anotação, antes de jogar no dia seguinte.
-- [ ] Todo registro na quarentena tem motivo preenchido.
+- [x] Testes automáticos cobrem: dia normal, jogo novo, jogo removido, total que diminui e dia sem coleta.
+- [x] Nenhum valor de horas por dia é negativo. Conferido nos dois bancos (zero linhas negativas).
+- [x] Com dados reais de pelo menos 2 dias, as horas de um jogo jogado no período batem com a diferença das horas exibidas na biblioteca da Steam nos dois dias (anotadas à mão). Primeira anotação: Deadlock com 430,5 h na biblioteca em 22/10/2026 às 17:22, sem jogar depois da coleta das 17:05. Segunda anotação: 438,4 h em 27/10/2026. Diferença na biblioteca: 7,9 h. Soma da daily_playtime entre os snapshots de 22 e 27/10: 7,92 h (475 min). Bate, com diferença só de arredondamento.
+- [x] Todo registro na quarentena tem motivo preenchido. Conferido nos dois bancos. Nos dados reais não houve queda de total, e o motivo é exigido pelo teste automático.
 
 ---
 

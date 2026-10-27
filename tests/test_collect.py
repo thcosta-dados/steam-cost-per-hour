@@ -66,6 +66,17 @@ def test_game_without_license_is_saved_as_unlicensed(conn):
     assert rows == [(900001, True), (900002, False)]
 
 
+def test_snapshot_includes_time_played_disconnected_like_the_steam_library(conn):
+    user_id = hash_steam_id(FAKE_STEAM_ID, "secret-key")
+    games = [{"appid": 900001, "name": "Fake Game One", "playtime_forever": 120, "playtime_disconnected": 30}]
+    save_collection(conn, user_id, "fake_user", games, LICENSED, datetime.date(2026, 1, 1))
+
+    minutes = conn.execute(
+        "SELECT minutes_played FROM playtime_snapshots WHERE user_id = %s AND app_id = 900001", (user_id,)
+    ).fetchone()[0]
+    assert minutes == 150  # the library shows online + disconnected time
+
+
 def test_game_missing_from_the_library_is_marked_removed_and_keeps_its_history(conn):
     user_id = hash_steam_id(FAKE_STEAM_ID, "secret-key")
     removed = lambda: dict(conn.execute(

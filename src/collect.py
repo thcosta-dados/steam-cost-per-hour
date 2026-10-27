@@ -17,6 +17,14 @@ def hash_steam_id(steam_id, secret_key):
     return hmac.new(secret_key.encode(), steam_id.encode(), hashlib.sha256).hexdigest()
 
 
+def library_minutes(game):
+    """Total minutes as the Steam library shows them: online plus disconnected (offline) play.
+
+    The API keeps time played while disconnected from Steam in a separate field.
+    """
+    return game["playtime_forever"] + game.get("playtime_disconnected", 0)
+
+
 def save_collection(conn, user_id, nickname, games, licensed_app_ids, snapshot_date):
     """Save one collection: user, games, library and the day's snapshot.
 
@@ -56,7 +64,7 @@ def save_collection(conn, user_id, nickname, games, licensed_app_ids, snapshot_d
                VALUES (%s, %s, %s, %s)
                ON CONFLICT (user_id, app_id, snapshot_date)
                DO UPDATE SET minutes_played = EXCLUDED.minutes_played""",
-            [(user_id, g["appid"], snapshot_date, g["playtime_forever"]) for g in games],
+            [(user_id, g["appid"], snapshot_date, library_minutes(g)) for g in games],
         )
 
 

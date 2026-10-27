@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "table_barely_started",
   "position": {
     "x": 970,
     "y": 610,
     "z": 12,
-    "width": 930,
     "height": 200,
+    "width": 930,
     "tabOrder": 12
   },
   "visual": {
@@ -108,8 +108,7 @@
             },
             "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": false
+        ]
       }
     },
     "visualContainerObjects": {

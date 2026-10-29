@@ -172,12 +172,13 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Blocked by:** 04, 05, 08b, 09.
 
 **Acceptance criteria:**
-- [ ] O Power BI se conecta ao Supabase em modo de importação e atualiza com um clique.
-- [ ] Todo valor de custo exibido mostra se a origem é pago ou estimado.
-- [ ] O painel mostra, por jogo, o valor pago e o gasto em compras no jogo separados. O ranking dos gratuitos e presentes ganha o gasto e o custo por hora, e o painel permite comparar gratuitos e pagos e informa que compras feitas fora da Steam não estão incluídas.
-- [ ] O painel mostra o desconto obtido por compra e a economia total (spec, regra 21), com o aviso de que a comparação é com o preço cheio atual. Para 3 compras, o desconto bate com uma conta feita à mão (valor do histórico de compras e preço cheio da página da loja).
-- [ ] O custo por hora de 3 jogos com preço pago bate com uma conta feita à mão (valor do histórico de compras dividido pelas horas exibidas na biblioteca da Steam).
-- [ ] A visão de horas por dia mostra os dias coletados sem valores negativos.
+- [x] O Power BI se conecta ao Supabase em modo de importação e atualiza com um clique. A conexão passa pelo container `supabase-tunnel`, que criptografa e verifica o certificado do Supabase sem alterar a confiança do Windows; um túnel configurado com a autoridade errada ou com o nome errado recusa a conexão.
+- [x] Todo valor de custo exibido mostra se a origem é pago ou estimado.
+- [x] O painel mostra, por jogo, o valor pago e o gasto em compras no jogo separados. O ranking dos gratuitos e presentes ganha o gasto e o custo por hora, e o painel permite comparar gratuitos e pagos e informa que compras feitas fora da Steam não estão incluídas.
+- [x] O painel mostra o desconto obtido por compra e a economia total (spec, regra 21), comparando com o preço original da época mostrado no histórico. Para 3 compras, o desconto bate com uma conta feita à mão (valor pago e preço riscado da página de Histórico de compras).
+- [x] O painel funciona nos dois níveis: só com o SteamID (valores estimados) e com o histórico carregado (valores pagos), e mostra qual nível está em uso. Coberto por teste automático com um usuário sem histórico.
+- [x] O custo por hora de 3 jogos com preço pago bate com uma conta feita à mão (valor do histórico de compras dividido pelas horas exibidas na biblioteca da Steam).
+- [x] A visão de horas por dia mostra os dias coletados sem valores negativos.
 
 ---
 

@@ -33,6 +33,32 @@
             "width": 234
           },
           "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 568,
+            "y": 14
+          },
+          "nodeIndex": "daily_playtime",
+          "nodeLineageTag": "ef6f0657-ce54-412c-b3b6-c2544310bdd7",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 852,
+            "y": 0
+          },
+          "nodeIndex": "purchase_discounts",
+          "nodeLineageTag": "eb4ea62a-3cd3-4647-95d3-70255ff638b7",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "Todas as tabelas",

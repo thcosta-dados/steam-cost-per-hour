@@ -57,7 +57,7 @@ cultureInfo pt-BR
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Valor": {
+			          "Valor do jogo": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -163,6 +163,247 @@ cultureInfo pt-BR
 			      "Terms": [
 			        {
 			          "Motivo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "game_costs.extra_spend_brl": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "game_costs",
+			          "ConceptualProperty": "extra_spend_brl"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Gasto dentro do jogo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Gasto extra": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "daily_playtime.play_date": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "daily_playtime",
+			          "ConceptualProperty": "play_date"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Dia de jogo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "daily_playtime.name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "daily_playtime",
+			          "ConceptualProperty": "name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Jogo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "daily_playtime.hours_played": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "daily_playtime",
+			          "ConceptualProperty": "hours_played"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Horas": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "daily_playtime.days_covered": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "daily_playtime",
+			          "ConceptualProperty": "days_covered"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Dias cobertos": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "purchase_discounts.purchase_date": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "purchase_discounts",
+			          "ConceptualProperty": "purchase_date"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Data": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "purchase_discounts.items": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "purchase_discounts",
+			          "ConceptualProperty": "items"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Itens": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "purchase_discounts.paid_brl": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "purchase_discounts",
+			          "ConceptualProperty": "paid_brl"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Pago": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "purchase_discounts.original_price_brl": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "purchase_discounts",
+			          "ConceptualProperty": "original_price_brl"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Preço original da época": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "purchase_discounts.discount_pct": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "purchase_discounts",
+			          "ConceptualProperty": "discount_pct"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Desconto": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "purchase_discounts.savings_brl": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "purchase_discounts",
+			          "ConceptualProperty": "savings_brl"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Economia": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",

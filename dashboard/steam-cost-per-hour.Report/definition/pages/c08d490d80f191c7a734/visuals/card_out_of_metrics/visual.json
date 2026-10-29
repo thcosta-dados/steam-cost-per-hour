@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "card_out_of_metrics",
   "position": {
-    "x": 1445,
+    "x": 1672,
     "y": 20,
-    "z": 3,
-    "width": 455,
-    "height": 150,
-    "tabOrder": 3
+    "z": 7000,
+    "height": 120,
+    "width": 226,
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "card",

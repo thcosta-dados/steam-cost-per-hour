@@ -11,10 +11,12 @@ annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_ProTooling = ["DevMode"]
 
-annotation PBI_QueryOrder = ["DatabaseServer","DatabaseName","game_costs","items_out_of_metrics"]
+annotation PBI_QueryOrder = ["DatabaseServer","DatabaseName","game_costs","items_out_of_metrics","daily_playtime","purchase_discounts"]
 
 ref table game_costs
 ref table items_out_of_metrics
+ref table daily_playtime
+ref table purchase_discounts
 
 ref cultureInfo pt-BR
 

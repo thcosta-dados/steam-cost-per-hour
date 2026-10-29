@@ -3,11 +3,11 @@
   "name": "table_free_games",
   "position": {
     "x": 970,
-    "y": 190,
-    "z": 11,
+    "y": 200,
+    "z": 10000,
     "height": 400,
     "width": 930,
-    "tabOrder": 11
+    "tabOrder": 10000
   },
   "visual": {
     "visualType": "tableEx",
@@ -44,6 +44,36 @@
               "queryRef": "game_costs.hours_played",
               "nativeQueryRef": "hours_played",
               "displayName": "Horas"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "game_costs"
+                    }
+                  },
+                  "Property": "extra_spend_brl"
+                }
+              },
+              "queryRef": "game_costs.extra_spend_brl",
+              "nativeQueryRef": "extra_spend_brl",
+              "displayName": "Gasto dentro do jogo"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "game_costs"
+                    }
+                  },
+                  "Property": "cost_per_hour_brl"
+                }
+              },
+              "queryRef": "game_costs.cost_per_hour_brl",
+              "nativeQueryRef": "cost_per_hour_brl",
+              "displayName": "Custo por hora"
             },
             {
               "field": {
@@ -95,7 +125,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Sem custo na Steam: gratuitos, presentes e cortesias (por horas jogadas)'"
+                  "Value": "'Sem custo de acesso: gratuitos, presentes e cortesias (por horas jogadas)'"
                 }
               }
             }

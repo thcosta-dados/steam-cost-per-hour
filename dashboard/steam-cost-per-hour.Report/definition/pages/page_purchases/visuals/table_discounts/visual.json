@@ -1,0 +1,175 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "table_discounts",
+  "position": {
+    "x": 20.199501246882793,
+    "y": 169.67581047381546,
+    "z": 3000,
+    "height": 890.12468827930172,
+    "width": 1179.6508728179551,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "purchase_discounts"
+                    }
+                  },
+                  "Property": "purchase_date"
+                }
+              },
+              "queryRef": "purchase_discounts.purchase_date",
+              "nativeQueryRef": "purchase_date",
+              "displayName": "Data"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "purchase_discounts"
+                    }
+                  },
+                  "Property": "items"
+                }
+              },
+              "queryRef": "purchase_discounts.items",
+              "nativeQueryRef": "items",
+              "displayName": "Itens"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "purchase_discounts"
+                    }
+                  },
+                  "Property": "paid_brl"
+                }
+              },
+              "queryRef": "purchase_discounts.paid_brl",
+              "nativeQueryRef": "paid_brl",
+              "displayName": "Pago"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "purchase_discounts"
+                    }
+                  },
+                  "Property": "original_price_brl"
+                }
+              },
+              "queryRef": "purchase_discounts.original_price_brl",
+              "nativeQueryRef": "original_price_brl",
+              "displayName": "Preço original da época"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "purchase_discounts"
+                    }
+                  },
+                  "Property": "discount_pct"
+                }
+              },
+              "queryRef": "purchase_discounts.discount_pct",
+              "nativeQueryRef": "discount_pct",
+              "displayName": "Desconto"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "purchase_discounts"
+                    }
+                  },
+                  "Property": "savings_brl"
+                }
+              },
+              "queryRef": "purchase_discounts.savings_brl",
+              "nativeQueryRef": "savings_brl",
+              "displayName": "Economia"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "purchase_discounts"
+                  }
+                },
+                "Property": "purchase_date"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "660.3544382140867D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "purchase_discounts.items"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Compras de jogos e DLCs: desconto contra o preço da época (reembolsadas ficam de fora)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

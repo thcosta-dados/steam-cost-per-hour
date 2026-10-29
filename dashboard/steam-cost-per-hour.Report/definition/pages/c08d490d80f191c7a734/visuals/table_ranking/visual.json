@@ -3,11 +3,11 @@
   "name": "table_ranking",
   "position": {
     "x": 20,
-    "y": 190,
-    "z": 10,
-    "height": 870,
+    "y": 200,
+    "z": 9000,
+    "height": 860,
     "width": 930,
-    "tabOrder": 10
+    "tabOrder": 9000
   },
   "visual": {
     "visualType": "tableEx",
@@ -59,6 +59,36 @@
               "queryRef": "game_costs.hours_played",
               "nativeQueryRef": "hours_played",
               "displayName": "Horas"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "game_costs"
+                    }
+                  },
+                  "Property": "game_value_brl"
+                }
+              },
+              "queryRef": "game_costs.game_value_brl",
+              "nativeQueryRef": "game_value_brl",
+              "displayName": "Valor do jogo"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "game_costs"
+                    }
+                  },
+                  "Property": "extra_spend_brl"
+                }
+              },
+              "queryRef": "game_costs.extra_spend_brl",
+              "nativeQueryRef": "extra_spend_brl",
+              "displayName": "Gasto extra"
             },
             {
               "field": {

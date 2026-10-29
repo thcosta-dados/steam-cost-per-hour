@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "chart_hours_per_day",
+  "position": {
+    "x": 20,
+    "y": 20,
+    "z": 0,
+    "height": 500,
+    "width": 1880,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "daily_playtime"
+                    }
+                  },
+                  "Property": "play_date"
+                }
+              },
+              "queryRef": "daily_playtime.play_date",
+              "nativeQueryRef": "play_date",
+              "active": true,
+              "displayName": "Dia de jogo"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "daily_playtime"
+                    }
+                  },
+                  "Property": "Horas jogadas"
+                }
+              },
+              "queryRef": "daily_playtime.Horas jogadas",
+              "nativeQueryRef": "Horas jogadas"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "daily_playtime"
+                  }
+                },
+                "Property": "play_date"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Horas jogadas por dia (o dia de jogo termina na coleta da manhã seguinte)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

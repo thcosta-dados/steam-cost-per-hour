@@ -3,11 +3,11 @@
   "name": "table_out_of_metrics",
   "position": {
     "x": 970,
-    "y": 830,
-    "z": 13,
-    "height": 230,
+    "y": 840,
+    "z": 12000,
+    "height": 220,
     "width": 930,
-    "tabOrder": 13
+    "tabOrder": 12000
   },
   "visual": {
     "visualType": "tableEx",
@@ -86,51 +86,5 @@
         }
       ]
     }
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "d010c26a63011ca4058f",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "items_out_of_metrics"
-              }
-            },
-            "Property": "name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "83bdc999bbc5855e147c",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "items_out_of_metrics"
-              }
-            },
-            "Property": "item_category"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "e921b4903a0a87121ab9",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "items_out_of_metrics"
-              }
-            },
-            "Property": "reason"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

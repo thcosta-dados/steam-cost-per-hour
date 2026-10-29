@@ -3,11 +3,11 @@
   "name": "table_barely_started",
   "position": {
     "x": 970,
-    "y": 610,
-    "z": 12,
+    "y": 620,
+    "z": 11000,
     "height": 200,
     "width": 930,
-    "tabOrder": 12
+    "tabOrder": 11000
   },
   "visual": {
     "visualType": "tableEx",
@@ -58,7 +58,7 @@
               },
               "queryRef": "game_costs.game_value_brl",
               "nativeQueryRef": "game_value_brl",
-              "displayName": "Valor"
+              "displayName": "Valor do jogo"
             },
             {
               "field": {

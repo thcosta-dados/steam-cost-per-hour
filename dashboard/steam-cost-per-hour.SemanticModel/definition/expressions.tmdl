@@ -1,11 +1,14 @@
-/// Database server. Local Docker database; switched to the cloud database in ticket 10.
-expression DatabaseServer = "localhost:5433" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+/// Database server: Supabase through the supabase-tunnel container (tunnel/stunnel.conf), which encrypts
+/// and verifies the connection with Supabase's root CA; in Power BI this source has "Encrypt connections" off
+/// because that leg stays inside the computer. User and password are entered in Power BI and stay on the computer.
+/// For the local Docker database: "localhost:5433".
+expression DatabaseServer = "localhost:5434" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
 	lineageTag: ae1d5ea8-1114-4eb4-b28f-efe3c6fe605d
 
 	annotation PBI_ResultType = Text
 
-/// Database name.
-expression DatabaseName = "steam" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+/// Database name: "postgres" on Supabase, "steam" on the local Docker database.
+expression DatabaseName = "postgres" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
 	lineageTag: 4ea8e98a-8161-4714-8ecc-ceefd73d0244
 
 	annotation PBI_ResultType = Text

@@ -1,4 +1,4 @@
-# Local environment: `docker compose up -d` starts the database and the Python app.
+# Local environment: `docker compose up -d` starts the database, the Python app and the Power BI tunnel.
 # Values like ${POSTGRES_PASSWORD} are read from the .env file (never committed).
 # The app-cloud service runs the same code against Supabase (.env.cloud).
 
@@ -42,6 +42,14 @@ services:
     volumes:
       - .:/app
     profiles: [cloud]  # not started by "docker compose up", so nothing is written to the cloud by accident
+
+  # Encrypted, verified path from Power BI to Supabase (details in tunnel/stunnel.conf).
+  # Power BI connects to localhost:5434; the tunnel opens a connection to Supabase only when asked.
+  supabase-tunnel:
+    build: ./tunnel
+    # 127.0.0.1 only: the unencrypted side is reachable from this computer, never from the network
+    ports:
+      - "127.0.0.1:5434:5432"
 
 volumes:
   pgdata:

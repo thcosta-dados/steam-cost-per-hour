@@ -68,6 +68,8 @@ As tabelas têm Row Level Security ligado e as views usam `security_invoker`, pa
 
 O painel do Power BI está em `dashboard/`, salvo como projeto (`.pbip`). Ele lê as views do banco, e o servidor e o banco são parâmetros. Os dados importados não são versionados.
 
+O Supabase assina os certificados do banco com uma autoridade própria, que o Windows não conhece, e o conector do Power BI só confia nas autoridades do Windows. Em vez de instalar essa autoridade no sistema, o painel passa pelo container `supabase-tunnel` (pasta `tunnel/`). O Power BI conecta em `localhost:5434`, um trecho que não sai do computador, e o túnel leva a conexão ao Supabase criptografada e com o certificado verificado. Para atualizar o painel, o ambiente precisa estar ligado (`docker compose up -d`). No Power BI, essa fonte de dados fica com "Criptografar conexões" desmarcado, já que a criptografia é feita pelo túnel.
+
 ## Privacidade
 
 Credenciais ficam só no `.env` (ignorado pelo Git) e nos segredos do GitHub. Arquivos de histórico de compras nunca vão para o repositório, e o SteamID só é gravado no banco transformado em hash.

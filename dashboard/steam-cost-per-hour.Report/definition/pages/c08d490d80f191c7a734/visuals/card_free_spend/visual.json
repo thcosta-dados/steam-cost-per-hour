@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "card_free_spend",
+  "position": {
+    "x": 728,
+    "y": 20,
+    "z": 3000,
+    "height": 120,
+    "width": 226,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "game_costs"
+                    }
+                  },
+                  "Property": "Gasto em jogos sem custo de acesso"
+                }
+              },
+              "queryRef": "game_costs.Gasto em jogos sem custo de acesso",
+              "nativeQueryRef": "Gasto em jogos sem custo de acesso"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

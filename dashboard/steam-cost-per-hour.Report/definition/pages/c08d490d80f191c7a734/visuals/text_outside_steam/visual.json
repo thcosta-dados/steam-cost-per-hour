@@ -1,0 +1,32 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "text_outside_steam",
+  "position": {
+    "x": 20,
+    "y": 150,
+    "z": 8000,
+    "height": 40,
+    "width": 1880,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Valores da Steam apenas: compras feitas fora da Steam (sites das empresas, chaves de outras lojas) não estão incluídas. A origem do valor de cada jogo aparece ao lado (pago, estimado, gratuito, sem compra na Steam)."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

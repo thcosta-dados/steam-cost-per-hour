@@ -1,0 +1,122 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "table_hours_per_game",
+  "position": {
+    "x": 20,
+    "y": 540,
+    "z": 1000,
+    "height": 520,
+    "width": 1880,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "daily_playtime"
+                    }
+                  },
+                  "Property": "play_date"
+                }
+              },
+              "queryRef": "daily_playtime.play_date",
+              "nativeQueryRef": "play_date",
+              "displayName": "Dia de jogo"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "daily_playtime"
+                    }
+                  },
+                  "Property": "name"
+                }
+              },
+              "queryRef": "daily_playtime.name",
+              "nativeQueryRef": "name",
+              "displayName": "Jogo"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "daily_playtime"
+                    }
+                  },
+                  "Property": "hours_played"
+                }
+              },
+              "queryRef": "daily_playtime.hours_played",
+              "nativeQueryRef": "hours_played",
+              "displayName": "Horas"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "daily_playtime"
+                    }
+                  },
+                  "Property": "days_covered"
+                }
+              },
+              "queryRef": "daily_playtime.days_covered",
+              "nativeQueryRef": "days_covered",
+              "displayName": "Dias cobertos"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "daily_playtime"
+                  }
+                },
+                "Property": "play_date"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Horas por dia e por jogo (dias cobertos > 1: houve dia sem coleta)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

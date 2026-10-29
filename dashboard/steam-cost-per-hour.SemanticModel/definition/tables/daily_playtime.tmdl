@@ -1,0 +1,73 @@
+/// Hours played per play day and game (view public.daily_playtime, spec rules 11 to 13).
+table daily_playtime
+	lineageTag: ef6f0657-ce54-412c-b3b6-c2544310bdd7
+
+	measure 'Horas jogadas' = SUM ( daily_playtime[hours_played] )
+		formatString: #,0.0
+		lineageTag: a623bec7-0f34-419d-ab62-33f8abc84c76
+
+	column user_id
+		dataType: string
+		lineageTag: 3d60e841-7df2-445f-953c-ade7a53f7630
+		summarizeBy: none
+		sourceColumn: user_id
+
+	column app_id
+		dataType: int64
+		formatString: 0
+		lineageTag: f223696b-567f-4c35-998b-ede147f900f2
+		summarizeBy: none
+		sourceColumn: app_id
+
+	column name
+		dataType: string
+		lineageTag: f6a7ec9e-0c6e-4b8e-b410-6861a653d9c2
+		summarizeBy: none
+		sourceColumn: name
+
+	column play_date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: b3e937fb-7a12-43aa-a5fd-e035d1ae4509
+		summarizeBy: none
+		sourceColumn: play_date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column days_covered
+		dataType: int64
+		formatString: 0
+		lineageTag: aad36860-75f2-4cc5-a55f-30546899870d
+		summarizeBy: none
+		sourceColumn: days_covered
+
+	column minutes_played
+		dataType: int64
+		formatString: #,0
+		lineageTag: 08d2675a-bd73-4c2f-891d-cad949ce65d0
+		summarizeBy: none
+		sourceColumn: minutes_played
+
+	column hours_played
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 80f1139f-d530-4827-b00c-04d60d94f73d
+		summarizeBy: none
+		sourceColumn: hours_played
+
+	partition daily_playtime = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(DatabaseServer, DatabaseName),
+				    Daily = Source{[Schema = "public", Item = "daily_playtime"]}[Data],
+				    Selected = Table.SelectColumns(Daily, {"user_id", "app_id", "name", "play_date", "days_covered", "minutes_played", "hours_played"}),
+				    Typed = Table.TransformColumnTypes(Selected, {
+				        {"app_id", Int64.Type}, {"play_date", type date}, {"days_covered", Int64.Type},
+				        {"minutes_played", Int64.Type}, {"hours_played", type number}
+				    })
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

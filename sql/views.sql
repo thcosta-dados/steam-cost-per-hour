@@ -44,20 +44,57 @@ LEFT JOIN (
 WHERE p.purchase_type <> 'refund';
 
 
--- Cost per hour of each game, one row per user and game (spec, rules 1, 2, 5, 6, 9, 10, 18, 24).
+-- Value of each purchased item after refunds (rule 5): the item keeps its share of the net total.
+-- Fully refunded purchases are left out.
+CREATE OR REPLACE VIEW net_purchase_items WITH (security_invoker = true) AS
+SELECT
+    np.user_id,
+    np.purchase_key,
+    np.purchase_date,
+    np.purchase_type,
+    i.item_position,
+    i.item_name,
+    i.app_id,
+    round(i.value_brl * np.net_total_brl / np.total_brl, 2) AS net_value_brl
+FROM net_purchases np
+JOIN purchase_items i USING (purchase_key)
+WHERE np.net_total_brl > 0;
+
+
+-- Money spent on each game (rules 16 and 23): the first purchase of the game is the game value;
+-- later purchases (DLCs, passes) and in-game purchases are extra spending.
+CREATE OR REPLACE VIEW game_spending WITH (security_invoker = true) AS
+WITH per_purchase AS (
+    -- One row per purchase and game (a row can have several items of the same game)
+    SELECT user_id, app_id, purchase_key, purchase_date, purchase_type, sum(net_value_brl) AS value_brl
+    FROM net_purchase_items
+    GROUP BY user_id, app_id, purchase_key, purchase_date, purchase_type
+),
+first_purchase AS (
+    -- DISTINCT ON keeps the first row of each (user, game) in the ORDER BY: the oldest purchase
+    SELECT DISTINCT ON (user_id, app_id) user_id, app_id, purchase_key
+    FROM per_purchase
+    WHERE purchase_type = 'purchase'
+    ORDER BY user_id, app_id, purchase_date, purchase_key
+)
+SELECT
+    p.user_id,
+    p.app_id,
+    -- FILTER: a sum over only the rows that meet the condition
+    sum(p.value_brl) FILTER (WHERE p.purchase_key = f.purchase_key) AS game_paid_brl,
+    coalesce(sum(p.value_brl) FILTER (WHERE p.purchase_key IS DISTINCT FROM f.purchase_key), 0) AS extra_spend_brl
+FROM per_purchase p
+LEFT JOIN first_purchase f USING (user_id, app_id)  -- no first purchase: only in-game spending (free game)
+GROUP BY p.user_id, p.app_id;
+
+
+-- Cost per hour of each game, one row per user and game (spec, rules 1, 2, 5, 6, 9, 10, 16, 18, 23, 24).
 CREATE OR REPLACE VIEW game_costs WITH (security_invoker = true) AS
 WITH latest_snapshot AS (
     -- DISTINCT ON keeps the first row of each (user, game) in the ORDER BY: the latest day
     SELECT DISTINCT ON (user_id, app_id) user_id, app_id, snapshot_date, minutes_played
     FROM playtime_snapshots
     ORDER BY user_id, app_id, snapshot_date DESC
-),
-purchased_games AS (
-    -- Games bought at least once and not refunded (in-game purchases do not buy the game itself)
-    SELECT DISTINCT p.user_id, i.app_id
-    FROM net_purchases p
-    JOIN purchase_items i USING (purchase_key)
-    WHERE p.purchase_type = 'purchase' AND p.net_total_brl > 0
 ),
 origins AS (
     SELECT
@@ -68,14 +105,17 @@ origins AS (
         g.list_price_brl,
         s.snapshot_date,
         s.minutes_played,
-        -- Value origin (rule 2). "paid" comes with the paid value (ticket 10).
+        u.purchase_history_loaded_at IS NOT NULL AS purchase_history_loaded,
+        gs.game_paid_brl,
+        coalesce(gs.extra_spend_brl, 0) AS extra_spend_brl,
+        -- Value origin, in order of priority (rule 2)
         CASE
-            WHEN NOT l.has_license THEN 'free'              -- played without a license (rule 6)
-            -- Complete history loaded and no purchase of the game: gift, complimentary or
-            -- promotion, nothing paid on Steam (rule 24). LEFT JOIN below: no match = no purchase.
-            WHEN u.purchase_history_loaded_at IS NOT NULL AND pg.app_id IS NULL THEN 'no_purchase'
-            WHEN g.list_price_brl IS NOT NULL THEN 'estimated'
-            ELSE 'unknown'                                  -- licensed, no store price (rule 18)
+            WHEN NOT l.has_license THEN 'free'                -- played without a license (rule 6)
+            WHEN gs.game_paid_brl IS NOT NULL THEN 'paid'     -- bought, not refunded (rules 5 and 23)
+            -- Complete history loaded and no purchase: gift, complimentary or promotion (rule 24)
+            WHEN u.purchase_history_loaded_at IS NOT NULL THEN 'no_purchase'
+            WHEN g.list_price_brl IS NOT NULL THEN 'estimated'  -- only the SteamID: store price
+            ELSE 'unknown'                                    -- licensed, no store price (rule 18)
         END AS value_origin
     FROM library l
     JOIN users u USING (user_id)
@@ -83,7 +123,7 @@ origins AS (
     JOIN games_classified c USING (app_id)
     -- Inner join: every library row has a snapshot (both are saved in the same transaction)
     JOIN latest_snapshot s USING (user_id, app_id)
-    LEFT JOIN purchased_games pg ON pg.user_id = l.user_id AND pg.app_id = l.app_id
+    LEFT JOIN game_spending gs ON gs.user_id = l.user_id AND gs.app_id = l.app_id
     WHERE c.item_category = 'game'  -- software and other items are out of metrics (rule 17)
 ),
 valued AS (
@@ -93,6 +133,7 @@ valued AS (
         CASE o.value_origin
             WHEN 'free' THEN 0
             WHEN 'no_purchase' THEN 0
+            WHEN 'paid' THEN o.game_paid_brl
             WHEN 'estimated' THEN o.list_price_brl
         END AS game_value_brl
     FROM origins o
@@ -108,18 +149,40 @@ SELECT
     round(v.minutes_played / 60.0, 2) AS hours_played,
     v.value_origin,
     v.game_value_brl,
-    -- From minutes, not rounded hours, to avoid rounding errors; only with hours and a known value
+    -- Total spending (game + extra) per hour, from minutes to avoid rounding; only with hours and a known value
     CASE
         WHEN v.minutes_played > 0 AND v.game_value_brl IS NOT NULL
-        THEN v.game_value_brl * 60 / v.minutes_played
+        THEN (v.game_value_brl + v.extra_spend_brl) * 60 / v.minutes_played
     END AS cost_per_hour_brl,
     CASE
         WHEN v.minutes_played = 0 THEN 'not_played'      -- money parked (rule 9)
         WHEN v.minutes_played < 60 THEN 'barely_started' -- out of the main ranking (rule 10)
         ELSE 'played'
-    END AS hours_group
+    END AS hours_group,
+    -- New columns go at the end: CREATE OR REPLACE VIEW only accepts columns added after the old ones
+    v.extra_spend_brl,
+    v.game_value_brl + v.extra_spend_brl AS total_spend_brl,
+    v.purchase_history_loaded  -- false = only the SteamID (estimated values)
 FROM valued v
 JOIN users u USING (user_id);
+
+
+-- Discount of each purchase (rule 21): paid value against the price at purchase time shown in the
+-- history. Without a discount on the page, the price at purchase time is the price paid.
+CREATE OR REPLACE VIEW purchase_discounts WITH (security_invoker = true) AS
+SELECT
+    np.user_id,
+    np.purchase_key,
+    np.purchase_date,
+    (SELECT string_agg(i.item_name, ' + ' ORDER BY i.item_position)
+     FROM purchase_items i WHERE i.purchase_key = np.purchase_key) AS items,
+    np.total_brl AS paid_brl,
+    coalesce(p.original_price_brl, p.total_brl) AS original_price_brl,
+    coalesce(p.discount_pct, 0) AS discount_pct,
+    coalesce(p.original_price_brl, p.total_brl) - p.total_brl AS savings_brl
+FROM net_purchases np
+JOIN purchases p USING (purchase_key)
+WHERE np.purchase_type = 'purchase' AND np.net_total_brl > 0;  -- refunded purchases saved nothing
 
 
 -- Minutes played between each snapshot and the previous one (spec, rules 11 to 13).

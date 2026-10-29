@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "card_barely_started",
   "position": {
-    "x": 495,
+    "x": 1200,
     "y": 20,
-    "z": 1,
-    "width": 455,
-    "height": 150,
-    "tabOrder": 1
+    "z": 5000,
+    "height": 120,
+    "width": 226,
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "card",

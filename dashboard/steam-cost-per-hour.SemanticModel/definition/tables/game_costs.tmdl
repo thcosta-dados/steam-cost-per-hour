@@ -17,6 +17,25 @@ table game_costs
 		formatString: 0
 		lineageTag: dda9c777-cd73-48f8-a136-4deb179ae698
 
+	/// Everything spent on Steam on games: game value + extra spending (DLCs, in-game purchases).
+	measure 'Gasto total' = SUM ( game_costs[total_spend_brl] )
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: ba5bd1de-441c-47d7-9717-3c033faeee87
+
+	/// Spending on games bought (value + extra), to compare with games without access cost.
+	measure 'Gasto em jogos pagos' = CALCULATE ( SUM ( game_costs[total_spend_brl] ), game_costs[value_origin] = "pago" )
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: 1056a96a-de8c-4ac0-9192-bf821b44467e
+
+	/// Money spent inside free games and games received without purchase (spec, rule 16).
+	measure 'Gasto em jogos sem custo de acesso' = CALCULATE ( SUM ( game_costs[extra_spend_brl] ), game_costs[value_origin] IN { "gratuito", "sem compra na Steam" } )
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: cb7cd97b-d6b8-41ab-becc-83c9f45733b1
+
+	/// Which level the data is at: complete (purchase history loaded) or basic (only the SteamID).
+	measure 'Nível dos dados' = IF ( CALCULATE ( COUNTROWS ( game_costs ), game_costs[purchase_history_loaded] = TRUE () ) > 0, "Completo: valores pagos", "Básico: valores estimados" )
+		lineageTag: 7808bca7-2f54-417f-b85a-80e801db9111
+
 	column user_id
 		dataType: string
 		lineageTag: 5098b67f-b5b2-4624-95de-d58d19e11f48
@@ -97,6 +116,26 @@ table game_costs
 		summarizeBy: none
 		sourceColumn: hours_group
 
+	column extra_spend_brl
+		dataType: decimal
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: 156e555c-3375-4dda-b24e-88a5ac953ae6
+		summarizeBy: none
+		sourceColumn: extra_spend_brl
+
+	column total_spend_brl
+		dataType: decimal
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: 15e88e20-5588-4679-ac9c-eee401d7a795
+		summarizeBy: none
+		sourceColumn: total_spend_brl
+
+	column purchase_history_loaded
+		dataType: boolean
+		lineageTag: d77326a4-8ec0-45c5-b81c-4f9e592175a9
+		summarizeBy: none
+		sourceColumn: purchase_history_loaded
+
 	partition game_costs = m
 		mode: import
 		source =
@@ -104,7 +143,7 @@ table game_costs
 				    Source = PostgreSQL.Database(DatabaseServer, DatabaseName),
 				    GameCosts = Source{[Schema = "public", Item = "game_costs"]}[Data],
 				    // Portuguese labels for the dashboard; the database keeps the English codes
-				    OriginLabels = [free = "gratuito", no_purchase = "sem compra na Steam", estimated = "estimado", unknown = "sem valor conhecido"],
+				    OriginLabels = [paid = "pago", free = "gratuito", no_purchase = "sem compra na Steam", estimated = "estimado", unknown = "sem valor conhecido"],
 				    GroupLabels = [played = "jogado", barely_started = "mal começado", not_played = "não jogado"],
 				    Labeled = Table.TransformColumns(GameCosts, {
 				        {"value_origin", each Record.FieldOrDefault(OriginLabels, _, _), type text},
@@ -113,7 +152,8 @@ table game_costs
 				    // Money as fixed decimal (Currency.Type): exact, like NUMERIC in the database
 				    Typed = Table.TransformColumnTypes(Labeled, {
 				        {"app_id", Int64.Type}, {"minutes_played", Int64.Type}, {"last_snapshot_date", type date},
-				        {"hours_played", type number}, {"game_value_brl", Currency.Type}, {"cost_per_hour_brl", Currency.Type}
+				        {"hours_played", type number}, {"game_value_brl", Currency.Type}, {"cost_per_hour_brl", Currency.Type},
+				        {"extra_spend_brl", Currency.Type}, {"total_spend_brl", Currency.Type}, {"purchase_history_loaded", type logical}
 				    })
 				in
 				    Typed

@@ -1,0 +1,83 @@
+/// Discount of each purchase against the price at purchase time (view public.purchase_discounts, spec rule 21).
+table purchase_discounts
+	lineageTag: eb4ea62a-3cd3-4647-95d3-70255ff638b7
+
+	measure 'Economia com descontos' = SUM ( purchase_discounts[savings_brl] )
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: e488c8dc-1bc6-4012-9b4a-f88e50a3029d
+
+	/// Share of the original prices that was saved: savings / original prices.
+	measure 'Desconto médio' = DIVIDE ( SUM ( purchase_discounts[savings_brl] ), SUM ( purchase_discounts[original_price_brl] ) )
+		formatString: 0.0%
+		lineageTag: 34c530e9-0a11-481d-b496-1a3343f302c6
+
+	column user_id
+		dataType: string
+		lineageTag: 31282cee-db3c-44d8-8178-b08fd2d68c54
+		summarizeBy: none
+		sourceColumn: user_id
+
+	column purchase_key
+		dataType: string
+		lineageTag: 92c3894f-16b7-4dfc-8849-b3a6eb59314b
+		summarizeBy: none
+		sourceColumn: purchase_key
+
+	column purchase_date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 3a3667e7-dcb7-4053-aa28-704216b6fc53
+		summarizeBy: none
+		sourceColumn: purchase_date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column items
+		dataType: string
+		lineageTag: be2ab510-445d-4f1e-a1de-9da978033bc3
+		summarizeBy: none
+		sourceColumn: items
+
+	column paid_brl
+		dataType: decimal
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: 851348ef-9305-4738-bafe-e2a3a64b0683
+		summarizeBy: none
+		sourceColumn: paid_brl
+
+	column original_price_brl
+		dataType: decimal
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: a400c776-3d3e-4f62-967f-a08347abf7b1
+		summarizeBy: none
+		sourceColumn: original_price_brl
+
+	column discount_pct
+		dataType: int64
+		formatString: 0"%"
+		lineageTag: ffd3bfa0-0d06-40b6-a95b-c6e2be284a4d
+		summarizeBy: none
+		sourceColumn: discount_pct
+
+	column savings_brl
+		dataType: decimal
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: dc2887e3-d1ef-4b92-8b76-632d0a1d24d0
+		summarizeBy: none
+		sourceColumn: savings_brl
+
+	partition purchase_discounts = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(DatabaseServer, DatabaseName),
+				    Discounts = Source{[Schema = "public", Item = "purchase_discounts"]}[Data],
+				    Typed = Table.TransformColumnTypes(Discounts, {
+				        {"purchase_date", type date}, {"paid_brl", Currency.Type}, {"original_price_brl", Currency.Type},
+				        {"discount_pct", Int64.Type}, {"savings_brl", Currency.Type}
+				    })
+				in
+				    Typed
+
+	annotation PBI_ResultType = Exception
+

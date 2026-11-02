@@ -64,6 +64,7 @@ table game_costs
 	column header_image_url
 		dataType: string
 		lineageTag: 9496f2f3-7d42-4fbb-9105-89bd2aa06e19
+		dataCategory: ImageUrl
 		summarizeBy: none
 		sourceColumn: header_image_url
 
@@ -136,6 +137,23 @@ table game_costs
 		summarizeBy: none
 		sourceColumn: purchase_history_loaded
 
+	column first_purchase_date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 5dc64449-10ba-4f06-b512-56b80469b358
+		summarizeBy: none
+		sourceColumn: first_purchase_date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// User and game in one column: the relationship with daily_playtime (a relationship takes one column).
+	column game_key
+		dataType: string
+		isHidden
+		lineageTag: 8fb08014-2a6c-4330-8d2a-84be4e103964
+		summarizeBy: none
+		sourceColumn: game_key
+
 	partition game_costs = m
 		mode: import
 		source =
@@ -153,7 +171,8 @@ table game_costs
 				    Typed = Table.TransformColumnTypes(Labeled, {
 				        {"app_id", Int64.Type}, {"minutes_played", Int64.Type}, {"last_snapshot_date", type date},
 				        {"hours_played", type number}, {"game_value_brl", Currency.Type}, {"cost_per_hour_brl", Currency.Type},
-				        {"extra_spend_brl", Currency.Type}, {"total_spend_brl", Currency.Type}, {"purchase_history_loaded", type logical}
+				        {"extra_spend_brl", Currency.Type}, {"total_spend_brl", Currency.Type}, {"purchase_history_loaded", type logical},
+				        {"first_purchase_date", type date}
 				    })
 				in
 				    Typed

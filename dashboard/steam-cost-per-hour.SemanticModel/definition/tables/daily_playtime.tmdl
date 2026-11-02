@@ -55,13 +55,21 @@ table daily_playtime
 		summarizeBy: none
 		sourceColumn: hours_played
 
+	/// Same key as game_costs[game_key]: the relationship that filters the days of one game.
+	column game_key
+		dataType: string
+		isHidden
+		lineageTag: fb44188d-6800-4f86-a91b-dcf5dab1f6de
+		summarizeBy: none
+		sourceColumn: game_key
+
 	partition daily_playtime = m
 		mode: import
 		source =
 				let
 				    Source = PostgreSQL.Database(DatabaseServer, DatabaseName),
 				    Daily = Source{[Schema = "public", Item = "daily_playtime"]}[Data],
-				    Selected = Table.SelectColumns(Daily, {"user_id", "app_id", "name", "play_date", "days_covered", "minutes_played", "hours_played"}),
+				    Selected = Table.SelectColumns(Daily, {"user_id", "app_id", "name", "play_date", "days_covered", "minutes_played", "hours_played", "game_key"}),
 				    Typed = Table.TransformColumnTypes(Selected, {
 				        {"app_id", Int64.Type}, {"play_date", type date}, {"days_covered", Int64.Type},
 				        {"minutes_played", Int64.Type}, {"hours_played", type number}

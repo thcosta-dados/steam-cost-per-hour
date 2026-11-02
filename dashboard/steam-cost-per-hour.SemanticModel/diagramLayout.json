@@ -10,8 +10,8 @@
       "nodes": [
         {
           "location": {
-            "x": 0,
-            "y": 0
+            "x": 489,
+            "y": 388
           },
           "nodeIndex": "game_costs",
           "nodeLineageTag": "bf85bb68-cd73-478d-90cb-92bdadf5e71a",
@@ -19,12 +19,12 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 1
         },
         {
           "location": {
-            "x": 284,
-            "y": 38
+            "x": 138,
+            "y": 57
           },
           "nodeIndex": "items_out_of_metrics",
           "nodeLineageTag": "01cbccef-4464-4dec-96d1-c5fd845d6a3c",
@@ -32,12 +32,12 @@
             "height": 224,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 2
         },
         {
           "location": {
-            "x": 568,
-            "y": 14
+            "x": 484,
+            "y": 5
           },
           "nodeIndex": "daily_playtime",
           "nodeLineageTag": "ef6f0657-ce54-412c-b3b6-c2544310bdd7",
@@ -45,12 +45,12 @@
             "height": 272,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 4
         },
         {
           "location": {
-            "x": 852,
-            "y": 0
+            "x": 868,
+            "y": 40
           },
           "nodeIndex": "purchase_discounts",
           "nodeLineageTag": "eb4ea62a-3cd3-4647-95d3-70255ff638b7",
@@ -58,7 +58,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 3
         }
       ],
       "name": "Todas as tabelas",

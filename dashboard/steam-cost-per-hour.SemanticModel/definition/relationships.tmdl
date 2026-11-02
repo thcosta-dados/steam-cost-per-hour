@@ -1,0 +1,4 @@
+relationship dbb7d383-a00e-4616-a7db-9ff7e3897611
+	fromColumn: daily_playtime.game_key
+	toColumn: game_costs.game_key
+

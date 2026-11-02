@@ -3,9 +3,9 @@
   "name": "table_hours_per_game",
   "position": {
     "x": 20,
-    "y": 540,
+    "y": 560,
     "z": 1000,
-    "height": 520,
+    "height": 500,
     "width": 1880,
     "tabOrder": 1000
   },

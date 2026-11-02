@@ -1,0 +1,97 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "chart_total_hours",
+  "position": {
+    "x": 20,
+    "y": 446,
+    "z": 4000,
+    "height": 300,
+    "width": 1880,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "playtime_history"
+                    }
+                  },
+                  "Property": "snapshot_date"
+                }
+              },
+              "queryRef": "playtime_history.snapshot_date",
+              "nativeQueryRef": "snapshot_date",
+              "displayName": "Dia da coleta",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "playtime_history"
+                    }
+                  },
+                  "Property": "Horas totais"
+                }
+              },
+              "queryRef": "playtime_history.Horas totais",
+              "nativeQueryRef": "Horas totais",
+              "displayName": "Horas totais"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "playtime_history"
+                  }
+                },
+                "Property": "snapshot_date"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Total de horas na biblioteca em cada coleta'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

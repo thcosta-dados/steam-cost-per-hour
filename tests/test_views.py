@@ -245,6 +245,20 @@ def test_game_key_links_each_day_played_to_one_game(conn):
     assert unmatched == []
 
 
+def test_playtime_history_has_the_total_hours_of_each_collection_day(conn):
+    rows = conn.execute(
+        """SELECT h.app_id, h.snapshot_date, h.hours_played, c.game_key IS NOT NULL
+           FROM playtime_history h
+           LEFT JOIN game_costs c ON c.game_key = h.game_key AND c.app_id = h.app_id
+           WHERE h.user_id = %s AND h.app_id IN (900001, 900006)
+           ORDER BY h.snapshot_date""",
+        (USER,),
+    ).fetchall()
+    # "Paid Played": 300 min on the old day, 600 on the latest, linked to its game in game_costs.
+    # "Some Software" (900006) is out of metrics (rule 17).
+    assert rows == [(900001, OLD_DAY, Decimal("5.00"), True), (900001, DAY, Decimal("10.00"), True)]
+
+
 def test_discount_compares_paid_value_with_the_price_at_purchase_time(conn):
     add_purchase(conn, "d1", datetime.date(2025, 1, 1), "purchase", 900001, "Paid Played",
                  Decimal("14.00"), original=Decimal("20.00"), pct=30)

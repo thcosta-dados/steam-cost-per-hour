@@ -286,6 +286,21 @@ WHERE c.item_category = 'game'
   AND i.minutes_difference > 0;  -- days without play are left out; decreases go to the quarantine
 
 
+-- Total hours of each game on each collection day, games only (rule 17). Unlike daily_playtime,
+-- it also has the days without play: the evolution of the hours in the game detail page (ticket 11).
+CREATE OR REPLACE VIEW playtime_history WITH (security_invoker = true) AS
+SELECT
+    s.user_id,
+    s.app_id,
+    s.snapshot_date,
+    s.minutes_played,
+    round(s.minutes_played / 60.0, 2) AS hours_played,
+    s.user_id || ':' || s.app_id AS game_key  -- same key as game_costs (Power BI relationship)
+FROM playtime_snapshots s
+JOIN games_classified c USING (app_id)
+WHERE c.item_category = 'game';
+
+
 -- Collection quarantine: a total that decreased is kept out of the hours, with the reason (rule 13).
 -- The original snapshots stay untouched in playtime_snapshots.
 CREATE OR REPLACE VIEW collection_quarantine WITH (security_invoker = true) AS

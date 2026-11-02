@@ -1,0 +1,10 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "page_game_tooltip",
+  "displayName": "Dica do jogo",
+  "displayOption": "FitToPage",
+  "height": 400,
+  "width": 480,
+  "visibility": "HiddenInViewMode",
+  "type": "Tooltip"
+}

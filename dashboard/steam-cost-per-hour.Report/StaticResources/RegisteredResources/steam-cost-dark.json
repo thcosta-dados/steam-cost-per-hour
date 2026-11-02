@@ -439,6 +439,14 @@
                 "color": "#FFFFFF"
               }
             }
+          },
+          {
+            "$id": "disabled",
+            "fontColor": {
+              "solid": {
+                "color": "#8B949E"
+              }
+            }
           }
         ],
         "shape": [
@@ -465,6 +473,15 @@
             "lineColor": {
               "solid": {
                 "color": "#3987E5"
+              }
+            },
+            "weight": 1
+          },
+          {
+            "$id": "disabled",
+            "lineColor": {
+              "solid": {
+                "color": "#2D3542"
               }
             },
             "weight": 1
@@ -497,6 +514,15 @@
             "fillColor": {
               "solid": {
                 "color": "#3987E5"
+              }
+            },
+            "transparency": 0
+          },
+          {
+            "$id": "disabled",
+            "fillColor": {
+              "solid": {
+                "color": "#161B22"
               }
             },
             "transparency": 0

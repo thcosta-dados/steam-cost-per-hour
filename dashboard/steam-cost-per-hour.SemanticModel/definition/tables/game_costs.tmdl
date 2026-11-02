@@ -36,6 +36,14 @@ table game_costs
 	measure 'Nível dos dados' = IF ( CALCULATE ( COUNTROWS ( game_costs ), game_costs[purchase_history_loaded] = TRUE () ) > 0, "Completo", "Básico" )
 		lineageTag: 7808bca7-2f54-417f-b85a-80e801db9111
 
+	/// Date of the purchase that is the game value, as text: games without a Steam purchase show "sem compra".
+	measure 'Data da compra' = VAR purchase_date = MIN ( game_costs[first_purchase_date] ) RETURN IF ( ISBLANK ( purchase_date ), "sem compra", FORMAT ( purchase_date, "dd/mm/yyyy" ) )
+		lineageTag: dc1e6edb-cdaa-4664-ae15-65bb109bc5b1
+
+	/// Cost per hour of one game, as text: "—" when it is not calculated (0 hours or unknown value, rules 9 and 18).
+	measure 'Custo por hora do jogo' = VAR cost = SUM ( game_costs[cost_per_hour_brl] ) RETURN IF ( ISBLANK ( cost ), "—", FORMAT ( cost, "\R$ #,0.00" ) )
+		lineageTag: 44d9e389-c6b4-49ae-9e18-94d7665ad96a
+
 	column user_id
 		dataType: string
 		lineageTag: 5098b67f-b5b2-4624-95de-d58d19e11f48

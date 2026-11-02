@@ -1,0 +1,69 @@
+/// Total hours of each game on each collection day (view public.playtime_history): the evolution in the game detail page.
+table playtime_history
+	lineageTag: e3d92472-1265-4bea-ac36-7922cda54464
+
+	measure 'Horas totais' = SUM ( playtime_history[hours_played] )
+		formatString: #,0.0
+		lineageTag: 9b1d41de-1a40-4ba5-a14f-ddad2b8a2371
+
+	column user_id
+		dataType: string
+		isHidden
+		lineageTag: 60ceb6f3-d911-44d7-ae14-aa9e8f84c007
+		summarizeBy: none
+		sourceColumn: user_id
+
+	column app_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d9902efb-70e8-4b4e-a664-dfd344b6435b
+		summarizeBy: none
+		sourceColumn: app_id
+
+	column snapshot_date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 06a6222d-a731-4b6f-ae84-fed6d79a7e10
+		summarizeBy: none
+		sourceColumn: snapshot_date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column minutes_played
+		dataType: int64
+		formatString: #,0
+		lineageTag: b6384fd3-5f16-4a1f-984c-b83cadf2f4f6
+		summarizeBy: none
+		sourceColumn: minutes_played
+
+	column hours_played
+		dataType: double
+		formatString: #,0.00
+		lineageTag: fd4c8c31-fc64-4718-9cc4-3d747a40e117
+		summarizeBy: none
+		sourceColumn: hours_played
+
+	/// Same key as game_costs[game_key]: the relationship that filters the history of one game.
+	column game_key
+		dataType: string
+		isHidden
+		lineageTag: 586707c2-62cb-48bc-8ad0-cdce57adf21e
+		summarizeBy: none
+		sourceColumn: game_key
+
+	partition playtime_history = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(DatabaseServer, DatabaseName),
+				    History = Source{[Schema = "public", Item = "playtime_history"]}[Data],
+				    Typed = Table.TransformColumnTypes(History, {
+				        {"app_id", Int64.Type}, {"snapshot_date", type date},
+				        {"minutes_played", Int64.Type}, {"hours_played", type number}
+				    })
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

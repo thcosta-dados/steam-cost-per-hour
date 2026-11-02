@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "card_detail_11",
+  "position": {
+    "x": 980,
+    "y": 311,
+    "z": 3101,
+    "height": 115,
+    "width": 450,
+    "tabOrder": 3101
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "game_costs"
+                        }
+                      },
+                      "Property": "extra_spend_brl"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(game_costs.extra_spend_brl)",
+              "nativeQueryRef": "Sum of extra_spend_brl",
+              "displayName": "Gasto extra"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

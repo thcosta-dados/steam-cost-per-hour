@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "card_detail_02",
+  "position": {
+    "x": 1450,
+    "y": 176,
+    "z": 3002,
+    "height": 115,
+    "width": 450,
+    "tabOrder": 3002
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "game_costs"
+                        }
+                      },
+                      "Property": "value_origin"
+                    }
+                  },
+                  "Function": 3
+                }
+              },
+              "queryRef": "Min(game_costs.value_origin)",
+              "nativeQueryRef": "Min of value_origin",
+              "displayName": "Origem do valor"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

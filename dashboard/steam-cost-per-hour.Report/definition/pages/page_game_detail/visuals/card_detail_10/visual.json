@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "card_detail_10",
+  "position": {
+    "x": 510,
+    "y": 311,
+    "z": 3100,
+    "height": 115,
+    "width": 450,
+    "tabOrder": 3100
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "game_costs"
+                        }
+                      },
+                      "Property": "game_value_brl"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(game_costs.game_value_brl)",
+              "nativeQueryRef": "Sum of game_value_brl",
+              "displayName": "Valor do jogo"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

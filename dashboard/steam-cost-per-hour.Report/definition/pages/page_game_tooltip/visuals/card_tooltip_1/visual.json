@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "card_tooltip_1",
+  "position": {
+    "x": 245,
+    "y": 210,
+    "z": 2001,
+    "height": 90,
+    "width": 225,
+    "tabOrder": 2001
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "game_costs"
+                        }
+                      },
+                      "Property": "hours_played"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(game_costs.hours_played)",
+              "nativeQueryRef": "Sum of hours_played",
+              "displayName": "Horas jogadas"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

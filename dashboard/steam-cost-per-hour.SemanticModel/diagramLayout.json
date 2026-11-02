@@ -11,7 +11,7 @@
         {
           "location": {
             "x": 489,
-            "y": 388
+            "y": 390.5
           },
           "nodeIndex": "game_costs",
           "nodeLineageTag": "bf85bb68-cd73-478d-90cb-92bdadf5e71a",
@@ -24,7 +24,7 @@
         {
           "location": {
             "x": 138,
-            "y": 57
+            "y": 59.5
           },
           "nodeIndex": "items_out_of_metrics",
           "nodeLineageTag": "01cbccef-4464-4dec-96d1-c5fd845d6a3c",
@@ -37,7 +37,7 @@
         {
           "location": {
             "x": 484,
-            "y": 5
+            "y": 7.5
           },
           "nodeIndex": "daily_playtime",
           "nodeLineageTag": "ef6f0657-ce54-412c-b3b6-c2544310bdd7",
@@ -50,7 +50,7 @@
         {
           "location": {
             "x": 868,
-            "y": 40
+            "y": 42.5
           },
           "nodeIndex": "purchase_discounts",
           "nodeLineageTag": "eb4ea62a-3cd3-4647-95d3-70255ff638b7",
@@ -59,6 +59,19 @@
             "width": 234
           },
           "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 1014,
+            "y": 220
+          },
+          "nodeIndex": "playtime_history",
+          "nodeLineageTag": "e3d92472-1265-4bea-ac36-7922cda54464",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "Todas as tabelas",

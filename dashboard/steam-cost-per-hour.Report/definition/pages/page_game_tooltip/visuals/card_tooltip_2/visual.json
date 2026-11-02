@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "card_tooltip_2",
+  "position": {
+    "x": 10,
+    "y": 305,
+    "z": 2002,
+    "height": 90,
+    "width": 225,
+    "tabOrder": 2002
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "game_costs"
+                    }
+                  },
+                  "Property": "Data da compra"
+                }
+              },
+              "queryRef": "game_costs.Data da compra",
+              "nativeQueryRef": "Data da compra",
+              "displayName": "Data da compra"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

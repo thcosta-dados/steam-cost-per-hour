@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "card_detail_01",
+  "position": {
+    "x": 980,
+    "y": 176,
+    "z": 3001,
+    "height": 115,
+    "width": 450,
+    "tabOrder": 3001
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "game_costs"
+                    }
+                  },
+                  "Property": "Custo por hora do jogo"
+                }
+              },
+              "queryRef": "game_costs.Custo por hora do jogo",
+              "nativeQueryRef": "Custo por hora do jogo",
+              "displayName": "Custo por hora"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

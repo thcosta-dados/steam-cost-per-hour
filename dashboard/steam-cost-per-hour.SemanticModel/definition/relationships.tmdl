@@ -2,3 +2,7 @@ relationship dbb7d383-a00e-4616-a7db-9ff7e3897611
 	fromColumn: daily_playtime.game_key
 	toColumn: game_costs.game_key
 
+relationship 0a10fdad-3725-4940-9451-fb4d719ccb65
+	fromColumn: playtime_history.game_key
+	toColumn: game_costs.game_key
+

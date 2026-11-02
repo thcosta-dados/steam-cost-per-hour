@@ -2,8 +2,8 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "card_total_spend_purchases",
   "position": {
-    "x": 820,
-    "y": 20,
+    "x": 833.56608478802991,
+    "y": 20.199501246882793,
     "z": 2000,
     "height": 130,
     "width": 380,

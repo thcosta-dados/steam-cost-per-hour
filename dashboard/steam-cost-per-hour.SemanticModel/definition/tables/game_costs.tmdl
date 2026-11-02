@@ -13,7 +13,7 @@ table game_costs
 		lineageTag: bb0eb698-c498-4d92-8c07-8347ed7083ed
 
 	/// Licensed games without a purchase record or store price: out of the ranking and sums (spec, rule 18).
-	measure 'Jogos sem valor conhecido' = CALCULATE ( COUNTROWS ( game_costs ), game_costs[value_origin] = "sem valor conhecido" )
+	measure 'Jogos sem valor conhecido' = CALCULATE ( COUNTROWS ( game_costs ), game_costs[value_origin] = "sem valor conhecido" ) + 0
 		formatString: 0
 		lineageTag: dda9c777-cd73-48f8-a136-4deb179ae698
 
@@ -33,7 +33,7 @@ table game_costs
 		lineageTag: cb7cd97b-d6b8-41ab-becc-83c9f45733b1
 
 	/// Which level the data is at: complete (purchase history loaded) or basic (only the SteamID).
-	measure 'Nível dos dados' = IF ( CALCULATE ( COUNTROWS ( game_costs ), game_costs[purchase_history_loaded] = TRUE () ) > 0, "Completo: valores pagos", "Básico: valores estimados" )
+	measure 'Nível dos dados' = IF ( CALCULATE ( COUNTROWS ( game_costs ), game_costs[purchase_history_loaded] = TRUE () ) > 0, "Completo", "Básico" )
 		lineageTag: 7808bca7-2f54-417f-b85a-80e801db9111
 
 	column user_id

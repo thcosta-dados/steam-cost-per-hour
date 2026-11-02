@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "game_costs.Gasto em jogos sem custo de acesso",
-              "nativeQueryRef": "Gasto em jogos sem custo de acesso"
+              "nativeQueryRef": "Gasto em jogos sem custo de acesso",
+              "displayName": "Gasto em jogos de graça"
             }
           ]
         }

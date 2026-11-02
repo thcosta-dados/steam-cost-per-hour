@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Valores da Steam apenas: compras feitas fora da Steam (sites das empresas, chaves de outras lojas) não estão incluídas. A origem do valor de cada jogo aparece ao lado (pago, estimado, gratuito, sem compra na Steam)."
+                    "value": "Nível completo: valores pagos, do histórico de compras (no básico, preços de tabela estimados). Só entram compras feitas na Steam: compras nos sites das empresas e chaves de outras lojas ficam de fora."
                   }
                 ]
               }

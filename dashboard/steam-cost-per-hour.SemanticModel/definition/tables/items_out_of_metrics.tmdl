@@ -2,7 +2,7 @@
 table items_out_of_metrics
 	lineageTag: 01cbccef-4464-4dec-96d1-c5fd845d6a3c
 
-	measure 'Itens fora das métricas' = COUNTROWS ( items_out_of_metrics )
+	measure 'Itens fora das métricas' = COUNTROWS ( items_out_of_metrics ) + 0
 		formatString: 0
 		lineageTag: 2b9395e8-ca73-4692-8272-042f9dab0da8
 
@@ -47,7 +47,7 @@ table items_out_of_metrics
 				    CategoryLabels = [software = "programa", other = "outro"],
 				    ReasonLabels = [
 				        #"Software genre in the store (e.g. Utilities)" = "Gênero de software na loja (ex.: Utilities)",
-				        #"No genres or no store page (test server, playtest or removed item)" = "Sem gêneros ou sem página na loja (servidor de teste, playtest ou item removido)"
+				        #"No genres or no store page (test server, playtest or removed item)" = "Sem gêneros nem página na loja (teste, playtest ou removido)"
 				    ],
 				    Labeled = Table.TransformColumns(OutOfMetrics, {
 				        {"item_category", each Record.FieldOrDefault(CategoryLabels, _, _), type text},

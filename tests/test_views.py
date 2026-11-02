@@ -160,10 +160,89 @@ def test_free_game_with_in_game_purchases_has_a_real_cost_per_hour(conn):
         "free", Decimal("0"), Decimal("30.00"), Decimal("30.00"), Decimal("15"), True)
 
 
+def test_free_game_store_purchase_is_extra_spending(conn):
+    conn.execute("UPDATE users SET purchase_history_loaded_at = now() WHERE user_id = %s", (USER,))
+    add_purchase(conn, "p5", datetime.date(2025, 6, 1), "purchase", 900002, "Free Played - Expansion", Decimal("50.00"))
+    add_purchase(conn, "p6", datetime.date(2025, 7, 1), "in_game", 900002, "Free Played", Decimal("10.00"))
+    # Without a license, a store purchase cannot be the game itself: it is a DLC, pass or pack.
+    # Access free (R$ 0) + extra R$ 60 (expansion + in-game) over 2 h = R$ 30/h (rules 2, 16 and 23)
+    assert spending(conn)["Free Played"] == (
+        "free", Decimal("0"), Decimal("60.00"), Decimal("60.00"), Decimal("30"), True)
+
+
+def add_history_row(conn, key, kind, items, refunded_key=None):
+    """Fictional history row with several items (app_id, name, value); a refund points to its purchase."""
+    conn.execute(
+        """INSERT INTO purchases (purchase_key, user_id, purchase_date, purchase_type, total_brl,
+                                  refunded_purchase_key)
+           VALUES (%s, %s, %s, %s, %s, %s)""",
+        (key, USER, OLD_DAY, kind, sum(value for _, _, value in items), refunded_key),
+    )
+    for position, (app_id, name, value) in enumerate(items, start=1):
+        conn.execute("INSERT INTO purchase_items VALUES (%s, %s, %s, %s, %s)", (key, position, name, app_id, value))
+
+
+def test_partial_refund_cancels_only_the_refunded_item(conn):
+    # Cart with two games (R$ 50 + R$ 30); only "Paid Played" is refunded (rule 5)
+    conn.execute("UPDATE users SET purchase_history_loaded_at = now() WHERE user_id = %s", (USER,))
+    add_history_row(conn, "cart", "purchase", [(900001, "Paid Played", Decimal("50.00")),
+                                               (900004, "Barely Started", Decimal("30.00"))])
+    add_history_row(conn, "cart_refund", "refund", [(900001, "Paid Played", Decimal("50.00"))],
+                    refunded_key="cart")
+    costs = game_costs(conn)
+    # The game kept cost R$ 30, not 30/80 of it (R$ 11.25)
+    assert costs["Barely Started"][:2] == ("paid", Decimal("30.00"))
+    # The refunded game has no other purchase: R$ 0 (rules 5 and 24), not "paid" R$ 18.75
+    assert costs["Paid Played"][:2] == ("no_purchase", Decimal("0"))
+
+
+def test_partial_refund_shares_the_net_total_without_losing_cents(conn):
+    # Cart of three games split at R$ 10 each; the refund of one returned R$ 9.99, so R$ 20.01 remain
+    add_history_row(conn, "cart", "purchase", [(900001, "Paid Played", Decimal("10.00")),
+                                               (900003, "Never Played", Decimal("10.00")),
+                                               (900004, "Barely Started", Decimal("10.00"))])
+    add_history_row(conn, "cart_refund", "refund", [(900003, "Never Played", Decimal("9.99"))],
+                    refunded_key="cart")
+    values = dict(conn.execute(
+        "SELECT item_name, net_value_brl FROM net_purchase_items WHERE purchase_key = 'cart'"
+    ).fetchall())
+    # R$ 20.01 / 2 = R$ 10.005 each: rounding both would give R$ 20.02, so the last item takes the rest
+    assert values == {"Paid Played": Decimal("10.01"), "Barely Started": Decimal("10.00")}
+
+
 def test_without_history_values_stay_estimated_and_the_level_is_basic(conn):
     # Only the SteamID: no purchase history loaded (rule 2)
     assert spending(conn)["Paid Played"] == (
         "estimated", Decimal("100.00"), Decimal("0"), Decimal("100.00"), Decimal("10"), False)
+
+
+def test_first_purchase_date_is_the_date_of_the_game_value(conn):
+    conn.execute("UPDATE users SET purchase_history_loaded_at = now() WHERE user_id = %s", (USER,))
+    add_purchase(conn, "p1", datetime.date(2025, 1, 1), "purchase", 900001, "Paid Played", Decimal("80.00"))
+    add_purchase(conn, "p2", datetime.date(2025, 6, 1), "purchase", 900001, "Paid Played - DLC", Decimal("20.00"))
+    add_purchase(conn, "p3", datetime.date(2025, 7, 1), "in_game", 900002, "Free Played", Decimal("30.00"))
+    dates = dict(conn.execute(
+        "SELECT name, first_purchase_date FROM game_costs WHERE user_id = %s", (USER,)
+    ).fetchall())
+    # The first purchase (the game value), not the DLC bought later
+    assert dates["Paid Played"] == datetime.date(2025, 1, 1)
+    # Free game with in-game purchases and games without purchase: no purchase date
+    assert dates["Free Played"] is None
+    assert dates["Never Played"] is None
+
+
+def test_game_key_links_each_day_played_to_one_game(conn):
+    # Power BI relationship game_costs (one) -> daily_playtime (many) by game_key
+    keys = conn.execute("SELECT game_key FROM game_costs WHERE user_id = %s", (USER,)).fetchall()
+    assert len(keys) == len(set(keys))  # unique on the "one" side
+    unmatched = conn.execute(
+        """SELECT d.app_id FROM daily_playtime d
+           LEFT JOIN game_costs c ON c.game_key = d.game_key AND c.app_id = d.app_id
+           WHERE d.user_id = %s AND c.game_key IS NULL""",
+        (USER,),
+    ).fetchall()
+    assert conn.execute("SELECT count(*) FROM daily_playtime WHERE user_id = %s", (USER,)).fetchone()[0] > 0
+    assert unmatched == []
 
 
 def test_discount_compares_paid_value_with_the_price_at_purchase_time(conn):

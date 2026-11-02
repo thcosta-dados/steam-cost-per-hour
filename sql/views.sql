@@ -44,25 +44,61 @@ LEFT JOIN (
 WHERE p.purchase_type <> 'refund';
 
 
--- Value of each purchased item after refunds (rule 5): the item keeps its share of the net total.
--- Fully refunded purchases are left out.
+-- Value of each purchased item after refunds (rule 5). A refund row lists the items that went back:
+-- they leave the purchase, and the net total is shared by the items kept, in proportion to their
+-- value. Fully refunded purchases are left out.
 CREATE OR REPLACE VIEW net_purchase_items WITH (security_invoker = true) AS
+WITH refunded_products AS (
+    -- Products listed in the refunds of each purchase
+    SELECT DISTINCT r.refunded_purchase_key AS purchase_key, i.app_id, i.item_name
+    FROM purchases r
+    JOIN purchase_items i ON i.purchase_key = r.purchase_key
+    WHERE r.purchase_type = 'refund'
+),
+marked AS (
+    SELECT
+        i.*,
+        rp.purchase_key IS NOT NULL AS refunded,
+        -- Value of the items the refund did not list (FILTER: a sum over only those rows)
+        coalesce(sum(i.value_brl) FILTER (WHERE rp.purchase_key IS NULL)
+                 OVER (PARTITION BY i.purchase_key), 0) AS value_not_refunded
+    FROM purchase_items i
+    LEFT JOIN refunded_products rp USING (purchase_key, app_id, item_name)
+),
+shares AS (
+    SELECT
+        np.user_id, np.purchase_key, np.purchase_date, np.purchase_type, np.net_total_brl,
+        m.item_position, m.item_name, m.app_id,
+        round(m.value_brl * np.net_total_brl / sum(m.value_brl) OVER w, 2) AS share,
+        m.item_position = max(m.item_position) OVER w AS last_item
+    FROM net_purchases np
+    JOIN marked m USING (purchase_key)
+    WHERE np.net_total_brl > 0
+      -- Items kept: the ones not refunded. If the refund lists no item of the purchase, or leaves
+      -- only items without value, every item shares the net total, so no money is lost.
+      AND (NOT m.refunded OR m.value_not_refunded = 0)
+    WINDOW w AS (PARTITION BY m.purchase_key)  -- window over the items kept (applied after WHERE)
+)
 SELECT
-    np.user_id,
-    np.purchase_key,
-    np.purchase_date,
-    np.purchase_type,
-    i.item_position,
-    i.item_name,
-    i.app_id,
-    round(i.value_brl * np.net_total_brl / np.total_brl, 2) AS net_value_brl
-FROM net_purchases np
-JOIN purchase_items i USING (purchase_key)
-WHERE np.net_total_brl > 0;
+    user_id,
+    purchase_key,
+    purchase_date,
+    purchase_type,
+    item_position,
+    item_name,
+    app_id,
+    -- The last item takes the rounding rest, so the items always add up to the net total
+    CASE
+        WHEN last_item THEN net_total_brl - (sum(share) OVER (PARTITION BY purchase_key) - share)
+        ELSE share
+    END AS net_value_brl
+FROM shares;
 
 
--- Money spent on each game (rules 16 and 23): the first purchase of the game is the game value;
--- later purchases (DLCs, passes) and in-game purchases are extra spending.
+-- Money spent on each game (rules 16 and 23): the first purchase of a licensed game is the game value;
+-- later purchases (DLCs, passes) and in-game purchases are extra spending. A game played without a
+-- license is free: a store purchase linked to it cannot be the game itself (it is a DLC, pass or
+-- pack), so all its purchases are extra spending.
 CREATE OR REPLACE VIEW game_spending WITH (security_invoker = true) AS
 WITH per_purchase AS (
     -- One row per purchase and game (a row can have several items of the same game)
@@ -72,9 +108,10 @@ WITH per_purchase AS (
 ),
 first_purchase AS (
     -- DISTINCT ON keeps the first row of each (user, game) in the ORDER BY: the oldest purchase
-    SELECT DISTINCT ON (user_id, app_id) user_id, app_id, purchase_key
+    SELECT DISTINCT ON (user_id, app_id) user_id, app_id, purchase_key, purchase_date
     FROM per_purchase
-    WHERE purchase_type = 'purchase'
+    JOIN library USING (user_id, app_id)
+    WHERE purchase_type = 'purchase' AND has_license
     ORDER BY user_id, app_id, purchase_date, purchase_key
 )
 SELECT
@@ -82,7 +119,9 @@ SELECT
     p.app_id,
     -- FILTER: a sum over only the rows that meet the condition
     sum(p.value_brl) FILTER (WHERE p.purchase_key = f.purchase_key) AS game_paid_brl,
-    coalesce(sum(p.value_brl) FILTER (WHERE p.purchase_key IS DISTINCT FROM f.purchase_key), 0) AS extra_spend_brl
+    coalesce(sum(p.value_brl) FILTER (WHERE p.purchase_key IS DISTINCT FROM f.purchase_key), 0) AS extra_spend_brl,
+    -- Date of the purchase that is the game value (one per group; NULL without one)
+    min(f.purchase_date) AS first_purchase_date
 FROM per_purchase p
 LEFT JOIN first_purchase f USING (user_id, app_id)  -- no first purchase: only in-game spending (free game)
 GROUP BY p.user_id, p.app_id;
@@ -108,6 +147,7 @@ origins AS (
         u.purchase_history_loaded_at IS NOT NULL AS purchase_history_loaded,
         gs.game_paid_brl,
         coalesce(gs.extra_spend_brl, 0) AS extra_spend_brl,
+        gs.first_purchase_date,
         -- Value origin, in order of priority (rule 2)
         CASE
             WHEN NOT l.has_license THEN 'free'                -- played without a license (rule 6)
@@ -162,7 +202,10 @@ SELECT
     -- New columns go at the end: CREATE OR REPLACE VIEW only accepts columns added after the old ones
     v.extra_spend_brl,
     v.game_value_brl + v.extra_spend_brl AS total_spend_brl,
-    v.purchase_history_loaded  -- false = only the SteamID (estimated values)
+    v.purchase_history_loaded,  -- false = only the SteamID (estimated values)
+    v.first_purchase_date,      -- tooltip in the dashboard (ticket 11)
+    -- One column for the Power BI relationship with daily_playtime (a relationship takes one column)
+    v.user_id || ':' || v.app_id AS game_key
 FROM valued v
 JOIN users u USING (user_id);
 
@@ -234,7 +277,8 @@ SELECT
     i.snapshot_date,
     i.snapshot_date - i.previous_snapshot_date AS days_covered,
     i.minutes_difference AS minutes_played,
-    round(i.minutes_difference / 60.0, 2) AS hours_played
+    round(i.minutes_difference / 60.0, 2) AS hours_played,
+    i.user_id || ':' || i.app_id AS game_key  -- same key as game_costs (Power BI relationship)
 FROM snapshot_intervals i
 JOIN games g USING (app_id)
 JOIN games_classified c USING (app_id)

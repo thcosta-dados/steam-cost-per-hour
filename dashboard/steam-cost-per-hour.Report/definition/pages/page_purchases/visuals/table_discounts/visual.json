@@ -3,10 +3,10 @@
   "name": "table_discounts",
   "position": {
     "x": 20,
-    "y": 234,
+    "y": 604,
     "z": 3000,
-    "height": 826,
-    "width": 1193,
+    "height": 456,
+    "width": 1880,
     "tabOrder": 3000
   },
   "visual": {

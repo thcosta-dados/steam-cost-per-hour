@@ -58,14 +58,14 @@
             "imageWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "342D"
+                  "Value": "300D"
                 }
               }
             },
             "imageHeight": {
               "expr": {
                 "Literal": {
-                  "Value": "160D"
+                  "Value": "140D"
                 }
               }
             },

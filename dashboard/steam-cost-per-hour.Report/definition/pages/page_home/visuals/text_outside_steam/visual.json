@@ -3,10 +3,10 @@
   "name": "text_outside_steam",
   "position": {
     "x": 20,
-    "y": 504,
+    "y": 946,
     "z": 8000,
-    "height": 44,
-    "width": 1880,
+    "height": 114,
+    "width": 919,
     "tabOrder": 8000
   },
   "visual": {

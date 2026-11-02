@@ -3,14 +3,14 @@
   "name": "chart_hours_per_day",
   "position": {
     "x": 20,
-    "y": 84,
+    "y": 104,
     "z": 0,
-    "height": 456,
+    "height": 500,
     "width": 1880,
     "tabOrder": 0
   },
   "visual": {
-    "visualType": "clusteredColumnChart",
+    "visualType": "columnChart",
     "query": {
       "queryState": {
         "Category": {
@@ -50,6 +50,25 @@
               "nativeQueryRef": "Horas jogadas"
             }
           ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "daily_playtime"
+                    }
+                  },
+                  "Property": "name"
+                }
+              },
+              "queryRef": "daily_playtime.name",
+              "nativeQueryRef": "name",
+              "displayName": "Jogo"
+            }
+          ]
         }
       },
       "sortDefinition": {
@@ -84,7 +103,42 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Horas jogadas por dia (o dia de jogo termina na coleta da manhã seguinte)'"
+                  "Value": "'Horas jogadas por dia e por jogo (o dia de jogo termina na coleta da manhã seguinte)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "objects": {
+      "legend": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryAxis": [
+        {
+          "properties": {
+            "axisType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Categorical'"
                 }
               }
             }

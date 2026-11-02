@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "card_out_of_metrics",
   "position": {
-    "x": 1445,
-    "y": 334,
+    "x": 646,
+    "y": 816,
     "z": 7000,
-    "height": 150,
-    "width": 455,
+    "height": 110,
+    "width": 293,
     "tabOrder": 7000
   },
   "visual": {

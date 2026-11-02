@@ -11,6 +11,11 @@ table purchase_discounts
 		formatString: 0.0%
 		lineageTag: 34c530e9-0a11-481d-b496-1a3343f302c6
 
+	/// Total paid in the purchases of the table (games and DLCs; refunded purchases left out).
+	measure 'Pago nas compras' = SUM ( purchase_discounts[paid_brl] )
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: ab893814-cc1b-4130-ad76-7211243eebb2
+
 	column user_id
 		dataType: string
 		lineageTag: 31282cee-db3c-44d8-8178-b08fd2d68c54
@@ -66,6 +71,14 @@ table purchase_discounts
 		summarizeBy: none
 		sourceColumn: savings_brl
 
+	/// Year of the purchase (Power Query), for the chart of paid and saved values per year.
+	column purchase_year
+		dataType: int64
+		formatString: 0
+		lineageTag: 3211005f-6ffb-4c3f-9cf4-d6e2e381c2cd
+		summarizeBy: none
+		sourceColumn: purchase_year
+
 	partition purchase_discounts = m
 		mode: import
 		source =
@@ -75,9 +88,10 @@ table purchase_discounts
 				    Typed = Table.TransformColumnTypes(Discounts, {
 				        {"purchase_date", type date}, {"paid_brl", Currency.Type}, {"original_price_brl", Currency.Type},
 				        {"discount_pct", Int64.Type}, {"savings_brl", Currency.Type}
-				    })
+				    }),
+				    WithYear = Table.AddColumn(Typed, "purchase_year", each Date.Year([purchase_date]), Int64.Type)
 				in
-				    Typed
+				    WithYear
 
 	annotation PBI_ResultType = Exception
 

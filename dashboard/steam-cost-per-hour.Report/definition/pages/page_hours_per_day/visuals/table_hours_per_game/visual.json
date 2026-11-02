@@ -3,10 +3,10 @@
   "name": "table_hours_per_game",
   "position": {
     "x": 20,
-    "y": 560,
+    "y": 624,
     "z": 1000,
-    "height": 500,
-    "width": 1880,
+    "height": 436,
+    "width": 900,
     "tabOrder": 1000
   },
   "visual": {

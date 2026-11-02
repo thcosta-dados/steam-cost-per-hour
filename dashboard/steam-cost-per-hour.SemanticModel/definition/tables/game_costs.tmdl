@@ -44,6 +44,10 @@ table game_costs
 	measure 'Custo por hora do jogo' = VAR cost = SUM ( game_costs[cost_per_hour_brl] ) RETURN IF ( ISBLANK ( cost ), "—", FORMAT ( cost, "\R$ #,0.00" ) )
 		lineageTag: 44d9e389-c6b4-49ae-9e18-94d7665ad96a
 
+	/// Ranking title with its takeaway: the paid game with 1 hour or more that cost least per hour (follows the filters).
+	measure 'Título do ranking' = VAR best = TOPN ( 1, FILTER ( game_costs, game_costs[hours_group] = "jogado" && game_costs[value_origin] IN { "pago", "estimado" } ), game_costs[cost_per_hour_brl], ASC ) RETURN IF ( ISEMPTY ( best ), "Jogos pagos com 1 hora ou mais: nenhum jogo com os filtros atuais", "Jogos pagos com 1 hora ou mais. Mais barato por hora: " & MAXX ( best, game_costs[name] ) & ", " & FORMAT ( MAXX ( best, game_costs[cost_per_hour_brl] ), "\R$ #,0.00" ) )
+		lineageTag: b61f6b94-9e76-4eb6-a7f9-0f6a3af06d76
+
 	column user_id
 		dataType: string
 		lineageTag: 5098b67f-b5b2-4624-95de-d58d19e11f48

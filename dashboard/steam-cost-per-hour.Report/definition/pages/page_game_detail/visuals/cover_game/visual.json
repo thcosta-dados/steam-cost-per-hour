@@ -3,7 +3,7 @@
   "name": "cover_game",
   "position": {
     "x": 20,
-    "y": 176,
+    "y": 196,
     "z": 2000,
     "height": 250,
     "width": 470,
@@ -46,7 +46,7 @@
                 "Property": "header_image_url"
               }
             },
-            "direction": "Ascending"
+            "direction": "Descending"
           }
         ]
       }
@@ -58,14 +58,7 @@
             "imageWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "428D"
-                }
-              }
-            },
-            "imageHeight": {
-              "expr": {
-                "Literal": {
-                  "Value": "200D"
+                  "Value": "396D"
                 }
               }
             },
@@ -91,6 +84,13 @@
                       "Value": "'#161B22'"
                     }
                   }
+                }
+              }
+            },
+            "imageHeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "185D"
                 }
               }
             }

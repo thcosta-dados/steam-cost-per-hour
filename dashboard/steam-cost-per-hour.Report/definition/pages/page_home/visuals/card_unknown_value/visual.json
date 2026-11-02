@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "card_unknown_value",
   "position": {
-    "x": 970,
-    "y": 334,
+    "x": 333,
+    "y": 816,
     "z": 6000,
-    "height": 150,
-    "width": 455,
+    "height": 110,
+    "width": 293,
     "tabOrder": 6000
   },
   "visual": {

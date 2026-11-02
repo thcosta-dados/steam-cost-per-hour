@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "card_total_spend",
   "position": {
-    "x": 495,
-    "y": 164,
+    "x": 20,
+    "y": 176,
     "z": 1000,
-    "height": 150,
-    "width": 455,
+    "height": 130,
+    "width": 360,
     "tabOrder": 1000
   },
   "visual": {

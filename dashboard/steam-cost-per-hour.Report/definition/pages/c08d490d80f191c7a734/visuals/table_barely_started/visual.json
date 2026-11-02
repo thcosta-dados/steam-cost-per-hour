@@ -3,9 +3,9 @@
   "name": "table_barely_started",
   "position": {
     "x": 970,
-    "y": 544,
+    "y": 684,
     "z": 11000,
-    "height": 220,
+    "height": 376,
     "width": 930,
     "tabOrder": 11000
   },
@@ -15,6 +15,21 @@
       "queryState": {
         "Values": {
           "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "game_costs"
+                    }
+                  },
+                  "Property": "header_image_url"
+                }
+              },
+              "queryRef": "game_costs.header_image_url",
+              "nativeQueryRef": "header_image_url",
+              "displayName": "Capa"
+            },
             {
               "field": {
                 "Column": {
@@ -146,6 +161,28 @@
               "expr": {
                 "Literal": {
                   "Value": "'page_game_tooltip'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "objects": {
+      "grid": [
+        {
+          "properties": {
+            "imageWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "77D"
+                }
+              }
+            },
+            "imageHeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "36D"
                 }
               }
             }

@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "button_game_detail",
   "position": {
-    "x": 1680,
-    "y": 20,
+    "x": 950,
+    "y": 26,
     "z": 54000,
     "height": 44,
-    "width": 220,
+    "width": 240,
     "tabOrder": 54000
   },
   "visual": {

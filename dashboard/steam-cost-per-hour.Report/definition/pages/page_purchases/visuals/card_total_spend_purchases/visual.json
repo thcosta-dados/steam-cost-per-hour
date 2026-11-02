@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "card_total_spend_purchases",
   "position": {
-    "x": 833.56608478802991,
-    "y": 84,
+    "x": 1286,
+    "y": 104,
     "z": 2000,
     "height": 130,
-    "width": 380,
+    "width": 613,
     "tabOrder": 2000
   },
   "visual": {
@@ -20,14 +20,14 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "game_costs"
+                      "Entity": "purchase_discounts"
                     }
                   },
-                  "Property": "Gasto total"
+                  "Property": "Pago nas compras"
                 }
               },
-              "queryRef": "game_costs.Gasto total",
-              "nativeQueryRef": "Gasto total"
+              "queryRef": "purchase_discounts.Pago nas compras",
+              "nativeQueryRef": "Pago nas compras"
             }
           ]
         }

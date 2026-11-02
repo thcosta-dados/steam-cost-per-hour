@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "card_average_discount",
   "position": {
-    "x": 426.88279301745638,
-    "y": 84,
+    "x": 653,
+    "y": 104,
     "z": 1000,
     "height": 130,
-    "width": 380,
+    "width": 613,
     "tabOrder": 1000
   },
   "visual": {

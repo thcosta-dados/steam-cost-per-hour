@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "card_barely_started",
   "position": {
-    "x": 495,
-    "y": 334,
+    "x": 1540,
+    "y": 176,
     "z": 5000,
-    "height": 150,
-    "width": 455,
+    "height": 130,
+    "width": 360,
     "tabOrder": 5000
   },
   "visual": {

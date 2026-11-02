@@ -3,9 +3,9 @@
   "name": "chart_total_hours",
   "position": {
     "x": 20,
-    "y": 446,
+    "y": 466,
     "z": 4000,
-    "height": 300,
+    "height": 280,
     "width": 1880,
     "tabOrder": 4000
   },

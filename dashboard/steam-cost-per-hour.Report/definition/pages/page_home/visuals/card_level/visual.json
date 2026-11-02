@@ -3,10 +3,10 @@
   "name": "card_level",
   "position": {
     "x": 20,
-    "y": 164,
+    "y": 816,
     "z": 0,
-    "width": 455,
-    "height": 150,
+    "width": 293,
+    "height": 110,
     "tabOrder": 0
   },
   "visual": {

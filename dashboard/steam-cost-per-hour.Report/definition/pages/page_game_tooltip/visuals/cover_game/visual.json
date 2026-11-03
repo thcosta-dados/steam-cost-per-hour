@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "cover_game",
   "position": {
-    "x": 10,
-    "y": 10,
+    "x": 20,
+    "y": 8,
     "z": 0,
-    "height": 190,
-    "width": 460,
+    "height": 238,
+    "width": 440,
     "tabOrder": 0
   },
   "visual": {
@@ -58,14 +58,14 @@
             "imageWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "290D"
+                  "Value": "420D"
                 }
               }
             },
             "imageHeight": {
               "expr": {
                 "Literal": {
-                  "Value": "135D"
+                  "Value": "196D"
                 }
               }
             },

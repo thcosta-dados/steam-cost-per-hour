@@ -348,6 +348,12 @@ table game_costs
 		formatString: 0.0
 		lineageTag: dffea637-3fde-424b-a24b-5901bee1a58f
 
+	measure 'Título do card paguei' = VAR d = MIN ( game_costs[first_purchase_date] ) RETURN IF ( ISBLANK ( d ), "Paguei pelo jogo", "Paguei pelo jogo em " & FORMAT ( d, "dd/mm/yyyy" ) )
+		lineageTag: a0fd3aa8-768c-404a-abc0-873255c9b668
+
+	measure 'Título do card posição' = "Posição entre os meus " & CALCULATE ( COUNTROWS ( game_costs ), ALL ( game_costs ) ) & " jogos"
+		lineageTag: 10b43df3-afbb-4ae6-a15a-dfebb856dffc
+
 	column user_id
 		dataType: string
 		isHidden

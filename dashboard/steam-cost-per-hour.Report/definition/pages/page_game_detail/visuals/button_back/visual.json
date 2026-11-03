@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "button_back",
   "position": {
-    "x": 1680,
-    "y": 26,
-    "z": 14000,
-    "height": 44,
-    "width": 220,
-    "tabOrder": 4000
+    "x": 1592,
+    "y": 28,
+    "z": 21000,
+    "height": 48,
+    "width": 296,
+    "tabOrder": 21000
   },
   "visual": {
     "visualType": "actionButton",
@@ -45,51 +45,14 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'← Voltar'"
+                  "Value": "'Voltar'"
                 }
               }
             },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#6DA7EC'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "id": "default"
-          }
-        }
-      ],
-      "fill": [
-        {
-          "properties": {
-            "show": {
+            "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "outline": [
-        {
-          "properties": {
-            "lineColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#3987E5'"
-                    }
-                  }
+                  "Value": "13D"
                 }
               }
             }

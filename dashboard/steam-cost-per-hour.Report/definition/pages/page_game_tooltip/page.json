@@ -3,7 +3,7 @@
   "name": "page_game_tooltip",
   "displayName": "Dica do jogo",
   "displayOption": "FitToPage",
-  "height": 540,
+  "height": 620,
   "width": 480,
   "visibility": "HiddenInViewMode",
   "type": "Tooltip"

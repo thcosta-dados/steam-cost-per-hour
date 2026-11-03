@@ -530,7 +530,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Do mais jogado ao menos jogado. Sem compra na Steam: presente, cortesia, promoção grátis ou chave de outra loja.'"
+                  "Value": "'Do mais jogado ao menos jogado. Sem compra: presente, cortesia, promoção ou chave de outra loja.'"
                 }
               }
             }

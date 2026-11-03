@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "table_ranking",
   "position": {
-    "x": 20,
-    "y": 104,
+    "x": 20.199501246882793,
+    "y": 103.69077306733168,
     "z": 9000,
-    "height": 956,
-    "width": 930,
+    "height": 956.10972568578552,
+    "width": 939.95012468827929,
     "tabOrder": 6000
   },
   "visual": {
@@ -333,7 +333,7 @@
             "autoSizeColumnWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }

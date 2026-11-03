@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "table_discounts",
   "position": {
-    "x": 20,
-    "y": 604,
+    "x": 20.199501246882793,
+    "y": 604.63840399002493,
     "z": 3000,
-    "height": 456,
-    "width": 1880,
+    "height": 455.16209476309228,
+    "width": 1207.930174563591,
     "tabOrder": 9000
   },
   "visual": {

@@ -58,7 +58,7 @@
             "imageWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "396D"
+                  "Value": "385D"
                 }
               }
             },
@@ -90,7 +90,7 @@
             "imageHeight": {
               "expr": {
                 "Literal": {
-                  "Value": "185D"
+                  "Value": "180D"
                 }
               }
             }
@@ -213,6 +213,40 @@
               "expr": {
                 "Literal": {
                   "Value": "'Capa'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }

@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "heart_hours",
   "position": {
-    "x": 784,
+    "x": 712,
     "y": 330,
-    "z": 2300,
+    "z": 7000,
     "height": 82,
-    "width": 308,
-    "tabOrder": 2300
+    "width": 380,
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "card",
@@ -178,7 +178,7 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },

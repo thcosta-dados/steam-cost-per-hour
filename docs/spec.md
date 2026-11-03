@@ -8,7 +8,7 @@ Quem joga no PC compra muitos jogos ao longo dos anos, em promoções, pacotes e
 
 ## Solution
 
-Um pipeline de dados que junta a biblioteca e as horas jogadas (coletadas todos os dias, automaticamente, pela API da Steam) com o histórico de compras da própria pessoa, trata os casos difíceis do histórico (pacotes, reembolsos, presentes, créditos de carteira) e entrega um painel que mostra o custo por hora de cada jogo. Como destaque secundário, o painel mostra o dinheiro parado em jogos nunca abertos e em jogos mal começados. Qualquer pessoa com perfil público pode usar com os próprios dados, e só com os próprios dados.
+Um pipeline de dados que junta a biblioteca e as horas jogadas (coletadas todos os dias, automaticamente, pela API da Steam) com o histórico de compras da própria pessoa, trata os casos difíceis do histórico (pacotes, reembolsos, presentes, créditos de carteira) e entrega um painel que mostra o custo por hora de cada jogo. Como destaque secundário, o painel mostra o dinheiro parado em jogos nunca abertos e em jogos mal começados. A v1 é um estudo de caso da conta do autor: o painel do Power BI conta a história dessa conta, como uma apresentação. O banco já está preparado para vários usuários, cada um vendo só os próprios dados, mas o uso por outras pessoas fica para a fase 2.
 
 ## User Stories
 
@@ -137,7 +137,7 @@ Cada conferência usa uma fonte independente do código, nunca o próprio result
 4. Login automático na Steam ou qualquer coleta que exija a senha do usuário.
 5. Coleta de perfis de pessoas que não deram consentimento, mesmo que públicos.
 6. Docker na execução em nuvem (na v1 ele é só o ambiente local).
-7. Página web pública para visualizar o painel.
+7. Um site em que outras pessoas informam o próprio perfil e veem os seus dados (fase 2, decidido em 03/11/2026). O Power BI não serve para isso sem licença paga e controle de acesso por usuário. A fase 2 ganha uma especificação própria, que precisa resolver o histórico de compras enviado por terceiros (dado financeiro, LGPD), a coleta diária de cada usuário e o login oficial "Entrar com a Steam". A publicação do painel da v1 na web, com os dados do autor, continua no escopo.
 8. Plataformas além da Steam (Epic, PlayStation, Xbox).
 9. Compras no jogo feitas fora da Steam. Não existe fonte confiável para elas: os sites de cada empresa exigem login, e uma planilha preenchida à mão foi descartada por ser insustentável (a pessoa não tem esses valores).
 10. Horas em jogos emprestados pela Biblioteca Familiar. A API principal não os devolve, e a de jogos recentes só cobriria o que foi jogado nas últimas 2 semanas, a partir do início da coleta. Avaliado e descartado em 16/10/2026.

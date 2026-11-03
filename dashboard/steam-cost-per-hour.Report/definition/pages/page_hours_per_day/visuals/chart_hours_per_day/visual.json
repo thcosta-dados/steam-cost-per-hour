@@ -28,27 +28,8 @@
               },
               "queryRef": "collection_days.play_date",
               "nativeQueryRef": "play_date",
-              "displayName": "Dia de jogo",
-              "active": true
-            }
-          ]
-        },
-        "Y": {
-          "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "daily_playtime"
-                    }
-                  },
-                  "Property": "Horas jogadas no dia"
-                }
-              },
-              "queryRef": "daily_playtime.Horas jogadas no dia",
-              "nativeQueryRef": "Horas jogadas no dia",
-              "displayName": "Horas jogadas"
+              "active": true,
+              "displayName": "Dia de jogo"
             }
           ]
         },
@@ -94,6 +75,25 @@
               "displayName": "Dias somados (1 = coleta normal)"
             }
           ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "daily_playtime"
+                    }
+                  },
+                  "Property": "Horas jogadas no dia"
+                }
+              },
+              "queryRef": "daily_playtime.Horas jogadas no dia",
+              "nativeQueryRef": "Horas jogadas no dia",
+              "displayName": "Horas jogadas"
+            }
+          ]
         }
       },
       "sortDefinition": {
@@ -113,6 +113,68 @@
           }
         ]
       }
+    },
+    "objects": {
+      "legend": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryAxis": [
+        {
+          "properties": {
+            "axisType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Categorical'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     "visualContainerObjects": {
       "title": [
@@ -153,7 +215,7 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },
@@ -211,6 +273,13 @@
               "expr": {
                 "Literal": {
                   "Value": "'Toda manhã o painel anota minhas horas da Steam e conta para o dia anterior. Se a dica mostrar 2 dias somados, um dia ficou sem anotação.'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
                 }
               }
             }
@@ -271,68 +340,6 @@
               "expr": {
                 "Literal": {
                   "Value": "14D"
-                }
-              }
-            }
-          }
-        }
-      ]
-    },
-    "objects": {
-      "legend": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "position": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Top'"
-                }
-              }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "12D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "categoryAxis": [
-        {
-          "properties": {
-            "axisType": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Categorical'"
-                }
-              }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "12D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "valueAxis": [
-        {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "12D"
                 }
               }
             }

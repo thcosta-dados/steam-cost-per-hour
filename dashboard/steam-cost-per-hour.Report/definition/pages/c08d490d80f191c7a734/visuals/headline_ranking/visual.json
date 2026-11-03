@@ -4,10 +4,10 @@
   "position": {
     "x": 32,
     "y": 96,
-    "z": 900,
+    "z": 0,
     "height": 120,
     "width": 1076,
-    "tabOrder": 900
+    "tabOrder": 0
   },
   "visual": {
     "visualType": "textbox",
@@ -21,7 +21,8 @@
                   {
                     "value": ""
                   }
-                ]
+                ],
+                "horizontalTextAlignment": "center"
               }
             ]
           }
@@ -114,7 +115,7 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },
@@ -177,6 +178,13 @@
                     }
                   },
                   "Property": "Frase de contraste"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
                 }
               }
             }

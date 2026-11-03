@@ -4,7 +4,7 @@
   "position": {
     "x": 32,
     "y": 232,
-    "z": 9000,
+    "z": 4000,
     "height": 600,
     "width": 1076,
     "tabOrder": 6000
@@ -383,7 +383,7 @@
             "autoSizeColumnWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }
@@ -502,7 +502,7 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },
@@ -516,7 +516,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Do mais barato ao mais caro por hora (jogos que comprei e joguei 1 hora ou mais)'"
+                  "Value": "'Do mais barato ao mais caro (por hora)'"
                 }
               }
             }
@@ -574,7 +574,14 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Passe o mouse num jogo para ver mais detalhes ou clique num jogo e depois em Abrir ficha do jogo. Selo: Platina até R$ 0,50 por hora, Ouro até R$ 1, Prata até R$ 3, Bronze acima disso.'"
+                  "Value": "'Passe o mouse num jogo para ver mais detalhes. Selos: Platina até R$ 0,50 por hora, Ouro até R$ 1, Prata até R$ 3, Bronze acima disso.'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
                 }
               }
             }

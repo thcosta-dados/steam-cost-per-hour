@@ -4,10 +4,10 @@
   "position": {
     "x": 1436,
     "y": 96,
-    "z": 60000,
+    "z": 14000,
     "height": 120,
     "width": 452,
-    "tabOrder": 4000
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "slicer",
@@ -28,8 +28,8 @@
               },
               "queryRef": "collection_days.play_date",
               "nativeQueryRef": "play_date",
-              "displayName": "Período",
-              "active": true
+              "active": true,
+              "displayName": "Período"
             }
           ]
         }
@@ -51,28 +51,12 @@
       ],
       "header": [
         {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "13D"
-                }
-              }
-            }
-          }
+          "properties": {}
         }
       ],
       "items": [
         {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "13D"
-                }
-              }
-            }
-          }
+          "properties": {}
         }
       ]
     },

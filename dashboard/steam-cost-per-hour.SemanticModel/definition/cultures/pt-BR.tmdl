@@ -57,7 +57,7 @@ cultureInfo pt-BR
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Valor do jogo": {
+			          "Paguei": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -78,7 +78,7 @@ cultureInfo pt-BR
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Custo por hora": {
+			          "Por hora": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -99,7 +99,17 @@ cultureInfo pt-BR
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Origem do valor": {
+			          "De onde vem o valor": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Origem": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -162,7 +172,7 @@ cultureInfo pt-BR
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Motivo": {
+			          "Por quê": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -183,7 +193,7 @@ cultureInfo pt-BR
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Gasto extra": {
+			          "Extras": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -252,7 +262,7 @@ cultureInfo pt-BR
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Período (data da compra)": {
+			          "Período da compra": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -283,7 +293,7 @@ cultureInfo pt-BR
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Itens": {
+			          "O que comprei": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -304,7 +314,7 @@ cultureInfo pt-BR
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Pago": {
+			          "Paguei": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -325,7 +335,7 @@ cultureInfo pt-BR
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Preço original da época": {
+			          "Preço cheio": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -367,7 +377,7 @@ cultureInfo pt-BR
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Economia": {
+			          "Economizei": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -469,17 +479,7 @@ cultureInfo pt-BR
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Horas jogadas no período": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        },
-			        {
-			          "Horas jogadas": {
+			          "Horas": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -539,19 +539,7 @@ cultureInfo pt-BR
 			          "ConceptualProperty": "hours_group"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Grupo de horas": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "purchase_discounts.purchase_year": {
 			      "Definition": {
@@ -560,19 +548,7 @@ cultureInfo pt-BR
 			          "ConceptualProperty": "purchase_year"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Ano da compra": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "purchase_discounts.pago_nas_compras": {
 			      "Definition": {
@@ -581,19 +557,7 @@ cultureInfo pt-BR
 			          "ConceptualProperty": "Pago nas compras"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Pago": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "purchase_discounts.economia_com_descontos": {
 			      "Definition": {
@@ -602,19 +566,7 @@ cultureInfo pt-BR
 			          "ConceptualProperty": "Economia com descontos"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Economia com descontos": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "game_costs.custo_médio_por_hora_jogos_pagos": {
 			      "Definition": {
@@ -650,19 +602,7 @@ cultureInfo pt-BR
 			          "ConceptualProperty": "Dias com jogo"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Dias com jogo no período": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "daily_playtime.horas_jogadas_no_dia": {
 			      "Definition": {
@@ -705,7 +645,7 @@ cultureInfo pt-BR
 			          }
 			        },
 			        {
-			          "Período (dia de jogo)": {
+			          "Período": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -723,19 +663,7 @@ cultureInfo pt-BR
 			          "ConceptualProperty": "Desconto médio"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Desconto sobre o preço original": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "game_genres.genre_label": {
 			      "Definition": {
@@ -832,6 +760,342 @@ cultureInfo pt-BR
 			      "Terms": [
 			        {
 			          "Fatia": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "game_costs.cost_group": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "game_costs",
+			          "ConceptualProperty": "cost_group"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Jogos que": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "game_costs.origens_do_grupo": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "game_costs",
+			          "ConceptualProperty": "Origens do grupo"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Origem": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "game_costs.gastei_no_grupo": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "game_costs",
+			          "ConceptualProperty": "Gastei no grupo"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Gastei": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "game_costs.custo_por_hora_do_grupo": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "game_costs",
+			          "ConceptualProperty": "Custo por hora do grupo"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Por hora": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "game_costs.selo": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "game_costs",
+			          "ConceptualProperty": "Selo"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Selo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "game_costs.hours_group_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "game_costs",
+			          "ConceptualProperty": "hours_group_label"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Tempo total no jogo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "game_costs.jogos_na_conta": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "game_costs",
+			          "ConceptualProperty": "Jogos na conta"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Jogos": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "anos.ano": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Anos",
+			          "ConceptualProperty": "Ano"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Ano": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "purchase_discounts.paguei_no_ano": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "purchase_discounts",
+			          "ConceptualProperty": "Paguei no ano"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Paguei": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "purchase_discounts.economizei_no_ano": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "purchase_discounts",
+			          "ConceptualProperty": "Economizei no ano"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Economizei": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "collection_days.weekday_short": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "collection_days",
+			          "ConceptualProperty": "weekday_short"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Dia da semana": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "daily_playtime.média_por_dia_jogado": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "daily_playtime",
+			          "ConceptualProperty": "Média por dia jogado"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Média": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "daily_playtime.fatia_do_período": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "daily_playtime",
+			          "ConceptualProperty": "Fatia do período"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Fatia": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "daily_playtime.dias_jogados": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "daily_playtime",
+			          "ConceptualProperty": "Dias jogados"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Dias jogados": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "origens.origem": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Origens",
+			          "ConceptualProperty": "Origem"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Origem": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "origens.o_que_quer_dizer": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Origens",
+			          "ConceptualProperty": "O que quer dizer"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "O que quer dizer": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",

@@ -1,12 +1,12 @@
 # steam-cost-per-hour
 
-> **EN:** Data pipeline that combines a Steam library's playtime (collected daily from the Steam Web API) with the user's own purchase history to show the cost per hour of each game in a Power BI dashboard. Work in progress.
+> **EN:** A case study of my own Steam account: a data pipeline that combines my library's playtime (collected daily from the Steam Web API) with my purchase history to show the cost per hour of each game in a Power BI dashboard. Work in progress.
 
 > 🚧 **README provisório.** O projeto está em construção. A versão final, com diagrama do fluxo, prints e GIF do painel, entra no fim da v1.
 
 ## O que é
 
-Um pipeline de dados que junta as horas jogadas de cada jogo da Steam com o valor pago por ele e responde perguntas como:
+Um estudo de caso da minha própria conta na Steam. Um pipeline de dados junta as horas jogadas de cada jogo com o valor que paguei por ele, e o painel conta essa história e responde perguntas como:
 
 - Qual jogo saiu mais barato por hora de diversão?
 - Quanto dinheiro está parado em jogos que nunca abri?
@@ -73,3 +73,13 @@ O Supabase assina os certificados do banco com uma autoridade própria, que o Wi
 ## Privacidade
 
 Credenciais ficam só no `.env` (ignorado pelo Git) e nos segredos do GitHub. Arquivos de histórico de compras nunca vão para o repositório, e o SteamID só é gravado no banco transformado em hash.
+
+## Próximos passos
+
+Os dados são só da minha conta, mas o banco já foi desenhado para vários usuários: cada linha tem um código anônimo de usuário, as tabelas têm Row Level Security e a coleta só inclui quem concordou. A ideia para uma segunda fase é um site em que outra pessoa informa o próprio perfil público e vê a sua biblioteca, as suas horas e um custo por hora estimado pelo preço da loja. O envio do histórico de compras seria opcional, para quem quiser o valor exato. Essa fase ainda vai ganhar uma especificação própria.
+
+## Considerações finais
+
+O projeto me fez pensar em quanto um dado pode se distanciar da realidade que ele parece descrever. A Steam diz que tenho mais de 2.000 horas de Warframe, mas isso não quer dizer que passei esse tempo todo jogando. O que ela mede é o tempo com o jogo aberto, e isso inclui partidas de verdade, o jogo esquecido em segundo plano e as horas em que fiquei logado e parado só para ganhar recompensas. Existem até jogos feitos para isso, os *idle games*, que progridem sozinhos enquanto ficam abertos.
+
+Ou seja, o número está certo, mas responde a uma pergunta diferente da que parece. O custo por hora deste painel é, na verdade, o custo por hora com o jogo aberto, e por isso pode sair mais baixo do que o custo por hora em que eu estava de fato jogando. Levo isso como lição para qualquer análise: antes de tirar conclusões, entender como o dado foi gerado e o que ele realmente mede.

@@ -49,7 +49,7 @@ table game_costs
 			VAR elegiveis = FILTER ( game_costs, game_costs[hours_group] = "jogado" && game_costs[value_origin] IN { "pago", "estimado" } )
 			VAR melhor = TOPN ( 1, elegiveis, game_costs[cost_per_hour_brl], ASC )
 			RETURN IF ( ISEMPTY ( melhor ), "Nenhum jogo pago com esse filtro",
-			    MAXX ( melhor, game_costs[name] ) & " foi o que mais valeu: " & FORMAT ( MAXX ( melhor, game_costs[cost_per_hour_brl] ), "\R$ #,0.00" ) & " por hora" )
+			    MAXX ( melhor, game_costs[name] ) & " foi o jogo que mais valeu a pena: " & FORMAT ( MAXX ( melhor, game_costs[cost_per_hour_brl] ), "\R$ #,0.00" ) & " por hora" )
 		lineageTag: ef820eca-795b-48c0-ac50-c3ff57bd067d
 
 	/// Spec rule 25: total spending on paid (or estimated) games divided by their hours, 0 h games included.
@@ -169,7 +169,7 @@ table game_costs
 			VAR barato = TOPN ( 1, elegiveis, game_costs[cost_per_hour_brl], ASC )
 			VAR caro = TOPN ( 1, elegiveis, game_costs[cost_per_hour_brl], DESC )
 			VAR razao = INT ( DIVIDE ( MAXX ( caro, game_costs[cost_per_hour_brl] ), MAXX ( barato, game_costs[cost_per_hour_brl] ) ) )
-			RETURN IF ( razao >= 2, "Na outra ponta, 1 hora de " & MAXX ( caro, game_costs[name] ) & " custou o mesmo que " & razao & " horas desse jogo.", "" )
+			RETURN IF ( razao >= 2, "1 hora de " & MAXX ( caro, game_costs[name] ) & " custou o mesmo que " & razao & " horas desse jogo.", "" )
 		lineageTag: 68df45d7-ce53-4567-a577-82b1058cf371
 
 	/// Selo de custo-benefício (regra 28): Platina até R$ 0,50/h, Ouro até R$ 1, Prata até R$ 3, Bronze acima
@@ -294,7 +294,7 @@ table game_costs
 			RETURN p1 & p2 & p3
 		lineageTag: a51c9787-000c-4f20-b91e-ade2d5f4dbd9
 
-	measure 'Título do card horas' = "Joguei na Steam, o que dá " & FORMAT ( [Dias inteiros], "#,0" ) & " dias inteiros"
+	measure 'Título do card horas' = "Total de horas jogadas na Steam, durante " & [Anos desde a primeira compra] & " anos (cerca de " & FORMAT ( [Horas por dia de conta], "0.0" ) & " h por dia)"
 		lineageTag: 1fde3c55-0a43-4726-8786-fbc87e91d613
 
 	measure 'Título do card jogos' = "Jogos na conta: " & [Frase da biblioteca]
@@ -306,13 +306,13 @@ table game_costs
 	measure 'Título do card média' = IF ( [Tem estimado], "Cada hora de jogo me custou, em média", "Cada hora de jogo pago me custou, em média" )
 		lineageTag: 66e9f935-e12a-46d2-8bbd-68ee9efd7953
 
-	measure 'Título do coração horas' = "Horas no jogo, o que dá " & FORMAT ( [Dias inteiros], "#,0" ) & " dias"
+	measure 'Título do coração horas' = "Horas com o jogo aberto, segundo a Steam"
 		lineageTag: e6f62b50-95c5-4072-8031-4d611f0ed2b9
 
-	measure 'Título do coração fatia' = "Das minhas horas, " & [Frase de cada 10]
+	measure 'Título do coração fatia' = "Das minhas horas jogadas, ele corresponde a:"
 		lineageTag: 3a846b4a-a121-40ad-be92-c042632e40ee
 
-	measure 'Título do coração gasto' = [Título do gasto no jogo] & ", " & [Frase da origem curta]
+	measure 'Título do coração gasto' = "Quanto gastei com ele:"
 		lineageTag: 06477ab5-1227-4741-a50c-a9be35ae28aa
 
 	measure 'Fatia das horas sem custo' = DIVIDE ( CALCULATE ( [Horas na biblioteca], game_costs[cost_group] = "não comprei" ), [Horas na biblioteca] )
@@ -339,6 +339,14 @@ table game_costs
 	measure 'Gastei no grupo' = SUM ( game_costs[total_spend_brl] ) + 0
 		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
 		lineageTag: 70d47edf-289e-4fa8-8ebf-8952c18c7bbd
+
+	/// Average hours per day since the first purchase (account age), up to the last snapshot.
+	measure 'Horas por dia de conta' =
+			VAR primeira = CALCULATE ( MIN ( purchase_discounts[purchase_date] ), ALL ( purchase_discounts ) )
+			VAR ultima = CALCULATE ( MAX ( game_costs[last_snapshot_date] ), ALL ( game_costs ) )
+			RETURN DIVIDE ( [Horas na biblioteca], DATEDIFF ( primeira, ultima, DAY ) )
+		formatString: 0.0
+		lineageTag: dffea637-3fde-424b-a24b-5901bee1a58f
 
 	column user_id
 		dataType: string

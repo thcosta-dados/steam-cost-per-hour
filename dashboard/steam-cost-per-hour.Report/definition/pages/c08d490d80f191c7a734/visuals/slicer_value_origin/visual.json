@@ -4,7 +4,7 @@
   "position": {
     "x": 1124,
     "y": 96,
-    "z": 60000,
+    "z": 14000,
     "height": 120,
     "width": 452,
     "tabOrder": 4000
@@ -28,8 +28,8 @@
               },
               "queryRef": "game_costs.value_origin",
               "nativeQueryRef": "value_origin",
-              "displayName": "De onde vem o valor",
-              "active": true
+              "active": true,
+              "displayName": "De onde vem o valor"
             }
           ]
         }
@@ -51,28 +51,12 @@
       ],
       "header": [
         {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "13D"
-                }
-              }
-            }
-          }
+          "properties": {}
         }
       ],
       "items": [
         {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "13D"
-                }
-              }
-            }
-          }
+          "properties": {}
         }
       ]
     },

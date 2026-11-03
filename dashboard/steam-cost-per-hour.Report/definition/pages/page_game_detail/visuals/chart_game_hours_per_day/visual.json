@@ -4,7 +4,7 @@
   "position": {
     "x": 20,
     "y": 766,
-    "z": 5000,
+    "z": 9000,
     "height": 294,
     "width": 1880,
     "tabOrder": 14000
@@ -28,8 +28,8 @@
               },
               "queryRef": "collection_days.play_date",
               "nativeQueryRef": "play_date",
-              "displayName": "Dia de jogo",
-              "active": true
+              "active": true,
+              "displayName": "Dia de jogo"
             }
           ]
         },
@@ -70,6 +70,21 @@
           }
         ]
       }
+    },
+    "objects": {
+      "categoryAxis": [
+        {
+          "properties": {
+            "axisType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Categorical'"
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     "visualContainerObjects": {
       "title": [
@@ -137,21 +152,6 @@
               "expr": {
                 "Literal": {
                   "Value": "'Horas jogadas por dia'"
-                }
-              }
-            }
-          }
-        }
-      ]
-    },
-    "objects": {
-      "categoryAxis": [
-        {
-          "properties": {
-            "axisType": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Categorical'"
                 }
               }
             }

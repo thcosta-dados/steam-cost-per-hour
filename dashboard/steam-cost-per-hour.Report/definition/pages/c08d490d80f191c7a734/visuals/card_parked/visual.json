@@ -4,10 +4,10 @@
   "position": {
     "x": 656,
     "y": 848,
-    "z": 2100,
+    "z": 2000,
     "height": 212,
     "width": 452,
-    "tabOrder": 2100
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "card",
@@ -165,7 +165,7 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },

@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "table_free_games",
   "position": {
-    "x": 1124,
-    "y": 552,
-    "z": 10000,
-    "height": 508,
-    "width": 764,
+    "x": 1124.4389027431421,
+    "y": 463.2418952618454,
+    "z": 5000,
+    "height": 596.55860349127181,
+    "width": 763.54114713216961,
     "tabOrder": 7000
   },
   "visual": {
@@ -325,7 +325,7 @@
             "autoSizeColumnWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }

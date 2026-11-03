@@ -4,10 +4,10 @@
   "position": {
     "x": 1436,
     "y": 352,
-    "z": 62000,
+    "z": 16000,
     "height": 104,
     "width": 452,
-    "tabOrder": 6000
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "slicer",
@@ -28,8 +28,8 @@
               },
               "queryRef": "game_costs.hours_group_label",
               "nativeQueryRef": "hours_group_label",
-              "displayName": "Tempo total no jogo",
-              "active": true
+              "active": true,
+              "displayName": "Tempo total no jogo"
             }
           ]
         }
@@ -51,28 +51,12 @@
       ],
       "header": [
         {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "13D"
-                }
-              }
-            }
-          }
+          "properties": {}
         }
       ],
       "items": [
         {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "13D"
-                }
-              }
-            }
-          }
+          "properties": {}
         }
       ]
     },

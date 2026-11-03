@@ -4,10 +4,10 @@
   "position": {
     "x": 968,
     "y": 688,
-    "z": 4000,
+    "z": 6000,
     "height": 372,
     "width": 920,
-    "tabOrder": 4000
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "clusteredColumnChart",
@@ -28,8 +28,8 @@
               },
               "queryRef": "collection_days.weekday_short",
               "nativeQueryRef": "weekday_short",
-              "displayName": "Dia da semana",
-              "active": true
+              "active": true,
+              "displayName": "Dia da semana"
             }
           ]
         },
@@ -312,7 +312,7 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },

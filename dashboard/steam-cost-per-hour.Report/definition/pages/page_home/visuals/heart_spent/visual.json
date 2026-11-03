@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "heart_spent",
   "position": {
-    "x": 784,
+    "x": 712,
     "y": 510,
-    "z": 2302,
+    "z": 9000,
     "height": 82,
-    "width": 308,
-    "tabOrder": 2302
+    "width": 380,
+    "tabOrder": 9000
   },
   "visual": {
     "visualType": "card",
@@ -178,7 +178,7 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },
@@ -198,6 +198,13 @@
                     }
                   },
                   "Property": "Título do coração gasto"
+                }
+              }
+            },
+            "heading": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Heading3'"
                 }
               }
             }

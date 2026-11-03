@@ -7,7 +7,7 @@
     "z": 4000,
     "height": 330,
     "width": 1856,
-    "tabOrder": 4000
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "clusteredColumnChart",
@@ -28,8 +28,8 @@
               },
               "queryRef": "Anos.Ano",
               "nativeQueryRef": "Ano",
-              "displayName": "Ano",
-              "active": true
+              "active": true,
+              "displayName": "Ano"
             }
           ]
         },
@@ -334,7 +334,7 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },
@@ -397,6 +397,13 @@
                     }
                   },
                   "Property": "Subtítulo do gráfico de anos"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
                 }
               }
             }

@@ -4,10 +4,10 @@
   "position": {
     "x": 32,
     "y": 28,
-    "z": 50000,
+    "z": 6000,
     "height": 48,
     "width": 300,
-    "tabOrder": 50000
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "textbox",
@@ -127,7 +127,7 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },

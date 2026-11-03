@@ -4,10 +4,10 @@
   "position": {
     "x": 32,
     "y": 620,
-    "z": 4000,
+    "z": 11000,
     "height": 440,
     "width": 608,
-    "tabOrder": 4000
+    "tabOrder": 11000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -28,8 +28,8 @@
               },
               "queryRef": "game_genres.genre_label",
               "nativeQueryRef": "genre_label",
-              "displayName": "Gênero",
-              "active": true
+              "active": true,
+              "displayName": "Gênero"
             }
           ]
         },
@@ -270,7 +270,7 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },
@@ -328,6 +328,13 @@
               "expr": {
                 "Literal": {
                   "Value": "'Gêneros da loja. Um jogo pode ter mais de um.'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
                 }
               }
             }

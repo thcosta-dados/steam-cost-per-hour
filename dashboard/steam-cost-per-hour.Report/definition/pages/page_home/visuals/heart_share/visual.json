@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "heart_share",
   "position": {
-    "x": 784,
+    "x": 712,
     "y": 420,
-    "z": 2301,
+    "z": 8000,
     "height": 82,
-    "width": 308,
-    "tabOrder": 2301
+    "width": 380,
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "card",
@@ -178,7 +178,7 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },

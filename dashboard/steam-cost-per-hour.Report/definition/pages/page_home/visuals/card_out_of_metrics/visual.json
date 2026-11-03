@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "card_out_of_metrics",
   "position": {
-    "x": 646,
-    "y": 816,
+    "x": 653,
+    "y": 786,
     "z": 7000,
     "height": 110,
-    "width": 293,
-    "tabOrder": 7000
+    "width": 297,
+    "tabOrder": 16000
   },
   "visual": {
     "visualType": "card",
@@ -32,6 +32,21 @@
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'card_out_of_metrics'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

@@ -18,12 +18,14 @@ table purchase_discounts
 
 	column user_id
 		dataType: string
+		isHidden
 		lineageTag: 31282cee-db3c-44d8-8178-b08fd2d68c54
 		summarizeBy: none
 		sourceColumn: user_id
 
 	column purchase_key
 		dataType: string
+		isHidden
 		lineageTag: 92c3894f-16b7-4dfc-8849-b3a6eb59314b
 		summarizeBy: none
 		sourceColumn: purchase_key

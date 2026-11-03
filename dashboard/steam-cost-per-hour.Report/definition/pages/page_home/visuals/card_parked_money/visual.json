@@ -3,11 +3,11 @@
   "name": "card_parked_money",
   "position": {
     "x": 1160,
-    "y": 176,
+    "y": 196,
     "z": 4000,
-    "height": 130,
+    "height": 124,
     "width": 360,
-    "tabOrder": 4000
+    "tabOrder": 9000
   },
   "visual": {
     "visualType": "card",
@@ -23,15 +23,31 @@
                       "Entity": "game_costs"
                     }
                   },
-                  "Property": "Dinheiro parado"
+                  "Property": "Dinheiro parado com contagem"
                 }
               },
-              "queryRef": "game_costs.Dinheiro parado",
-              "nativeQueryRef": "Dinheiro parado"
+              "queryRef": "game_costs.Dinheiro parado com contagem",
+              "nativeQueryRef": "Dinheiro parado com contagem",
+              "displayName": "Dinheiro parado (jogos com 0 h)"
             }
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dinheiro parado (jogos com 0 h)'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

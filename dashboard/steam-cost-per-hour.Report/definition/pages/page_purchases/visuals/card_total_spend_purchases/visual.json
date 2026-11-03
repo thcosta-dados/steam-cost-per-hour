@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "card_total_spend_purchases",
   "position": {
-    "x": 1286,
+    "x": 1287,
     "y": 104,
     "z": 2000,
     "height": 130,
     "width": 613,
-    "tabOrder": 2000
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "card",
@@ -32,6 +32,21 @@
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'card_total_spend_purchases'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

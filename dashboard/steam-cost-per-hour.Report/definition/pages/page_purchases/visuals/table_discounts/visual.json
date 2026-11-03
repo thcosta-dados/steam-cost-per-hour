@@ -7,7 +7,7 @@
     "z": 3000,
     "height": 456,
     "width": 1880,
-    "tabOrder": 3000
+    "tabOrder": 9000
   },
   "visual": {
     "visualType": "tableEx",
@@ -163,7 +163,20 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Compras de jogos e DLCs: desconto contra o preço da época (reembolsadas ficam de fora)'"
+                  "Value": "'Compras de jogos e DLCs: desconto em relação ao preço da época (reembolsadas ficam de fora)'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Compras de jogos e DLCs: desconto em relação ao preço da época (reembolsadas ficam de fora)'"
                 }
               }
             }

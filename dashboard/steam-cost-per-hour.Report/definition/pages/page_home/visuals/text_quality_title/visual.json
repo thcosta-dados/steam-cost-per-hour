@@ -3,11 +3,11 @@
   "name": "text_quality_title",
   "position": {
     "x": 20,
-    "y": 776,
+    "y": 746,
     "z": 30000,
     "height": 30,
     "width": 1880,
-    "tabOrder": 30000
+    "tabOrder": 13000
   },
   "visual": {
     "visualType": "textbox",

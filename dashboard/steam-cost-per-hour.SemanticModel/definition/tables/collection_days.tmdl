@@ -1,0 +1,27 @@
+/// Play days covered by a collection (view public.collection_days): axis of the daily charts, so a day with a collection and no play shows 0.
+table collection_days
+	lineageTag: bc8bf7aa-a99e-4099-83b2-eb6c26f82b48
+
+	column play_date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 6e4ba7fc-8dc4-411e-b0d3-faea1598a2cb
+		summarizeBy: none
+		sourceColumn: play_date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition collection_days = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(DatabaseServer, DatabaseName),
+				    Days = Source{[Schema = "public", Item = "collection_days"]}[Data],
+				    // One row per day for all users: the "one" side of the relationship with daily_playtime
+				    Distinct = Table.Distinct(Table.SelectColumns(Days, {"play_date"})),
+				    Typed = Table.TransformColumnTypes(Distinct, {{"play_date", type date}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

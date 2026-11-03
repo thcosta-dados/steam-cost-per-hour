@@ -3,11 +3,11 @@
   "name": "card_tooltip_3",
   "position": {
     "x": 245,
-    "y": 305,
+    "y": 320,
     "z": 2003,
-    "height": 90,
+    "height": 100,
     "width": 225,
-    "tabOrder": 2003
+    "tabOrder": 4000
   },
   "visual": {
     "visualType": "card",
@@ -33,6 +33,21 @@
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custo por hora'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

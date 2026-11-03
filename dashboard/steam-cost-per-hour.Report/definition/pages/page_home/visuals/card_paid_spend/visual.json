@@ -3,11 +3,11 @@
   "name": "card_paid_spend",
   "position": {
     "x": 400,
-    "y": 176,
+    "y": 196,
     "z": 2000,
-    "height": 130,
+    "height": 124,
     "width": 360,
-    "tabOrder": 2000
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "card",
@@ -32,6 +32,21 @@
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'card_paid_spend'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

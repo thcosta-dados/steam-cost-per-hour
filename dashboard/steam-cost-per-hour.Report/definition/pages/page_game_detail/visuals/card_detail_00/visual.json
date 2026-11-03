@@ -3,11 +3,11 @@
   "name": "card_detail_00",
   "position": {
     "x": 510,
-    "y": 196,
+    "y": 176,
     "z": 3000,
     "height": 115,
     "width": 450,
-    "tabOrder": 3000
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "card",
@@ -38,6 +38,21 @@
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Horas jogadas'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

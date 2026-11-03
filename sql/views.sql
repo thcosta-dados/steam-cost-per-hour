@@ -286,6 +286,14 @@ WHERE c.item_category = 'game'
   AND i.minutes_difference > 0;  -- days without play are left out; decreases go to the quarantine
 
 
+-- Play days covered by a collection (ticket 11): the axis of the daily charts in the dashboard, so a
+-- day with a collection and no play shows 0 instead of disappearing. A day without a collection is
+-- not here: its hours went to the next collection (days_covered in daily_playtime).
+CREATE OR REPLACE VIEW collection_days WITH (security_invoker = true) AS
+SELECT DISTINCT user_id, snapshot_date - 1 AS play_date
+FROM snapshot_intervals;
+
+
 -- Total hours of each game on each collection day, games only (rule 17). Unlike daily_playtime,
 -- it also has the days without play: the evolution of the hours in the game detail page (ticket 11).
 CREATE OR REPLACE VIEW playtime_history WITH (security_invoker = true) AS

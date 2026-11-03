@@ -6,14 +6,26 @@ table daily_playtime
 		formatString: #,0.0
 		lineageTag: a623bec7-0f34-419d-ab62-33f8abc84c76
 
+	/// Hours per collection day: 0 on a day with a collection and no play (axis: collection_days).
+	measure 'Horas jogadas no dia' = [Horas jogadas] + 0
+		formatString: #,0.0
+		lineageTag: 99cbfb03-df4a-408c-86e6-a25093f95fe4
+
+	/// Days with play in the filter context.
+	measure 'Dias com jogo' = DISTINCTCOUNT ( daily_playtime[play_date] ) + 0
+		formatString: 0
+		lineageTag: 8fb4047d-5b70-4263-892f-831136a47004
+
 	column user_id
 		dataType: string
+		isHidden
 		lineageTag: 3d60e841-7df2-445f-953c-ade7a53f7630
 		summarizeBy: none
 		sourceColumn: user_id
 
 	column app_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: f223696b-567f-4c35-998b-ede147f900f2
 		summarizeBy: none
@@ -43,6 +55,7 @@ table daily_playtime
 
 	column minutes_played
 		dataType: int64
+		isHidden
 		formatString: #,0
 		lineageTag: 08d2675a-bd73-4c2f-891d-cad949ce65d0
 		summarizeBy: none

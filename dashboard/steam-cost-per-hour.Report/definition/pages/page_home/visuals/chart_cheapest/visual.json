@@ -3,11 +3,11 @@
   "name": "chart_cheapest",
   "position": {
     "x": 20,
-    "y": 326,
+    "y": 340,
     "z": 20020,
-    "height": 430,
+    "height": 386,
     "width": 930,
-    "tabOrder": 20020
+    "tabOrder": 11000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -168,6 +168,19 @@
               }
             },
             "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'10 jogos mais baratos por hora (pagos, 1 hora ou mais)'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
               "expr": {
                 "Literal": {
                   "Value": "'10 jogos mais baratos por hora (pagos, 1 hora ou mais)'"

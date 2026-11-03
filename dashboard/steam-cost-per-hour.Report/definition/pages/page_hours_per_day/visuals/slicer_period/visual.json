@@ -3,11 +3,11 @@
   "name": "slicer_period",
   "position": {
     "x": 950,
-    "y": 10,
+    "y": 14,
     "z": 60000,
-    "height": 80,
+    "height": 70,
     "width": 350,
-    "tabOrder": 60000
+    "tabOrder": 4000
   },
   "visual": {
     "visualType": "slicer",
@@ -20,16 +20,16 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "daily_playtime"
+                      "Entity": "collection_days"
                     }
                   },
                   "Property": "play_date"
                 }
               },
-              "queryRef": "daily_playtime.play_date",
+              "queryRef": "collection_days.play_date",
               "nativeQueryRef": "play_date",
-              "active": true,
-              "displayName": "Período (dia de jogo)"
+              "displayName": "Período (dia de jogo)",
+              "active": true
             }
           ]
         }
@@ -58,72 +58,6 @@
                 "Literal": {
                   "Value": "'Between'"
                 }
-              }
-            }
-          }
-        }
-      ],
-      "general": [
-        {
-          "properties": {
-            "filter": {
-              "filter": {
-                "Version": 2,
-                "From": [
-                  {
-                    "Name": "d",
-                    "Entity": "daily_playtime",
-                    "Type": 0
-                  }
-                ],
-                "Where": [
-                  {
-                    "Condition": {
-                      "And": {
-                        "Left": {
-                          "Comparison": {
-                            "ComparisonKind": 2,
-                            "Left": {
-                              "Column": {
-                                "Expression": {
-                                  "SourceRef": {
-                                    "Source": "d"
-                                  }
-                                },
-                                "Property": "play_date"
-                              }
-                            },
-                            "Right": {
-                              "Literal": {
-                                "Value": "datetime'2026-10-22T00:00:00'"
-                              }
-                            }
-                          }
-                        },
-                        "Right": {
-                          "Comparison": {
-                            "ComparisonKind": 3,
-                            "Left": {
-                              "Column": {
-                                "Expression": {
-                                  "SourceRef": {
-                                    "Source": "d"
-                                  }
-                                },
-                                "Property": "play_date"
-                              }
-                            },
-                            "Right": {
-                              "Literal": {
-                                "Value": "datetime'2026-10-27T00:00:00'"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                ]
               }
             }
           }

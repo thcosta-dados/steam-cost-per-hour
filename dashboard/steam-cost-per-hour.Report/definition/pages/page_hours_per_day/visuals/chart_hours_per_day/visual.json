@@ -3,11 +3,11 @@
   "name": "chart_hours_per_day",
   "position": {
     "x": 20,
-    "y": 104,
+    "y": 248,
     "z": 0,
-    "height": 500,
+    "height": 446,
     "width": 1880,
-    "tabOrder": 0
+    "tabOrder": 9000
   },
   "visual": {
     "visualType": "columnChart",
@@ -20,16 +20,16 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "daily_playtime"
+                      "Entity": "collection_days"
                     }
                   },
                   "Property": "play_date"
                 }
               },
-              "queryRef": "daily_playtime.play_date",
+              "queryRef": "collection_days.play_date",
               "nativeQueryRef": "play_date",
-              "active": true,
-              "displayName": "Dia de jogo"
+              "displayName": "Dia de jogo",
+              "active": true
             }
           ]
         },
@@ -43,11 +43,12 @@
                       "Entity": "daily_playtime"
                     }
                   },
-                  "Property": "Horas jogadas"
+                  "Property": "Horas jogadas no dia"
                 }
               },
-              "queryRef": "daily_playtime.Horas jogadas",
-              "nativeQueryRef": "Horas jogadas"
+              "queryRef": "daily_playtime.Horas jogadas no dia",
+              "nativeQueryRef": "Horas jogadas no dia",
+              "displayName": "Horas jogadas"
             }
           ]
         },
@@ -69,6 +70,30 @@
               "displayName": "Jogo"
             }
           ]
+        },
+        "Tooltips": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "daily_playtime"
+                        }
+                      },
+                      "Property": "days_covered"
+                    }
+                  },
+                  "Function": 4
+                }
+              },
+              "queryRef": "Max(daily_playtime.days_covered)",
+              "nativeQueryRef": "Max of days_covered",
+              "displayName": "Dias somados (1 = coleta normal)"
+            }
+          ]
         }
       },
       "sortDefinition": {
@@ -78,7 +103,7 @@
               "Column": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "daily_playtime"
+                    "Entity": "collection_days"
                   }
                 },
                 "Property": "play_date"
@@ -103,7 +128,58 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Horas jogadas por dia e por jogo (o dia de jogo termina na coleta da manhã seguinte)'"
+                  "Value": "'Horas jogadas por dia e por jogo'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'As horas são medidas toda manhã e contam para o dia anterior. Na dica, dias somados acima de 1 indicam dia sem coleta.'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#8B949E'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Horas jogadas por dia e por jogo'"
                 }
               }
             }

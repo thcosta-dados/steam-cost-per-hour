@@ -6,8 +6,8 @@
     "y": 104,
     "z": 1000,
     "height": 130,
-    "width": 613,
-    "tabOrder": 1000
+    "width": 614,
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "card",
@@ -27,11 +27,27 @@
                 }
               },
               "queryRef": "purchase_discounts.Desconto médio",
-              "nativeQueryRef": "Desconto médio"
+              "nativeQueryRef": "Desconto médio",
+              "displayName": "Desconto sobre o preço original"
             }
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Desconto sobre o preço original'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

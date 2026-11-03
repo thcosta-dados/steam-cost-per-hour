@@ -30,7 +30,7 @@
     },
     "title": {
       "fontFace": "Segoe UI Semibold",
-      "fontSize": 13,
+      "fontSize": 14,
       "color": "#E6EDF3"
     },
     "header": {
@@ -167,7 +167,7 @@
               }
             },
             "fontFamily": "Segoe UI Semibold",
-            "fontSize": 13
+            "fontSize": 14
           }
         ],
         "visualHeader": [
@@ -225,7 +225,8 @@
               "solid": {
                 "color": "#202732"
               }
-            }
+            },
+            "fontSize": 11
           }
         ],
         "valueAxis": [
@@ -244,7 +245,8 @@
               "solid": {
                 "color": "#202732"
               }
-            }
+            },
+            "fontSize": 11
           }
         ],
         "legend": [
@@ -253,7 +255,8 @@
               "solid": {
                 "color": "#B1BAC4"
               }
-            }
+            },
+            "fontSize": 11
           }
         ],
         "labels": [
@@ -262,7 +265,8 @@
               "solid": {
                 "color": "#E6EDF3"
               }
-            }
+            },
+            "fontSize": 11
           }
         ],
         "subTitle": [
@@ -281,17 +285,18 @@
                 "color": "#E6EDF3"
               }
             },
-            "fontSize": 22
+            "fontSize": 22,
+            "labelDisplayUnits": 1
           }
         ],
         "categoryLabels": [
           {
             "color": {
               "solid": {
-                "color": "#8B949E"
+                "color": "#B1BAC4"
               }
             },
-            "fontSize": 11
+            "fontSize": 12
           }
         ]
       }
@@ -380,7 +385,8 @@
                 "color": "#B1BAC4"
               }
             },
-            "fontFamily": "Segoe UI Semibold"
+            "fontFamily": "Segoe UI Semibold",
+            "textSize": 11
           }
         ],
         "items": [
@@ -394,7 +400,8 @@
               "solid": {
                 "color": "#161B22"
               }
-            }
+            },
+            "textSize": 11
           }
         ],
         "general": [
@@ -436,6 +443,16 @@
                 "color": "#3987E5"
               }
             }
+          }
+        ],
+        "background": [
+          {
+            "show": false
+          }
+        ],
+        "border": [
+          {
+            "show": false
           }
         ]
       }

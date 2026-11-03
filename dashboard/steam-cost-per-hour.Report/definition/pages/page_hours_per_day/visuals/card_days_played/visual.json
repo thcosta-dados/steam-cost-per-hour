@@ -1,0 +1,53 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "card_days_played",
+  "position": {
+    "x": 970,
+    "y": 104,
+    "z": 1100,
+    "height": 124,
+    "width": 930,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "daily_playtime"
+                    }
+                  },
+                  "Property": "Dias com jogo"
+                }
+              },
+              "queryRef": "daily_playtime.Dias com jogo",
+              "nativeQueryRef": "Dias com jogo",
+              "displayName": "Dias com jogo no período"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dias com jogo no período'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

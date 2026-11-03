@@ -32,6 +32,7 @@ table playtime_history
 
 	column minutes_played
 		dataType: int64
+		isHidden
 		formatString: #,0
 		lineageTag: b6384fd3-5f16-4a1f-984c-b83cadf2f4f6
 		summarizeBy: none

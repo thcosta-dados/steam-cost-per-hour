@@ -3,11 +3,11 @@
   "name": "cover_game",
   "position": {
     "x": 20,
-    "y": 196,
+    "y": 176,
     "z": 2000,
     "height": 250,
     "width": 470,
-    "tabOrder": 2000
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "tableEx",
@@ -200,6 +200,19 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Capa'"
                 }
               }
             }

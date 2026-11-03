@@ -7,7 +7,7 @@
     "z": 52000,
     "height": 44,
     "width": 220,
-    "tabOrder": 52000
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "actionButton",
@@ -74,7 +74,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#2D3542'"
+                      "Value": "'#1A2A40'"
                     }
                   }
                 }
@@ -97,6 +97,13 @@
                       "Value": "'#3987E5'"
                     }
                   }
+                }
+              }
+            },
+            "weight": {
+              "expr": {
+                "Literal": {
+                  "Value": "2D"
                 }
               }
             }

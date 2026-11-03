@@ -3,11 +3,11 @@
   "name": "card_detail_01",
   "position": {
     "x": 980,
-    "y": 196,
+    "y": 176,
     "z": 3001,
     "height": 115,
     "width": 450,
-    "tabOrder": 3001
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "card",
@@ -33,6 +33,21 @@
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custo por hora'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

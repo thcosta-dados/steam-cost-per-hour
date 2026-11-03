@@ -3,11 +3,11 @@
   "name": "card_detail_11",
   "position": {
     "x": 980,
-    "y": 331,
+    "y": 311,
     "z": 3101,
     "height": 115,
     "width": 450,
-    "tabOrder": 3101
+    "tabOrder": 11000
   },
   "visual": {
     "visualType": "card",
@@ -38,6 +38,21 @@
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Gasto extra'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

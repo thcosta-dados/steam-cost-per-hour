@@ -48,20 +48,40 @@ table game_costs
 	measure 'Título do ranking' = VAR best = TOPN ( 1, FILTER ( game_costs, game_costs[hours_group] = "jogado" && game_costs[value_origin] IN { "pago", "estimado" } ), game_costs[cost_per_hour_brl], ASC ) RETURN IF ( ISEMPTY ( best ), "Jogos pagos com 1 hora ou mais: nenhum jogo com os filtros atuais", "Jogos pagos com 1 hora ou mais. Mais barato por hora: " & MAXX ( best, game_costs[name] ) & ", " & FORMAT ( MAXX ( best, game_costs[cost_per_hour_brl] ), "\R$ #,0.00" ) )
 		lineageTag: b61f6b94-9e76-4eb6-a7f9-0f6a3af06d76
 
+	/// Spec rule 25: total spending on paid (or estimated) games divided by their hours, 0 h games included.
+	measure 'Custo médio por hora (jogos pagos)' = DIVIDE ( CALCULATE ( SUM ( game_costs[total_spend_brl] ), game_costs[value_origin] IN { "pago", "estimado" } ), CALCULATE ( SUM ( game_costs[minutes_played] ), game_costs[value_origin] IN { "pago", "estimado" } ) / 60 )
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: 74ae5d52-239c-4fff-95ba-e1e870917b40
+
+	/// Money parked with the number of games, so "R$ 0,00" does not look like an error.
+	measure 'Dinheiro parado com contagem' = VAR games = CALCULATE ( COUNTROWS ( game_costs ), game_costs[hours_group] = "não jogado", game_costs[game_value_brl] > 0 ) + 0 RETURN FORMAT ( [Dinheiro parado] + 0, "\R$ #,0.00" ) & " · " & games & IF ( games = 1, " jogo", " jogos" )
+		lineageTag: e1829d89-db9e-4003-a67b-db2c7acfd067
+
+	/// Value of paid games played for less than 1 hour, with the number of games.
+	measure 'Mal começados com contagem' = VAR games = CALCULATE ( COUNTROWS ( game_costs ), game_costs[hours_group] = "mal começado", game_costs[game_value_brl] > 0 ) + 0 RETURN FORMAT ( [Valor em jogos mal começados] + 0, "\R$ #,0.00" ) & " · " & games & IF ( games = 1, " jogo", " jogos" )
+		lineageTag: b0caad86-a7b6-4d0f-b5e8-2cd2b0c904aa
+
+	/// Context line of the home page: total spending, what cost per hour means and the last collection.
+	measure 'Contexto do início' = "Gasto total na Steam: " & FORMAT ( [Gasto total], "\R$ #,0.00" ) & "   ·   Custo por hora = (valor do jogo + gasto extra) ÷ horas jogadas   ·   Última coleta: " & FORMAT ( MAX ( game_costs[last_snapshot_date] ), "dd/mm/yyyy" )
+		lineageTag: 655deefc-5b8c-4f9e-a357-10dc6e3a7094
+
 	column user_id
 		dataType: string
+		isHidden
 		lineageTag: 5098b67f-b5b2-4624-95de-d58d19e11f48
 		summarizeBy: none
 		sourceColumn: user_id
 
 	column nickname
 		dataType: string
+		isHidden
 		lineageTag: daa7129c-6e46-400c-a7fe-957b7c4d38b2
 		summarizeBy: none
 		sourceColumn: nickname
 
 	column app_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: f1e5d497-2251-4262-a227-3a854fb8feaf
 		summarizeBy: none
@@ -82,6 +102,7 @@ table game_costs
 
 	column last_snapshot_date
 		dataType: dateTime
+		isHidden
 		formatString: Short Date
 		lineageTag: 7bf3aa64-1d53-43f6-9fff-077040e1d253
 		summarizeBy: none
@@ -91,6 +112,7 @@ table game_costs
 
 	column minutes_played
 		dataType: int64
+		isHidden
 		formatString: #,0
 		lineageTag: fe5fdc61-84d5-4a40-bce4-88e6992d14ec
 		summarizeBy: none
@@ -138,6 +160,7 @@ table game_costs
 
 	column total_spend_brl
 		dataType: decimal
+		isHidden
 		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
 		lineageTag: 15e88e20-5588-4679-ac9c-eee401d7a795
 		summarizeBy: none
@@ -145,12 +168,14 @@ table game_costs
 
 	column purchase_history_loaded
 		dataType: boolean
+		isHidden
 		lineageTag: d77326a4-8ec0-45c5-b81c-4f9e592175a9
 		summarizeBy: none
 		sourceColumn: purchase_history_loaded
 
 	column first_purchase_date
 		dataType: dateTime
+		isHidden
 		formatString: Short Date
 		lineageTag: 5dc64449-10ba-4f06-b512-56b80469b358
 		summarizeBy: none

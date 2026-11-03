@@ -7,7 +7,7 @@
     "z": 0,
     "width": 613,
     "height": 130,
-    "tabOrder": 0
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "card",
@@ -32,6 +32,21 @@
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'card_savings'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

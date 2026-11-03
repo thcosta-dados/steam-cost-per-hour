@@ -3,11 +3,11 @@
   "name": "card_tooltip_2",
   "position": {
     "x": 10,
-    "y": 305,
+    "y": 320,
     "z": 2002,
-    "height": 90,
+    "height": 100,
     "width": 225,
-    "tabOrder": 2002
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "card",
@@ -33,6 +33,21 @@
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Data da compra'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

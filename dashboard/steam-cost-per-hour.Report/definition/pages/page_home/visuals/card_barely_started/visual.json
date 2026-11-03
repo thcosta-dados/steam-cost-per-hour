@@ -3,11 +3,11 @@
   "name": "card_barely_started",
   "position": {
     "x": 1540,
-    "y": 176,
+    "y": 196,
     "z": 5000,
-    "height": 130,
+    "height": 124,
     "width": 360,
-    "tabOrder": 5000
+    "tabOrder": 10000
   },
   "visual": {
     "visualType": "card",
@@ -23,16 +23,31 @@
                       "Entity": "game_costs"
                     }
                   },
-                  "Property": "Valor em jogos mal começados"
+                  "Property": "Mal começados com contagem"
                 }
               },
-              "queryRef": "game_costs.Valor em jogos mal começados",
-              "nativeQueryRef": "Valor em jogos mal começados",
-              "displayName": "Valor dos mal começados"
+              "queryRef": "game_costs.Mal começados com contagem",
+              "nativeQueryRef": "Mal começados com contagem",
+              "displayName": "Pago em jogos com menos de 1 h"
             }
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Pago em jogos com menos de 1 h'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

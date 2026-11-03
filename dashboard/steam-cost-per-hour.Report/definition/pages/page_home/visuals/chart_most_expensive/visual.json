@@ -3,11 +3,11 @@
   "name": "chart_most_expensive",
   "position": {
     "x": 970,
-    "y": 326,
+    "y": 340,
     "z": 20970,
-    "height": 430,
+    "height": 386,
     "width": 930,
-    "tabOrder": 20970
+    "tabOrder": 12000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -168,6 +168,19 @@
               }
             },
             "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'10 jogos mais caros por hora (pagos, 1 hora ou mais)'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
               "expr": {
                 "Literal": {
                   "Value": "'10 jogos mais caros por hora (pagos, 1 hora ou mais)'"

@@ -7,7 +7,7 @@
     "z": 5000,
     "height": 294,
     "width": 1880,
-    "tabOrder": 5000
+    "tabOrder": 14000
   },
   "visual": {
     "visualType": "clusteredColumnChart",
@@ -20,13 +20,13 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "daily_playtime"
+                      "Entity": "collection_days"
                     }
                   },
                   "Property": "play_date"
                 }
               },
-              "queryRef": "daily_playtime.play_date",
+              "queryRef": "collection_days.play_date",
               "nativeQueryRef": "play_date",
               "displayName": "Dia de jogo",
               "active": true
@@ -43,11 +43,11 @@
                       "Entity": "daily_playtime"
                     }
                   },
-                  "Property": "Horas jogadas"
+                  "Property": "Horas jogadas no dia"
                 }
               },
-              "queryRef": "daily_playtime.Horas jogadas",
-              "nativeQueryRef": "Horas jogadas",
+              "queryRef": "daily_playtime.Horas jogadas no dia",
+              "nativeQueryRef": "Horas jogadas no dia",
               "displayName": "Horas jogadas"
             }
           ]
@@ -60,7 +60,7 @@
               "Column": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "daily_playtime"
+                    "Entity": "collection_days"
                   }
                 },
                 "Property": "play_date"
@@ -85,7 +85,58 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Horas jogadas por dia (só os dias em que o jogo foi aberto)'"
+                  "Value": "'Horas jogadas por dia'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'0 = houve coleta, mas o jogo não foi aberto.'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#8B949E'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Horas jogadas por dia'"
                 }
               }
             }

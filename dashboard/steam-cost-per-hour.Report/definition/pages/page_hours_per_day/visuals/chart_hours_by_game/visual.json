@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "chart_hours_by_game",
   "position": {
-    "x": 940,
-    "y": 624,
+    "x": 20,
+    "y": 714,
     "z": 3000,
-    "height": 436,
-    "width": 960,
-    "tabOrder": 3000
+    "height": 346,
+    "width": 1880,
+    "tabOrder": 10000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -170,6 +170,19 @@
               }
             },
             "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Horas jogadas por jogo no período'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
               "expr": {
                 "Literal": {
                   "Value": "'Horas jogadas por jogo no período'"

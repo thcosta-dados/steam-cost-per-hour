@@ -3,11 +3,11 @@
   "name": "card_detail_10",
   "position": {
     "x": 510,
-    "y": 331,
+    "y": 311,
     "z": 3100,
     "height": 115,
     "width": 450,
-    "tabOrder": 3100
+    "tabOrder": 10000
   },
   "visual": {
     "visualType": "card",
@@ -38,6 +38,21 @@
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Valor do jogo'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

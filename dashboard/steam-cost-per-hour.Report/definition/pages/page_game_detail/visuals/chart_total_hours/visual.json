@@ -3,11 +3,11 @@
   "name": "chart_total_hours",
   "position": {
     "x": 20,
-    "y": 466,
+    "y": 446,
     "z": 4000,
-    "height": 280,
+    "height": 300,
     "width": 1880,
-    "tabOrder": 4000
+    "tabOrder": 13000
   },
   "visual": {
     "visualType": "lineChart",
@@ -85,7 +85,20 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Total de horas na biblioteca em cada coleta'"
+                  "Value": "'Horas acumuladas neste jogo em cada coleta'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Horas acumuladas neste jogo em cada coleta'"
                 }
               }
             }

@@ -1,48 +1,47 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "slicer_hours_group",
+  "name": "card_hours_in_period",
   "position": {
-    "x": 1600,
-    "y": 10,
-    "z": 61000,
-    "height": 80,
-    "width": 300,
-    "tabOrder": 61000
+    "x": 20,
+    "y": 104,
+    "z": 1000,
+    "height": 124,
+    "width": 930,
+    "tabOrder": 7000
   },
   "visual": {
-    "visualType": "slicer",
+    "visualType": "card",
     "query": {
       "queryState": {
         "Values": {
           "projections": [
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "game_costs"
+                      "Entity": "daily_playtime"
                     }
                   },
-                  "Property": "hours_group"
+                  "Property": "Horas jogadas"
                 }
               },
-              "queryRef": "game_costs.hours_group",
-              "nativeQueryRef": "hours_group",
-              "displayName": "Grupo de horas",
-              "active": true
+              "queryRef": "daily_playtime.Horas jogadas",
+              "nativeQueryRef": "Horas jogadas",
+              "displayName": "Horas jogadas no período"
             }
           ]
         }
       }
     },
-    "objects": {
-      "data": [
+    "visualContainerObjects": {
+      "general": [
         {
           "properties": {
-            "mode": {
+            "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Dropdown'"
+                  "Value": "'Horas jogadas no período'"
                 }
               }
             }

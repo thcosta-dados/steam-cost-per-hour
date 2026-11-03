@@ -1,0 +1,53 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "card_average_cost",
+  "position": {
+    "x": 20,
+    "y": 196,
+    "z": 1000,
+    "height": 124,
+    "width": 360,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "game_costs"
+                    }
+                  },
+                  "Property": "Custo médio por hora (jogos pagos)"
+                }
+              },
+              "queryRef": "game_costs.Custo médio por hora (jogos pagos)",
+              "nativeQueryRef": "Custo médio por hora (jogos pagos)",
+              "displayName": "Custo médio por hora (jogos pagos)"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custo médio por hora (jogos pagos)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

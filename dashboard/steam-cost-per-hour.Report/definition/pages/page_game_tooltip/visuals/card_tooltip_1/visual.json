@@ -5,9 +5,9 @@
     "x": 245,
     "y": 210,
     "z": 2001,
-    "height": 90,
+    "height": 100,
     "width": 225,
-    "tabOrder": 2001
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "card",
@@ -38,6 +38,21 @@
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Horas jogadas'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

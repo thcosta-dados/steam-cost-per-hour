@@ -8,12 +8,14 @@ table items_out_of_metrics
 
 	column user_id
 		dataType: string
+		isHidden
 		lineageTag: faa309cb-dd9d-4fa4-8c9c-d9e8bc2e22c5
 		summarizeBy: none
 		sourceColumn: user_id
 
 	column app_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 0a9ec935-a9fc-4cf8-bc0a-fe71b4c6d1c5
 		summarizeBy: none

@@ -3,11 +3,11 @@
   "name": "slicer_hours_group",
   "position": {
     "x": 1620,
-    "y": 10,
+    "y": 14,
     "z": 62000,
-    "height": 80,
+    "height": 70,
     "width": 280,
-    "tabOrder": 62000
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "slicer",

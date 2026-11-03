@@ -3,11 +3,11 @@
   "name": "slicer_value_origin",
   "position": {
     "x": 1320,
-    "y": 10,
+    "y": 14,
     "z": 61000,
-    "height": 80,
+    "height": 70,
     "width": 280,
-    "tabOrder": 61000
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "slicer",

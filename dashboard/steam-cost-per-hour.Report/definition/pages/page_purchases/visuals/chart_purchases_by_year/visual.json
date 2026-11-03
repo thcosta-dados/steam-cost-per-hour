@@ -7,7 +7,7 @@
     "z": 4000,
     "height": 330,
     "width": 1880,
-    "tabOrder": 4000
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "clusteredColumnChart",
@@ -180,6 +180,19 @@
               }
             },
             "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Pago e economizado com descontos, por ano da compra'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
               "expr": {
                 "Literal": {
                   "Value": "'Pago e economizado com descontos, por ano da compra'"

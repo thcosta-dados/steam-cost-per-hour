@@ -3,11 +3,11 @@
   "name": "card_free_spend",
   "position": {
     "x": 780,
-    "y": 176,
+    "y": 196,
     "z": 3000,
-    "height": 130,
+    "height": 124,
     "width": 360,
-    "tabOrder": 3000
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "card",
@@ -28,11 +28,26 @@
               },
               "queryRef": "game_costs.Gasto em jogos sem custo de acesso",
               "nativeQueryRef": "Gasto em jogos sem custo de acesso",
-              "displayName": "Gasto em jogos de graça"
+              "displayName": "Gasto extra em jogos sem custo"
             }
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Gasto extra em jogos sem custo'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

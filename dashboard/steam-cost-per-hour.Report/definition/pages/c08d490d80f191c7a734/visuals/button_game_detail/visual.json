@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "button_game_detail",
   "position": {
-    "x": 950,
+    "x": 970,
     "y": 26,
     "z": 54000,
     "height": 44,
-    "width": 240,
-    "tabOrder": 54000
+    "width": 280,
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "actionButton",
@@ -45,7 +45,65 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Ver detalhe do jogo'"
+                  "Value": "'Ver detalhe do jogo →'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#6DA7EC'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        },
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Selecione um jogo na tabela'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "disabled"
+          }
+        }
+      ],
+      "fill": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "outline": [
+        {
+          "properties": {
+            "lineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#3987E5'"
+                    }
+                  }
                 }
               }
             }

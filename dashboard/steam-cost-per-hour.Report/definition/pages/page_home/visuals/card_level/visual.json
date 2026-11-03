@@ -3,11 +3,11 @@
   "name": "card_level",
   "position": {
     "x": 20,
-    "y": 816,
+    "y": 786,
     "z": 0,
-    "width": 293,
+    "width": 296,
     "height": 110,
-    "tabOrder": 0
+    "tabOrder": 14000
   },
   "visual": {
     "visualType": "card",
@@ -32,6 +32,21 @@
           ]
         }
       }
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'card_level'"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

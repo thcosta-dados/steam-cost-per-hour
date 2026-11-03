@@ -259,6 +259,20 @@ def test_playtime_history_has_the_total_hours_of_each_collection_day(conn):
     assert rows == [(900001, OLD_DAY, Decimal("5.00"), True), (900001, DAY, Decimal("10.00"), True)]
 
 
+def test_collection_days_include_days_with_a_collection_and_no_play(conn):
+    # A third collection with the same minutes: nobody played on that play day
+    next_day = DAY + datetime.timedelta(days=1)
+    conn.execute("INSERT INTO playtime_snapshots VALUES (%s, 900001, %s, 600)", (USER, next_day))
+    days = [row[0] for row in conn.execute(
+        "SELECT play_date FROM collection_days WHERE user_id = %s ORDER BY play_date", (USER,))]
+    played = [row[0] for row in conn.execute(
+        "SELECT DISTINCT play_date FROM daily_playtime WHERE user_id = %s ORDER BY play_date", (USER,))]
+    # Play day = collection day - 1; the first collection ever has no interval, so no play day
+    assert days == [OLD_DAY, DAY]
+    # DAY had a collection but no play: it is a collection day, not a day in daily_playtime
+    assert played == [OLD_DAY]
+
+
 def test_discount_compares_paid_value_with_the_price_at_purchase_time(conn):
     add_purchase(conn, "d1", datetime.date(2025, 1, 1), "purchase", 900001, "Paid Played",
                  Decimal("14.00"), original=Decimal("20.00"), pct=30)

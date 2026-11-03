@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "table_out_of_metrics",
   "position": {
-    "x": 960,
-    "y": 816,
+    "x": 970,
+    "y": 786,
     "z": 12000,
-    "height": 244,
-    "width": 940,
-    "tabOrder": 12000
+    "height": 274,
+    "width": 930,
+    "tabOrder": 17000
   },
   "visual": {
     "visualType": "tableEx",
@@ -76,6 +76,19 @@
               }
             },
             "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Itens fora das métricas'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
               "expr": {
                 "Literal": {
                   "Value": "'Itens fora das métricas'"

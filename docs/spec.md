@@ -8,7 +8,7 @@ Quem joga no PC compra muitos jogos ao longo dos anos, em promoções, pacotes e
 
 ## Solution
 
-Um pipeline de dados que junta a biblioteca e as horas jogadas (coletadas todos os dias, automaticamente, pela API da Steam) com o histórico de compras da própria pessoa, trata os casos difíceis do histórico (pacotes, reembolsos, presentes, créditos de carteira) e entrega um painel que mostra o custo por hora de cada jogo. Como destaque secundário, o painel mostra o dinheiro parado em jogos nunca abertos e em jogos mal começados. A v1 é um estudo de caso da conta do autor: o painel do Power BI conta a história dessa conta, como uma apresentação. O banco já está preparado para vários usuários, cada um vendo só os próprios dados, mas o uso por outras pessoas fica para a fase 2.
+Um pipeline de dados que junta a biblioteca e as horas jogadas (coletadas todos os dias, automaticamente, pela API da Steam) com o histórico de compras da própria pessoa, trata os casos difíceis do histórico (pacotes, reembolsos, presentes, créditos de carteira) e entrega um painel que mostra o custo por hora de cada jogo. Como destaque secundário, o painel mostra o dinheiro parado em jogos nunca abertos e em jogos mal começados. A v1 é um estudo de caso da conta do autor: o painel do Power BI conta a história dessa conta, como uma apresentação. O banco já está preparado para vários usuários, cada um vendo só os próprios dados, mas o uso por outras pessoas fica para a fase 2. Além do custo por hora, o painel conta a história do jogador na Steam (ticket 11b): horas ao longo dos anos, o jogo mais jogado, os gêneros, os anos de compras, os recordes do dia a dia e curiosidades de cada jogo, em frases simples e em primeira pessoa.
 
 ## User Stories
 
@@ -31,6 +31,9 @@ Um pipeline de dados que junta a biblioteca e as horas jogadas (coletadas todos 
 17. Como amigo do dono do projeto (fase 2), quero informar meu perfil e meu histórico e ver o meu próprio painel, sem acesso aos dados de outras pessoas.
 18. Como jogador, quero ver quanto gastei dentro de cada jogo (compras no jogo feitas pela Steam), inclusive nos gratuitos, para comparar o custo real de jogos gratuitos e pagos.
 19. Como jogador, quero ver o desconto que consegui em cada compra e quanto economizei no total, calculados automaticamente, sem informar nada além do histórico de compras.
+20. Como jogador, quero abrir o painel e ver a história da minha conta (horas ao longo dos anos, jogo mais jogado, gêneros, fatos curiosos) em frases simples, para entender meus hábitos sem precisar ler tabelas.
+21. Como jogador, quero abrir a ficha de qualquer jogo, com um selo de custo-benefício e curiosidades, para ver tudo sobre ele num só lugar.
+22. Como recrutador ou pessoa leiga, quero que cada número venha com uma frase que diga o que ele significa, para entender o painel sem explicação.
 
 ## Data and Sources
 
@@ -107,10 +110,21 @@ O banco já nasce preparado para vários usuários: toda tabela de dados pessoai
 23. A primeira compra ligada a um jogo com licença é o valor pago pelo jogo. As compras seguintes do mesmo jogo (DLCs, passes, capítulos) somam ao gasto extra, como as compras no jogo. Num jogo sem licença (gratuito), toda compra ligada a ele é gasto extra: sem a licença do jogo base, a compra só pode ser DLC, passe ou pacote.
 24. Quando o usuário carregou o histórico de compras completo (a carga recusa páginas incompletas), um jogo com licença e sem nenhuma compra no histórico tem origem "sem compra na Steam": R$ 0, no ranking de gratuitos e presentes, fora do dinheiro parado. Isso cobre presentes recebidos, cortesias (como as edições Enhanced entregues a quem tinha a original) e promoções gratuitas. Uma chave comprada em outra loja também cai aqui, coerente com a regra de que compras fora da Steam ficam fora do projeto. Sem histórico carregado, vale a regra 2 (estimado ou sem valor conhecido).
 25. Custo médio por hora dos jogos pagos = soma do gasto total (valor do jogo + gasto extra) dos jogos com origem "pago" ou "estimado" ÷ soma das horas jogadas nesses jogos. Os jogos com 0 h e os mal começados entram no gasto: o dinheiro foi gasto mesmo sem horas, e a média mostra isso. Jogos "gratuito", "sem compra na Steam" e "sem valor conhecido" ficam de fora. É o número principal da tela inicial do painel.
+26. Tempo na Steam: anos = parte inteira de (dias entre a primeira compra do histórico e a última coleta) ÷ 365,25, e horas por dia = horas totais ÷ esses dias. A primeira compra é a referência porque a API não informa a data de criação da conta, então a conta pode ser um pouco mais antiga.
+27. As horas da Steam medem o tempo com o jogo aberto, não o tempo jogando de fato: contam o jogo esquecido em segundo plano e os jogos deixados abertos para ganhar recompensas. O painel chama esse número de "horas com o jogo aberto" onde ele é o destaque, e o README discute o limite.
+28. Jogo mais jogado e pódio: ordem pelos minutos acumulados. Fatia = minutos do jogo ÷ minutos de todos os jogos. Posição na ficha = jogos com mais minutos + 1 (um empate divide a posição).
+29. Selo de custo-benefício, só para jogos com origem "pago" ou "estimado" e 1 hora ou mais: Platina até R$ 0,50 por hora, Ouro até R$ 1, Prata até R$ 3 e Bronze acima disso. Os outros jogos ficam sem selo, e a ficha diz o motivo.
+30. Horas por gênero: os gêneros vêm da loja, e um jogo com vários gêneros conta em cada um, então as fatias somam mais de 100%. "Free To Play" e "Early Access" ficam de fora por serem modelo de negócio, não estilo de jogo.
+31. Placar das metades: "comprei" = origem "pago" ou "estimado"; "não comprei" = "gratuito" ou "sem compra na Steam". O placar mostra as horas, o gasto e o custo por hora de cada lado.
+32. Recordes do dia a dia: o melhor dia e a média por dia da semana usam só intervalos de 1 dia (regra 11), para não juntar dias sem coleta num dia só. A maior sequência conta dias anotados seguidos com jogo: um dia anotado sem jogo quebra a sequência, e um dia sem anotação não quebra nem soma.
+33. Recordes de compras: o ano em que mais gastei tem a maior soma paga; o ano com mais compras tem o maior número de compras (empate: o mais recente); a maior pechincha é a compra com o maior desconto (empate: a de maior economia).
+34. Todo fato do painel vem de uma medida, nunca de um texto digitado, e tem uma consulta SQL independente em docs/fact_checks.sql. Uma frase que não cabe no espaço nunca é cortada com "...": o texto é reescrito ou o visual muda de tamanho.
 
 **Painel (Power BI)**
 
 Visão principal: ranking de custo por hora dos jogos pagos (origem "pago" ou "estimado") com 1 hora ou mais, mostrando sempre as horas e a origem do valor ao lado. Ao lado, o ranking dos gratuitos e presentes, ordenado por horas. Destaques secundários: total de dinheiro parado em jogos com 0 horas e total em jogos mal começados. Visões de apoio: horas jogadas por dia e por jogo. O design interativo (tema, capas, navegação, detalhe por jogo) está descrito no ticket 11.
+
+Depois do ticket 11b, o painel tem cinco páginas visíveis, com navegação por botões: Minha Steam (a história da conta e os fatos curiosos), Valeu a pena? (os rankings e o placar), Compras, Dia a dia e Bastidores (como as contas foram feitas e o que ficou de fora). A ficha do jogo abre pelo clique num jogo, e a dica aparece ao passar o mouse. O visual segue o universo dos games, com tema escuro, dourado para o destaque e selos de custo-benefício. Uma fonte só (Segoe UI) e quatro tamanhos: 14 pt nos títulos, 22 pt nos números dos cartões, 13 pt nos títulos dos cartões e 12 pt nos textos. Títulos e subtítulos são centralizados.
 
 **Idioma.** Código, tabelas e colunas em inglês. README em português com um resumo curto em inglês no topo.
 
@@ -126,6 +140,7 @@ Cada conferência usa uma fonte independente do código, nunca o próprio result
 6. Testes: os testes das regras de negócio (pacote, reembolso, presente, moeda estrangeira, zero horas, horas que diminuem, jogo novo) passam.
 7. Qualidade de dados: nenhuma chave duplicada (um snapshot por usuário, jogo e dia, um item por compra e jogo), nenhum valor pago negativo, nenhum jogo sem nome no catálogo.
 8. Privacidade: nenhum SteamID em texto aberto no banco, nenhum arquivo de histórico ou credencial no repositório.
+9. Fatos do painel: todo fato curioso bate com a consulta correspondente em docs/fact_checks.sql, e 5 deles batem com a própria Steam (biblioteca e Histórico de compras).
 
 **A v1 está pronta quando** a coleta rodar sozinha por 7 dias, o histórico do autor estiver carregado, o painel mostrar custo por hora e dinheiro parado, todos os critérios acima passarem e o README tiver os prints do painel.
 
@@ -141,6 +156,8 @@ Cada conferência usa uma fonte independente do código, nunca o próprio result
 8. Plataformas além da Steam (Epic, PlayStation, Xbox).
 9. Compras no jogo feitas fora da Steam. Não existe fonte confiável para elas: os sites de cada empresa exigem login, e uma planilha preenchida à mão foi descartada por ser insustentável (a pessoa não tem esses valores).
 10. Horas em jogos emprestados pela Biblioteca Familiar. A API principal não os devolve, e a de jogos recentes só cobriria o que foi jogado nas últimas 2 semanas, a partir do início da coleta. Avaliado e descartado em 16/10/2026.
+11. Notas pessoais do autor sobre cada jogo. Descartadas em 03/11/2026: o painel mostra só dados.
+12. Medalhas de conquistas. Descartadas em 03/11/2026: a própria Steam já mostra as conquistas, e o espaço ficou com fatos curiosos.
 
 ## Open Questions
 

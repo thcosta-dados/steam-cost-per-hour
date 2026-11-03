@@ -45,7 +45,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Abrir ficha do jogo →'"
+                  "Value": "'Abrir ficha do jogo'"
                 }
               }
             },

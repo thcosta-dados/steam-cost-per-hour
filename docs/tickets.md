@@ -201,13 +201,13 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 
 # 11b: Repaginada "meu perfil de jogador"
 
-**What to build:** o painel passa a contar a história do jogador na Steam, além do custo por hora: horas em dias inteiros, jogo do coração, pódio dos mais jogados, gêneros, medalhas com regra, anos de destaque nas compras, recordes do diário e curiosidades de cada jogo. Textos em primeira pessoa e linguagem simples, letra mínima de 18 pt, visual do universo dos games (selo de custo-benefício em troféus, ouro como destaque) e nenhum espaço vazio grande. Base: pesquisa com fontes (retrospectivas como Steam Replay e Spotify Wrapped, sinais de texto gerado por IA, linguagem simples e design de games) e a proposta revisada por personas de leigo e recrutador.
+**What to build:** o painel passa a contar a história do jogador na Steam, além do custo por hora: horas ao longo dos anos, jogo mais jogado, pódio dos mais jogados, gêneros, fatos curiosos, anos de destaque nas compras, recordes do dia a dia e curiosidades de cada jogo. Textos em primeira pessoa e linguagem simples, a mesma tipografia do ticket 11 (Segoe UI: 14 pt nos títulos, 22 pt nos números, 13 pt nos títulos dos cartões, 12 pt nos textos), visual do universo dos games (selo de custo-benefício, ouro como destaque) e nenhum espaço vazio grande. As medalhas de conquistas e as notas pessoais foram descartadas durante o ticket (spec, fora do escopo 11 e 12). Base: pesquisa com fontes (retrospectivas como Steam Replay e Spotify Wrapped, sinais de texto gerado por IA, linguagem simples e design de games) e a proposta revisada por personas de leigo e recrutador.
 
 **Blocked by:** 11.
 
 **Acceptance criteria:**
 - [ ] O painel tem cinco páginas visíveis (Minha Steam, Valeu a pena?, Compras, Dia a dia, Bastidores), navegação só por botões, e a ficha do jogo (drill-through) e a dica continuam funcionando.
-- [ ] Nenhum texto visível abaixo de 18 pt, nenhum "..." ou "(Em branco)", e nenhum "·", "÷" ou "→" como separador. Conferido por varredura automática dos arquivos do relatório e pelos prints de cada página.
+- [ ] Nenhum texto visível abaixo de 12 pt, nenhum "..." ou "(Em branco)", e nenhum "·", "÷" ou "→" como separador. Conferido por varredura automática dos arquivos do relatório e pelos prints de cada página.
 - [ ] Todo fato curioso vem de uma medida e bate com uma consulta SQL independente em docs/fact_checks.sql.
 - [ ] Cinco fatos conferidos contra a própria Steam (biblioteca e página de Histórico de compras).
 - [ ] Toda métrica de custo mostra a origem do valor (regra 2), e um placar compara o gasto em jogos pagos e em jogos sem custo de acesso.

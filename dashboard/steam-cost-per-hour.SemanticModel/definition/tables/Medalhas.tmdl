@@ -1,0 +1,84 @@
+/// Seis medalhas com regra fixa, calculadas pelos dados (não são conquistas da Steam).
+table Medalhas
+	lineageTag: d8a31016-b944-47b1-968f-6e3333d1e6b5
+
+	/// Regra 29: cada medalha tem um critério fixo calculado pelos dados
+	measure 'Medalha conquistada' =
+			SWITCH ( SELECTEDVALUE ( Medalhas[Ordem] ),
+			    1, [Anos desde a primeira compra] >= 10,
+			    2, [Maior total num jogo] >= 1000,
+			    3, CALCULATE ( [Compras com 50% ou mais], ALL ( purchase_discounts ) ) >= 10,
+			    4, CALCULATE ( [Jogos pagos nunca abertos], ALL ( game_costs ) ) = 0,
+			    5, [Maior desconto da conta] >= 90,
+			    6, [Recorde de horas num dia] >= 8 )
+		lineageTag: 28ec9c14-e8ce-4693-8f63-d39a64bf5f1c
+
+	measure 'Medalha detalhe' =
+			VAR naoAbertos = CALCULATE ( [Jogos pagos nunca abertos], ALL ( game_costs ) )
+			RETURN SWITCH ( SELECTEDVALUE ( Medalhas[Ordem] ),
+			    1, "Comprando na Steam desde " & YEAR ( CALCULATE ( MIN ( purchase_discounts[purchase_date] ), ALL ( purchase_discounts ) ) ),
+			    2, FORMAT ( [Maior total num jogo], "#,0" ) & " h num só jogo",
+			    3, CALCULATE ( [Compras com 50% ou mais], ALL ( purchase_discounts ) ) & " compras com 50% ou mais de desconto",
+			    4, IF ( naoAbertos = 0, "Abri todos os jogos que comprei", "Falta abrir " & naoAbertos & IF ( naoAbertos = 1, " jogo", " jogos" ) ),
+			    5, [Maior desconto da conta] & "% de desconto no " & [Jogo do maior desconto],
+			    6, IF ( [Medalha conquistada], "Recorde: ", "Meta: 8 h num dia. Recorde: " ) & FORMAT ( [Recorde de horas num dia], "0.0" ) & " h" )
+		lineageTag: 65c57e0a-6239-46af-8a96-30f08b61f88e
+
+	measure 'Medalha ganha' = IF ( [Medalha conquistada], "sim", "ainda não" )
+		lineageTag: 15b6ca80-d76c-4778-8b00-576af2ef49ba
+
+	measure 'Cor da medalha' = IF ( [Medalha conquistada], "#FFC24B", "#8B949E" )
+		lineageTag: 5635cb8f-25d8-482d-8243-2180c504f4ec
+
+	measure 'Medalhas conquistadas' =
+			VAR n = SUMX ( ALL ( Medalhas ), IF ( CALCULATE ( [Medalha conquistada] ), 1, 0 ) )
+			RETURN n & " de " & COUNTROWS ( ALL ( Medalhas ) ) & " conquistadas"
+		lineageTag: af49df59-89ad-4032-a422-c5aec34df171
+
+	/// Ícone SVG da medalha (hexágono com visto ou cadeado)
+	measure 'Medalha ícone' =
+			VAR ok = [Medalha conquistada]
+			VAR cor = IF ( ok, "%23FFC24B", "%238B949E" )
+			VAR fundo = IF ( ok, "%23403929", "%23202732" )
+			VAR simbolo = IF ( ok,
+			    "<path d='M22 33 l7 7 l13 -15' fill='none' stroke='" & cor & "' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/>",
+			    "<rect x='24' y='30' width='16' height='13' rx='2' fill='" & cor & "'/><path d='M27 30 v-4 a5 5 0 0 1 10 0 v4' fill='none' stroke='" & cor & "' stroke-width='3'/>" )
+			RETURN "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><polygon points='32,4 56,18 56,46 32,60 8,46 8,18' fill='" & fundo & "' stroke='" & cor & "' stroke-width='3'/>" & simbolo & "</svg>"
+		dataCategory: ImageUrl
+		lineageTag: fb7d47fa-b563-43e9-95ab-e1cdbdc27efa
+
+	column Ordem
+		dataType: int64
+		formatString: 0
+		lineageTag: cfdd090e-811e-41c5-ab29-52971646c8d1
+		summarizeBy: none
+		sourceColumn: Ordem
+
+	column Medalha
+		dataType: string
+		lineageTag: 7859b40f-0997-48c0-b710-9f164b7d0fdf
+		summarizeBy: none
+		sourceColumn: Medalha
+
+	column Como ganha
+		dataType: string
+		lineageTag: 035b0a29-a45c-480e-a6fd-6b70afdfb476
+		summarizeBy: none
+		sourceColumn: Como ganha
+
+	partition Medalhas = m
+		mode: import
+		source =
+				let
+				    Result = #table(type table [Ordem = Int64.Type, Medalha = text, #"Como ganha" = text], {
+				        {1, "Veterano", "Primeira compra na Steam há 10 anos ou mais"},
+				        {2, "Maratonista", "1.000 horas ou mais num só jogo"},
+				        {3, "Rei da promoção", "10 compras ou mais com 50% de desconto ou mais"},
+				        {4, "Nada na estante", "Abrir todos os jogos que comprei"},
+				        {5, "Pechincha lendária", "Uma compra com 90% de desconto ou mais"},
+				        {6, "Dia de maratona", "8 horas ou mais num só dia do diário"}})
+				in
+				    Result
+
+	annotation PBI_ResultType = Table
+

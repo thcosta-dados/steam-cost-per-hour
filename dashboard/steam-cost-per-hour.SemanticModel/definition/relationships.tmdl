@@ -10,3 +10,15 @@ relationship e55f7716-b8b0-43a1-8c2b-1be2057ba5d1
 	fromColumn: daily_playtime.play_date
 	toColumn: collection_days.play_date
 
+relationship 9b8fa12c-f742-43f0-9c3e-1bb878bd365d
+	fromColumn: game_genres.game_key
+	toColumn: game_costs.game_key
+
+relationship 767963c6-91c9-437f-ac5b-8bc6bc54f919
+	fromColumn: game_costs.value_origin
+	toColumn: Origens.Origem
+
+relationship dab65fdc-4d49-4178-ab33-365716197f29
+	fromColumn: purchase_discounts.purchase_year
+	toColumn: Anos.Ano
+

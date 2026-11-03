@@ -1,0 +1,71 @@
+/// Gêneros da loja de cada jogo (view public.game_genres): um jogo conta em cada gênero que tem.
+table game_genres
+	lineageTag: 165bef0b-2033-4b5e-b121-1598004b17ea
+
+	/// Soma das horas dos jogos que têm o gênero
+	measure 'Horas do gênero' = DIVIDE ( SUMX ( game_genres, RELATED ( game_costs[minutes_played] ) ), 60 )
+		formatString: #,0
+		lineageTag: 16e18dd5-489d-45db-bef8-8db1af828756
+
+	measure 'Título dos gêneros' =
+			VAR g = ADDCOLUMNS ( VALUES ( game_genres[genre_label] ), "@h", [Horas do gênero] )
+			VAR topo = TOPN ( 1, g, [@h], DESC )
+			VAR nome = MAXX ( topo, game_genres[genre_label] )
+			VAR p = DIVIDE ( MAXX ( topo, [@h] ), [Horas na biblioteca] )
+			RETURN IF ( ISEMPTY ( topo ), "Gêneros que mais joguei", ROUND ( p * 10, 0 ) & " de cada 10 horas foram em jogos de " & IF ( nome = "RPG", nome, LOWER ( nome ) ) )
+		lineageTag: 95b2ce4f-0d43-4de5-9994-5b815f804270
+
+	measure 'Cor da barra do gênero' = IF ( [Horas do gênero] = MAXX ( ALLSELECTED ( game_genres[genre_label] ), [Horas do gênero] ), "#FFC24B", "#3987E5" )
+		lineageTag: 79f4ed87-562b-4dd5-9833-b8f47ff9506d
+
+	column user_id
+		dataType: string
+		isHidden
+		lineageTag: 5662a52a-6246-49a4-9b40-2c58ee052454
+		summarizeBy: none
+		sourceColumn: user_id
+
+	column app_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 58a57206-d683-4eac-afdf-fa91559c15a5
+		summarizeBy: none
+		sourceColumn: app_id
+
+	column game_key
+		dataType: string
+		isHidden
+		lineageTag: cdb98551-36f6-4bc6-87b7-7828d50439f4
+		summarizeBy: none
+		sourceColumn: game_key
+
+	column genre
+		dataType: string
+		isHidden
+		lineageTag: 3abc3d02-f214-4b81-9851-29f15b03c6b0
+		summarizeBy: none
+		sourceColumn: genre
+
+	/// Gênero em português; Free to Play e Early Access saem (são modelo de venda)
+	column genre_label
+		dataType: string
+		lineageTag: 8cfe18ae-58f4-4205-9b18-894f62a5bcab
+		summarizeBy: none
+		sourceColumn: genre_label
+
+	partition game_genres = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(DatabaseServer, DatabaseName),
+				    Genres = Source{[Schema = "public", Item = "game_genres"]}[Data],
+				    // Business model, not a style of game
+				    Styles = Table.SelectRows(Genres, each not List.Contains({"Free To Play", "Free to Play", "Early Access"}, [genre])),
+				    Labels = [Action = "Ação", Adventure = "Aventura", Strategy = "Estratégia", Simulation = "Simulação", Racing = "Corrida", Sports = "Esportes", Indie = "Indie", Casual = "Casual", RPG = "RPG"],
+				    Result = Table.AddColumn(Styles, "genre_label", each Record.FieldOrDefault(Labels, [genre], [genre]), type text)
+				in
+				    Result
+
+	annotation PBI_ResultType = Table
+

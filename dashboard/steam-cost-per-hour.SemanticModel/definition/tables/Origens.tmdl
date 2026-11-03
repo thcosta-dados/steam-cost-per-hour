@@ -1,0 +1,40 @@
+/// O que quer dizer cada origem do valor (dicionário para a página Bastidores).
+table Origens
+	lineageTag: e6452286-9e71-45cf-b4ab-c262cdbe72ef
+
+	column Ordem
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e2e4cabb-c59e-44fe-aa58-db4c6fcaa8d6
+		summarizeBy: none
+		sourceColumn: Ordem
+
+	column Origem
+		dataType: string
+		sortByColumn: Ordem
+		lineageTag: c3977185-2062-4fa3-82b4-c3d15aab8fa1
+		summarizeBy: none
+		sourceColumn: Origem
+
+	column O que quer dizer
+		dataType: string
+		lineageTag: 53a680ba-9f3c-47e3-9100-1739f2994a20
+		summarizeBy: none
+		sourceColumn: O que quer dizer
+
+	partition Origens = m
+		mode: import
+		source =
+				let
+				    Result = #table(type table [Ordem = Int64.Type, Origem = text, #"O que quer dizer" = text], {
+				        {1, "pago", "Comprei, e o valor vem do histórico de compras"},
+				        {2, "gratuito", "Jogo grátis para jogar; conto só o que gastei dentro"},
+				        {3, "sem compra na Steam", "Presente, cortesia, promoção grátis ou chave de outra loja"},
+				        {4, "estimado", "Sem histórico carregado: uso o preço cheio da loja"},
+				        {5, "sem valor conhecido", "Sem histórico e sem preço na loja: fica fora do custo"}})
+				in
+				    Result
+
+	annotation PBI_ResultType = Table
+

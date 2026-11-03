@@ -1,0 +1,43 @@
+/// Linhas da dica do jogo, no estilo de atributos de item.
+table 'Campos da dica'
+	lineageTag: ddfc7808-fd97-4ae1-b15f-f22dcdf94e0b
+
+	measure 'Valor da dica' =
+			SWITCH ( SELECTEDVALUE ( 'Campos da dica'[Ordem] ),
+			    1, [Horas texto],
+			    2, [Custo por hora do jogo],
+			    3, [Selo],
+			    4, [Paguei texto],
+			    5, [Extras texto],
+			    6, SELECTEDVALUE ( game_costs[value_origin] ),
+			    7, [Data da compra] )
+		lineageTag: de958f6d-fec6-483b-b1c0-28c337954f3f
+
+	measure 'Cor do valor da dica' = IF ( SELECTEDVALUE ( 'Campos da dica'[Ordem] ) = 3, [Cor do selo], "#E6EDF3" )
+		lineageTag: 1cc72e21-85c3-47fb-8989-6ca51807c704
+
+	column Ordem
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0455c0da-eb1a-41ae-b8b2-b6366eca5645
+		summarizeBy: none
+		sourceColumn: Ordem
+
+	column Campo
+		dataType: string
+		sortByColumn: Ordem
+		lineageTag: 6038ceac-e620-43e3-b190-a3d6f66b6d78
+		summarizeBy: none
+		sourceColumn: Campo
+
+	partition 'Campos da dica' = m
+		mode: import
+		source =
+				let
+				    Result = #table(type table [Ordem = Int64.Type, Campo = text], {{1, "Horas"}, {2, "Por hora"}, {3, "Selo"}, {4, "Paguei"}, {5, "Extras"}, {6, "Origem"}, {7, "Comprei em"}})
+				in
+				    Result
+
+	annotation PBI_ResultType = Table
+

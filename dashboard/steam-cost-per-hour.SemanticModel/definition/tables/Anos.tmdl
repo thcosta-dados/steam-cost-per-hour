@@ -1,0 +1,22 @@
+/// Todos os anos entre a primeira e a última compra, inclusive os sem compra.
+table Anos
+	lineageTag: a95f61a2-b8cd-4a63-8743-dd4bef8db94b
+
+	column Ano
+		dataType: int64
+		formatString: 0
+		lineageTag: 6670c6c5-843d-43c1-8561-1029d3b685f6
+		summarizeBy: none
+		sourceColumn: Ano
+
+	partition Anos = m
+		mode: import
+		source =
+				let
+				    Years = {List.Min(purchase_discounts[purchase_year])..List.Max(purchase_discounts[purchase_year])},
+				    Result = #table(type table [Ano = Int64.Type], List.Transform(Years, each {_}))
+				in
+				    Result
+
+	annotation PBI_ResultType = Table
+

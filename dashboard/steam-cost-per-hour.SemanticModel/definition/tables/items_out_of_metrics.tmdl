@@ -48,8 +48,8 @@ table items_out_of_metrics
 				    // Portuguese labels; unknown values pass through unchanged
 				    CategoryLabels = [software = "programa", other = "outro"],
 				    ReasonLabels = [
-				        #"Software genre in the store (e.g. Utilities)" = "Gênero de software na loja (ex.: Utilities)",
-				        #"No genres or no store page (test server, playtest or removed item)" = "Sem gêneros nem página na loja (teste, playtest ou removido)"
+				        #"Software genre in the store (e.g. Utilities)" = "É um programa, não um jogo",
+				        #"No genres or no store page (test server, playtest or removed item)" = "Sem página na loja: teste ou item removido"
 				    ],
 				    Labeled = Table.TransformColumns(OutOfMetrics, {
 				        {"item_category", each Record.FieldOrDefault(CategoryLabels, _, _), type text},

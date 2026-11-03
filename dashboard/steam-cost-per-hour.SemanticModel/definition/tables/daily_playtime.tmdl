@@ -16,6 +16,80 @@ table daily_playtime
 		formatString: 0
 		lineageTag: 8fb4047d-5b70-4263-892f-831136a47004
 
+	/// Recorde do diário: só dias com uma anotação normal (days_covered = 1)
+	measure 'Recorde de horas num dia' =
+			MAXX ( ALL ( collection_days[play_date] ),
+			    CALCULATE ( SUM ( daily_playtime[hours_played] ), ALL ( game_costs ), daily_playtime[days_covered] = 1 ) )
+		formatString: 0.0
+		lineageTag: be276274-c9fe-4ff7-85bd-b91523ad74f5
+
+	measure 'Jogos que abri' = DISTINCTCOUNT ( daily_playtime[game_key] ) + 0
+		formatString: 0
+		lineageTag: 1a0ef4cd-c1a0-4a47-8679-17b62fafd8d9
+
+	measure 'Melhor dia horas' =
+			MAXX ( ADDCOLUMNS ( VALUES ( collection_days[play_date] ), "@h",
+			    CALCULATE ( SUM ( daily_playtime[hours_played] ), daily_playtime[days_covered] = 1 ) ), [@h] )
+		formatString: 0.0
+		lineageTag: 913e91b2-9332-4cfa-807e-96664a17be87
+
+	measure 'Melhor dia texto' = VAR h = [Melhor dia horas] RETURN IF ( ISBLANK ( h ), "0 h", FORMAT ( h, "0.0" ) & " h" )
+		lineageTag: 062e0f17-c5f3-4420-8c7d-73415ef06533
+
+	measure 'Melhor dia frase' =
+			VAR dias = ADDCOLUMNS ( VALUES ( collection_days[play_date] ), "@h", CALCULATE ( SUM ( daily_playtime[hours_played] ), daily_playtime[days_covered] = 1 ) )
+			VAR topo = TOPN ( 1, FILTER ( dias, [@h] > 0 ), [@h], DESC, collection_days[play_date], DESC )
+			RETURN IF ( ISEMPTY ( topo ), "nenhum dia com jogo", FORMAT ( MAXX ( topo, collection_days[play_date] ), "dddd, dd/mm/yyyy" ) )
+		lineageTag: 10b761d6-65a0-411c-80ec-e0efd1329cbd
+
+	/// Maior sequência de dias anotados seguidos com jogo; dia sem anotação não quebra nem soma
+	measure 'Maior sequência de dias' =
+			VAR jogados = FILTER ( VALUES ( collection_days[play_date] ), CALCULATE ( SUM ( daily_playtime[minutes_played] ) ) > 0 )
+			VAR semJogo = FILTER ( ALLSELECTED ( collection_days[play_date] ), CALCULATE ( SUM ( daily_playtime[minutes_played] ) ) + 0 = 0 )
+			VAR comQuebra = ADDCOLUMNS ( jogados, "@quebra", VAR d = collection_days[play_date] RETURN MAXX ( FILTER ( semJogo, collection_days[play_date] < d ), collection_days[play_date] ) )
+			VAR grupos = GROUPBY ( comQuebra, [@quebra], "@dias", SUMX ( CURRENTGROUP (), 1 ) )
+			RETURN MAXX ( grupos, [@dias] ) + 0
+		formatString: 0
+		lineageTag: c62ecd07-0fb3-4371-a687-213ba7953e9a
+
+	measure 'Maior sequência texto' = VAR n = [Maior sequência de dias] RETURN n & IF ( n = 1, " dia", " dias" )
+		lineageTag: f13a9614-69d5-44ca-b7b1-7a8a0efd9ac6
+
+	measure 'Média por dia jogado' =
+			AVERAGEX (
+			    FILTER ( VALUES ( collection_days[play_date] ), CALCULATE ( SUM ( daily_playtime[hours_played] ), daily_playtime[days_covered] = 1 ) > 0 ),
+			    CALCULATE ( SUM ( daily_playtime[hours_played] ), daily_playtime[days_covered] = 1 ) )
+		formatString: 0.0
+		lineageTag: b1a419ae-74aa-4091-9d94-d9716061269a
+
+	measure 'Título do dia da semana' =
+			VAR dias = ADDCOLUMNS ( VALUES ( collection_days[weekday_name] ), "@m", [Média por dia jogado] )
+			VAR topo = TOPN ( 1, FILTER ( dias, NOT ISBLANK ( [@m] ) ), [@m], DESC )
+			VAR nome = MAXX ( topo, collection_days[weekday_name] )
+			RETURN IF ( ISEMPTY ( topo ), "Nenhum dia com jogo nesse período", UPPER ( LEFT ( nome, 1 ) ) & MID ( nome, 2, 20 ) & " é o meu dia: " & FORMAT ( MAXX ( topo, [@m] ), "0.0" ) & " h em média" )
+		lineageTag: 710dfef1-79f7-491c-aea7-c961c2371d1d
+
+	measure 'Título dos jogos do período' =
+			VAR total = [Horas jogadas]
+			VAR jogos = ADDCOLUMNS ( VALUES ( game_costs[name] ), "@h", [Horas jogadas] )
+			VAR topo = TOPN ( 1, FILTER ( jogos, [@h] > 0 ), [@h], DESC )
+			RETURN IF ( ISBLANK ( total ), "Nenhuma hora com esses filtros", MAXX ( topo, game_costs[name] ) & " ficou com " & FORMAT ( DIVIDE ( MAXX ( topo, [@h] ), total ), "0%" ) & " das minhas horas" )
+		lineageTag: c089e942-286c-40f4-85b1-377caf2b9984
+
+	measure 'Fatia do período' = DIVIDE ( [Horas jogadas], CALCULATE ( [Horas jogadas], ALLSELECTED ( game_costs ) ) )
+		formatString: 0%
+		lineageTag: b092bef4-d02a-4904-83b1-673d29e1a77a
+
+	measure 'Dias anotados' = CALCULATE ( COUNTROWS ( collection_days ) ) + 0
+		formatString: 0
+		lineageTag: 06987ba3-25b3-4279-a3fc-d9c2d0e1025b
+
+	measure 'Frase dos dias de jogo' = "em " & [Dias com jogo] & " de " & [Dias anotados] & " dias anotados"
+		lineageTag: a89f078e-1481-43e0-b57b-55111debd520
+
+	measure 'Título do gráfico diário' = "Quanto joguei em cada dia, desde " & FORMAT ( MIN ( collection_days[play_date] ), "dd/mm/yyyy" )
+		lineageTag: 3730f9cb-e9ae-4c72-b2ce-cf036b6859e4
+
 	column user_id
 		dataType: string
 		isHidden

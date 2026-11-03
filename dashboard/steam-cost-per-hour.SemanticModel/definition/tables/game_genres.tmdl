@@ -4,7 +4,7 @@ table game_genres
 
 	/// Soma das horas dos jogos que têm o gênero
 	measure 'Horas do gênero' = DIVIDE ( SUMX ( game_genres, RELATED ( game_costs[minutes_played] ) ), 60 )
-		formatString: #,0
+		formatString: #,0" h"
 		lineageTag: 16e18dd5-489d-45db-bef8-8db1af828756
 
 	measure 'Título dos gêneros' =

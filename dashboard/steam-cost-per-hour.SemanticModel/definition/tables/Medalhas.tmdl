@@ -56,6 +56,7 @@ table Medalhas
 
 	column Medalha
 		dataType: string
+		sortByColumn: Ordem
 		lineageTag: 7859b40f-0997-48c0-b710-9f164b7d0fdf
 		summarizeBy: none
 		sourceColumn: Medalha

@@ -3,8 +3,9 @@
   "pageOrder": [
     "page_home",
     "c08d490d80f191c7a734",
-    "page_hours_per_day",
     "page_purchases",
+    "page_hours_per_day",
+    "page_backstage",
     "page_game_detail",
     "page_game_tooltip"
   ],

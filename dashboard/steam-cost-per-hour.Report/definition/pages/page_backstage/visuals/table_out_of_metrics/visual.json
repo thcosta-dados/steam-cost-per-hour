@@ -1,0 +1,103 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "table_out_of_metrics",
+  "position": {
+    "x": 32,
+    "y": 744,
+    "z": 12000,
+    "height": 304,
+    "width": 920,
+    "tabOrder": 17000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "items_out_of_metrics"
+                    }
+                  },
+                  "Property": "name"
+                }
+              },
+              "queryRef": "items_out_of_metrics.name",
+              "nativeQueryRef": "name",
+              "displayName": "Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "items_out_of_metrics"
+                    }
+                  },
+                  "Property": "item_category"
+                }
+              },
+              "queryRef": "items_out_of_metrics.item_category",
+              "nativeQueryRef": "item_category",
+              "displayName": "Categoria"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "items_out_of_metrics"
+                    }
+                  },
+                  "Property": "reason"
+                }
+              },
+              "queryRef": "items_out_of_metrics.reason",
+              "nativeQueryRef": "reason",
+              "displayName": "Motivo"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Itens fora das métricas'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Itens fora das métricas'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

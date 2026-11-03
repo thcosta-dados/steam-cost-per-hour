@@ -60,7 +60,7 @@ table Medalhas
 		summarizeBy: none
 		sourceColumn: Medalha
 
-	column Como ganha
+	column 'Como ganha'
 		dataType: string
 		lineageTag: 035b0a29-a45c-480e-a6fd-6b70afdfb476
 		summarizeBy: none

@@ -17,7 +17,7 @@ table Origens
 		summarizeBy: none
 		sourceColumn: Origem
 
-	column O que quer dizer
+	column 'O que quer dizer'
 		dataType: string
 		lineageTag: 53a680ba-9f3c-47e3-9100-1739f2994a20
 		summarizeBy: none

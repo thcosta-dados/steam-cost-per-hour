@@ -189,13 +189,33 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Blocked by:** 10.
 
 **Acceptance criteria:**
-- [ ] O tema é aplicado de forma uniforme em todas as páginas.
-- [ ] O ranking exibe a capa de cada jogo.
-- [ ] Clicar em um jogo abre a página de detalhe com a evolução das horas daquele jogo.
-- [ ] Os filtros atualizam todas as visões da página.
-- [ ] A navegação entre telas funciona só pelos botões, sem usar as abas do Power BI.
-- [ ] O GIF de demonstração mostra filtros, clique no jogo e navegação, em menos de 30 segundos.
-- [ ] Verificado se é possível publicar o painel em link aberto com a conta disponível, e a resposta registrada.
+- [x] O tema é aplicado de forma uniforme em todas as páginas. Tema escuro próprio (steam-cost-dark.json) com contraste WCAG calculado e paleta validada para daltonismo, aplicado pelo tema e não visual por visual.
+- [x] O ranking exibe a capa de cada jogo.
+- [x] Clicar em um jogo abre a página de detalhe com a evolução das horas daquele jogo. Conferido em 02/11/2026 com o Deadlock pelo botão "Ver detalhe do jogo": a linha do total marca cerca de 430,5 h em 22/10 e 438,4 h em 27/10, iguais às anotações feitas à mão na biblioteca (ticket 07).
+- [x] Os filtros atualizam todas as visões da página. Conferido: com o período de 22 a 26/10, o Deadlock soma 7,92 h no gráfico e na tabela, igual à diferença das anotações na biblioteca (438,4 − 430,5).
+- [x] A navegação entre telas funciona só pelos botões, sem usar as abas do Power BI. Páginas de detalhe e de dica ficam ocultas e só abrem pela interação.
+- [ ] O GIF de demonstração mostra filtros, clique no jogo e navegação, em menos de 30 segundos. Movido para o ticket 11b: o GIF precisa mostrar o visual final.
+- [ ] Verificado se é possível publicar o painel em link aberto com a conta disponível, e a resposta registrada. Movido para o ticket 11b.
+
+---
+
+# 11b: Repaginada "meu perfil de jogador"
+
+**What to build:** o painel passa a contar a história do jogador na Steam, além do custo por hora: horas em dias inteiros, jogo do coração, pódio dos mais jogados, gêneros, medalhas com regra, anos de destaque nas compras, recordes do diário e curiosidades de cada jogo. Textos em primeira pessoa e linguagem simples, letra mínima de 18 pt, visual do universo dos games (selo de custo-benefício em troféus, ouro como destaque) e nenhum espaço vazio grande. Base: pesquisa com fontes (retrospectivas como Steam Replay e Spotify Wrapped, sinais de texto gerado por IA, linguagem simples e design de games) e a proposta revisada por personas de leigo e recrutador.
+
+**Blocked by:** 11.
+
+**Acceptance criteria:**
+- [ ] O painel tem cinco páginas visíveis (Minha Steam, Valeu a pena?, Compras, Dia a dia, Bastidores), navegação só por botões, e a ficha do jogo (drill-through) e a dica continuam funcionando.
+- [ ] Nenhum texto visível abaixo de 18 pt, nenhum "..." ou "(Em branco)", e nenhum "·", "÷" ou "→" como separador. Conferido por varredura automática dos arquivos do relatório e pelos prints de cada página.
+- [ ] Todo fato curioso vem de uma medida e bate com uma consulta SQL independente em docs/fact_checks.sql.
+- [ ] Cinco fatos conferidos contra a própria Steam (biblioteca e página de Histórico de compras).
+- [ ] Toda métrica de custo mostra a origem do valor (regra 2), e um placar compara o gasto em jogos pagos e em jogos sem custo de acesso.
+- [ ] A página Dia a dia tem os filtros de período, origem do valor e tempo de jogo, e cada filtro atualiza todos os visuais da página. Selecionar um jogo numa tabela não esvazia as outras.
+- [ ] Uma revisão independente com o checklist da pesquisa ("parece IA ou feito por gente?") dá nota 8 ou mais em todas as páginas.
+- [ ] A spec registra o novo objetivo, as user stories e as regras novas.
+- [ ] O GIF de demonstração mostra filtros, clique no jogo e navegação, em menos de 30 segundos (vindo do ticket 11).
+- [ ] Verificado se é possível publicar o painel em link aberto com a conta disponível, e a resposta registrada (vindo do ticket 11).
 
 ---
 

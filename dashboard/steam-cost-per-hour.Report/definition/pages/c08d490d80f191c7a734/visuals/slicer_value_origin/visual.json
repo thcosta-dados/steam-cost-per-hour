@@ -28,8 +28,8 @@
               },
               "queryRef": "game_costs.value_origin",
               "nativeQueryRef": "value_origin",
-              "displayName": "Origem do valor",
-              "active": true
+              "active": true,
+              "displayName": "Origem do valor"
             }
           ]
         }
@@ -47,6 +47,11 @@
               }
             }
           }
+        }
+      ],
+      "general": [
+        {
+          "properties": {}
         }
       ]
     }

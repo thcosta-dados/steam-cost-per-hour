@@ -12,10 +12,10 @@ table Origens
 
 	column Origem
 		dataType: string
-		sortByColumn: Ordem
 		lineageTag: c3977185-2062-4fa3-82b4-c3d15aab8fa1
 		summarizeBy: none
 		sourceColumn: Origem
+		sortByColumn: Ordem
 
 	column 'O que quer dizer'
 		dataType: string

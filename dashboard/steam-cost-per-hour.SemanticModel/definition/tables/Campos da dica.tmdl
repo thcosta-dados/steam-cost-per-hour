@@ -26,10 +26,10 @@ table 'Campos da dica'
 
 	column Campo
 		dataType: string
-		sortByColumn: Ordem
 		lineageTag: 6038ceac-e620-43e3-b190-a3d6f66b6d78
 		summarizeBy: none
 		sourceColumn: Campo
+		sortByColumn: Ordem
 
 	partition 'Campos da dica' = m
 		mode: import

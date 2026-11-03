@@ -394,19 +394,7 @@ cultureInfo pt-BR
 			          "ConceptualProperty": "Gasto em jogos sem custo de acesso"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Gasto extra em jogos sem custo": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "game_costs.custo_por_hora_do_jogo": {
 			      "Definition": {
@@ -635,19 +623,7 @@ cultureInfo pt-BR
 			          "ConceptualProperty": "Custo médio por hora (jogos pagos)"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Custo médio por hora (jogos pagos)": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "game_costs.mal_começados_com_contagem": {
 			      "Definition": {
@@ -656,19 +632,7 @@ cultureInfo pt-BR
 			          "ConceptualProperty": "Mal começados com contagem"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Pago em jogos com menos de 1 h": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "game_costs.dinheiro_parado_com_contagem": {
 			      "Definition": {
@@ -677,19 +641,7 @@ cultureInfo pt-BR
 			          "ConceptualProperty": "Dinheiro parado com contagem"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Dinheiro parado (jogos com 0 h)": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "daily_playtime.dias_com_jogo": {
 			      "Definition": {
@@ -775,6 +727,111 @@ cultureInfo pt-BR
 			      "Terms": [
 			        {
 			          "Desconto sobre o preço original": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "game_genres.genre_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "game_genres",
+			          "ConceptualProperty": "genre_label"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Gênero": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "game_genres.horas_do_gênero": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "game_genres",
+			          "ConceptualProperty": "Horas do gênero"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Horas": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "game_costs.hero_url": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "game_costs",
+			          "ConceptualProperty": "hero_url"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Arte": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "game_costs.horas_na_biblioteca": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "game_costs",
+			          "ConceptualProperty": "Horas na biblioteca"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Horas": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "game_costs.fatia_das_minhas_horas": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "game_costs",
+			          "ConceptualProperty": "Fatia das minhas horas"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Fatia": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",

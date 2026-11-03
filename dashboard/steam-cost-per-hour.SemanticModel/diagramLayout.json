@@ -11,7 +11,7 @@
         {
           "location": {
             "x": 489,
-            "y": 394.25
+            "y": 399.875
           },
           "nodeIndex": "game_costs",
           "nodeLineageTag": "bf85bb68-cd73-478d-90cb-92bdadf5e71a",
@@ -24,7 +24,7 @@
         {
           "location": {
             "x": 138,
-            "y": 63.25
+            "y": 68.875
           },
           "nodeIndex": "items_out_of_metrics",
           "nodeLineageTag": "01cbccef-4464-4dec-96d1-c5fd845d6a3c",
@@ -37,7 +37,7 @@
         {
           "location": {
             "x": 484,
-            "y": 11.25
+            "y": 16.875
           },
           "nodeIndex": "daily_playtime",
           "nodeLineageTag": "ef6f0657-ce54-412c-b3b6-c2544310bdd7",
@@ -50,7 +50,7 @@
         {
           "location": {
             "x": 868,
-            "y": 46.25
+            "y": 51.875
           },
           "nodeIndex": "purchase_discounts",
           "nodeLineageTag": "eb4ea62a-3cd3-4647-95d3-70255ff638b7",
@@ -63,7 +63,7 @@
         {
           "location": {
             "x": 1014,
-            "y": 223.75
+            "y": 229.375
           },
           "nodeIndex": "playtime_history",
           "nodeLineageTag": "e3d92472-1265-4bea-ac36-7922cda54464",
@@ -76,12 +76,64 @@
         {
           "location": {
             "x": 1160,
-            "y": 293.25
+            "y": 298.875
           },
           "nodeIndex": "collection_days",
           "nodeLineageTag": "bc8bf7aa-a99e-4099-83b2-eb6c26f82b48",
           "size": {
             "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1306,
+            "y": 295.125
+          },
+          "nodeIndex": "Anos",
+          "nodeLineageTag": "a95f61a2-b8cd-4a63-8743-dd4bef8db94b",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1590,
+            "y": 259.125
+          },
+          "nodeIndex": "Campos da dica",
+          "nodeLineageTag": "ddfc7808-fd97-4ae1-b15f-f22dcdf94e0b",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1874,
+            "y": 211.125
+          },
+          "nodeIndex": "game_genres",
+          "nodeLineageTag": "165bef0b-2033-4b5e-b121-1598004b17ea",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2158,
+            "y": 271.125
+          },
+          "nodeIndex": "Origens",
+          "nodeLineageTag": "e6452286-9e71-45cf-b4ab-c262cdbe72ef",
+          "size": {
+            "height": 152,
             "width": 234
           },
           "zIndex": 0

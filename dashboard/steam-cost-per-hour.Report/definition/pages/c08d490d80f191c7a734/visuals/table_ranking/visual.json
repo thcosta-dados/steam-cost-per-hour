@@ -418,7 +418,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Passe o mouse num jogo para ver a dica. Clique num jogo e depois em Ver detalhe do jogo.'"
+                  "Value": "'Passe o mouse num jogo para ver mais detalhes ou clique num jogo e depois em Ver detalhe do jogo.'"
                 }
               }
             }

@@ -21,17 +21,17 @@ table collection_days
 
 	column weekday_short
 		dataType: string
-		sortByColumn: weekday_number
 		lineageTag: 6b5dd614-3ecf-4b71-8510-0964b3a11b1d
 		summarizeBy: none
 		sourceColumn: weekday_short
+		sortByColumn: weekday_number
 
 	column weekday_name
 		dataType: string
-		sortByColumn: weekday_number
 		lineageTag: edc1cf6f-ba9f-4dae-8603-81cf5ff815d7
 		summarizeBy: none
 		sourceColumn: weekday_name
+		sortByColumn: weekday_number
 
 	partition collection_days = m
 		mode: import

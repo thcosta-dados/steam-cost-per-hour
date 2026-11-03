@@ -16,13 +16,6 @@ table daily_playtime
 		formatString: 0
 		lineageTag: 8fb4047d-5b70-4263-892f-831136a47004
 
-	/// Recorde do diário: só dias com uma anotação normal (days_covered = 1)
-	measure 'Recorde de horas num dia' =
-			MAXX ( ALL ( collection_days[play_date] ),
-			    CALCULATE ( SUM ( daily_playtime[hours_played] ), ALL ( game_costs ), daily_playtime[days_covered] = 1 ) )
-		formatString: 0.0
-		lineageTag: be276274-c9fe-4ff7-85bd-b91523ad74f5
-
 	measure 'Jogos que abri' = DISTINCTCOUNT ( daily_playtime[game_key] ) + 0
 		formatString: 0
 		lineageTag: 1a0ef4cd-c1a0-4a47-8679-17b62fafd8d9

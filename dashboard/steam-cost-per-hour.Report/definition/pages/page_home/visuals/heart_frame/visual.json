@@ -3,9 +3,9 @@
   "name": "heart_frame",
   "position": {
     "x": 32,
-    "y": 264,
+    "y": 232,
     "z": 2000,
-    "height": 464,
+    "height": 372,
     "width": 1076,
     "tabOrder": 2000
   },
@@ -48,28 +48,28 @@
             "top": {
               "expr": {
                 "Literal": {
-                  "Value": "6D"
+                  "Value": "8D"
                 }
               }
             },
             "bottom": {
               "expr": {
                 "Literal": {
-                  "Value": "6D"
+                  "Value": "8D"
                 }
               }
             },
             "left": {
               "expr": {
                 "Literal": {
-                  "Value": "16D"
+                  "Value": "14D"
                 }
               }
             },
             "right": {
               "expr": {
                 "Literal": {
-                  "Value": "16D"
+                  "Value": "14D"
                 }
               }
             }

@@ -3,11 +3,11 @@
   "name": "card_spent",
   "position": {
     "x": 968,
-    "y": 104,
-    "z": 1200,
-    "height": 144,
+    "y": 96,
+    "z": 1002,
+    "height": 120,
     "width": 452,
-    "tabOrder": 1200
+    "tabOrder": 1002
   },
   "visual": {
     "visualType": "card",
@@ -40,7 +40,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "36D"
+                  "Value": "22D"
                 }
               }
             },
@@ -58,7 +58,7 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'DIN'"
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             }
@@ -99,28 +99,28 @@
             "top": {
               "expr": {
                 "Literal": {
-                  "Value": "6D"
+                  "Value": "8D"
                 }
               }
             },
             "bottom": {
               "expr": {
                 "Literal": {
-                  "Value": "6D"
+                  "Value": "8D"
                 }
               }
             },
             "left": {
               "expr": {
                 "Literal": {
-                  "Value": "16D"
+                  "Value": "14D"
                 }
               }
             },
             "right": {
               "expr": {
                 "Literal": {
-                  "Value": "16D"
+                  "Value": "14D"
                 }
               }
             }
@@ -140,7 +140,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "18D"
+                  "Value": "13D"
                 }
               }
             },
@@ -178,51 +178,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Gastei na Steam'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "subTitle": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "18D"
-                }
-              }
-            },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#B1BAC4'"
-                    }
-                  }
-                }
-              }
-            },
-            "text": {
-              "expr": {
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
                       "Entity": "game_costs"
                     }
                   },
-                  "Property": "Frase do gasto total"
+                  "Property": "Título do card gasto"
                 }
               }
             }

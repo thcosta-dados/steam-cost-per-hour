@@ -3,9 +3,9 @@
   "name": "header_updated",
   "position": {
     "x": 1428,
-    "y": 24,
+    "y": 28,
     "z": 50200,
-    "height": 64,
+    "height": 48,
     "width": 460,
     "tabOrder": 50200
   },
@@ -102,7 +102,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "18D"
+                  "Value": "13D"
                 }
               }
             },

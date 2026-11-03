@@ -3,10 +3,10 @@
   "name": "heart_art",
   "position": {
     "x": 48,
-    "y": 392,
+    "y": 328,
     "z": 2200,
-    "height": 200,
-    "width": 1044,
+    "height": 268,
+    "width": 720,
     "tabOrder": 2200
   },
   "visual": {
@@ -41,7 +41,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "18D"
+                  "Value": "12D"
                 }
               }
             }
@@ -90,6 +90,19 @@
           }
         }
       ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
       "grid": [
         {
           "properties": {
@@ -110,14 +123,14 @@
             "imageWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "540D"
+                  "Value": "700D"
                 }
               }
             },
             "imageHeight": {
               "expr": {
                 "Literal": {
-                  "Value": "174D"
+                  "Value": "226D"
                 }
               }
             }

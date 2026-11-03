@@ -3,9 +3,9 @@
   "name": "header_player",
   "position": {
     "x": 32,
-    "y": 24,
+    "y": 28,
     "z": 50000,
-    "height": 64,
+    "height": 48,
     "width": 300,
     "tabOrder": 50000
   },
@@ -102,7 +102,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "24D"
+                  "Value": "18D"
                 }
               }
             },
@@ -120,7 +120,7 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'DIN'"
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             },
@@ -132,13 +132,6 @@
               }
             },
             "titleWrap": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "bold": {
               "expr": {
                 "Literal": {
                   "Value": "true"

@@ -3,9 +3,9 @@
   "name": "podium",
   "position": {
     "x": 1124,
-    "y": 264,
+    "y": 232,
     "z": 3000,
-    "height": 464,
+    "height": 372,
     "width": 764,
     "tabOrder": 3000
   },
@@ -53,11 +53,11 @@
                       "Entity": "game_costs"
                     }
                   },
-                  "Property": "Horas texto"
+                  "Property": "Horas na biblioteca"
                 }
               },
-              "queryRef": "game_costs.Horas texto",
-              "nativeQueryRef": "Horas texto",
+              "queryRef": "game_costs.Horas na biblioteca",
+              "nativeQueryRef": "Horas na biblioteca",
               "displayName": "Horas"
             },
             {
@@ -88,7 +88,7 @@
                     "Entity": "game_costs"
                   }
                 },
-                "Property": "Fatia das minhas horas"
+                "Property": "Horas na biblioteca"
               }
             },
             "direction": "Descending"
@@ -103,7 +103,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "18D"
+                  "Value": "12D"
                 }
               }
             }
@@ -116,11 +116,24 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "18D"
+                  "Value": "12D"
                 }
               }
             },
             "autoSizeColumnWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
               "expr": {
                 "Literal": {
                   "Value": "false"
@@ -150,14 +163,14 @@
             "imageWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "96D"
+                  "Value": "77D"
                 }
               }
             },
             "imageHeight": {
               "expr": {
                 "Literal": {
-                  "Value": "45D"
+                  "Value": "36D"
                 }
               }
             }
@@ -170,7 +183,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "110D"
+                  "Value": "100D"
                 }
               }
             }
@@ -184,7 +197,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "340D"
+                  "Value": "380D"
                 }
               }
             }
@@ -198,13 +211,13 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "130D"
+                  "Value": "120D"
                 }
               }
             }
           },
           "selector": {
-            "metadata": "game_costs.Horas texto"
+            "metadata": "game_costs.Horas na biblioteca"
           }
         },
         {
@@ -212,7 +225,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "130D"
+                  "Value": "110D"
                 }
               }
             }
@@ -257,14 +270,14 @@
             "left": {
               "expr": {
                 "Literal": {
-                  "Value": "16D"
+                  "Value": "14D"
                 }
               }
             },
             "right": {
               "expr": {
                 "Literal": {
-                  "Value": "16D"
+                  "Value": "14D"
                 }
               }
             }
@@ -284,7 +297,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "24D"
+                  "Value": "14D"
                 }
               }
             },
@@ -302,7 +315,7 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'DIN'"
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             },
@@ -314,13 +327,6 @@
               }
             },
             "titleWrap": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "bold": {
               "expr": {
                 "Literal": {
                   "Value": "true"
@@ -350,7 +356,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "18D"
+                  "Value": "12D"
                 }
               }
             },

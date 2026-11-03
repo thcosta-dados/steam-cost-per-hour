@@ -69,10 +69,9 @@ table game_costs
 	measure 'Contexto do início' = "Gasto total na Steam: " & FORMAT ( [Gasto total], "\R$ #,0.00" ) & "   ·   Custo por hora = (valor do jogo + gasto extra) ÷ horas jogadas   ·   Última coleta: " & FORMAT ( MAX ( game_costs[last_snapshot_date] ), "dd/mm/yyyy" )
 		lineageTag: 655deefc-5b8c-4f9e-a357-10dc6e3a7094
 
-	/// Horas totais a partir dos minutos
 	measure 'Horas na biblioteca' = DIVIDE ( SUM ( game_costs[minutes_played] ), 60 )
-		formatString: #,0.0
-		lineageTag: d0c378c6-1bf7-4cb9-8271-a73ad9f012bc
+		formatString: #,0" h"
+		lineageTag: edf9bf1d-b048-4501-b7f3-1b5fa7913a68
 
 	/// Horas para ler: minutos abaixo de 1 h, uma casa abaixo de 100 h, inteiro acima
 	measure 'Horas texto' =
@@ -242,10 +241,6 @@ table game_costs
 		formatString: 0
 		lineageTag: bba5f275-1dff-44ed-bf68-ab87fc4e3e40
 
-	measure 'Maior total num jogo' = DIVIDE ( CALCULATE ( MAX ( game_costs[minutes_played] ), ALL ( game_costs ) ), 60 )
-		formatString: #,0
-		lineageTag: ab55674f-5ca4-49c6-9096-8672fc68865d
-
 	/// Posição pelo total de horas; o ALL ignora o filtro do drill-through
 	measure 'Posição em horas' =
 			VAR meu = SUM ( game_costs[minutes_played] )
@@ -298,6 +293,39 @@ table game_costs
 			VAR p3 = IF ( recentes > 0, " Desde " & FORMAT ( inicio, "dd/mm/yyyy" ) & ", joguei mais " & FORMAT ( recentes, "#,0.0" ) & " h.", "" )
 			RETURN p1 & p2 & p3
 		lineageTag: a51c9787-000c-4f20-b91e-ade2d5f4dbd9
+
+	measure 'Título do card horas' = "Joguei na Steam, o que dá " & FORMAT ( [Dias inteiros], "#,0" ) & " dias inteiros"
+		lineageTag: 1fde3c55-0a43-4726-8786-fbc87e91d613
+
+	measure 'Título do card jogos' = "Jogos na conta: " & [Frase da biblioteca]
+		lineageTag: 6ddcd766-eb92-4409-be3c-5700c9dbc2e5
+
+	measure 'Título do card gasto' = IF ( [Tem estimado], "Gastei na Steam, somando o pago e o estimado", "Gastei na Steam, pelo meu histórico de compras" )
+		lineageTag: 834b5dc4-eb78-42d2-92f8-2d7346b69890
+
+	measure 'Título do card média' = IF ( [Tem estimado], "Cada hora de jogo me custou, em média", "Cada hora de jogo pago me custou, em média" )
+		lineageTag: 66e9f935-e12a-46d2-8bbd-68ee9efd7953
+
+	measure 'Título do coração horas' = "Horas no jogo, o que dá " & FORMAT ( [Dias inteiros], "#,0" ) & " dias"
+		lineageTag: e6f62b50-95c5-4072-8031-4d611f0ed2b9
+
+	measure 'Título do coração fatia' = "Das minhas horas, " & [Frase de cada 10]
+		lineageTag: 3a846b4a-a121-40ad-be92-c042632e40ee
+
+	measure 'Título do coração gasto' = [Título do gasto no jogo] & ", " & [Frase da origem curta]
+		lineageTag: 06477ab5-1227-4741-a50c-a9be35ae28aa
+
+	measure 'Fatia das horas sem custo' = DIVIDE ( CALCULATE ( [Horas na biblioteca], game_costs[cost_group] = "não comprei" ), [Horas na biblioteca] )
+		formatString: 0.0%
+		lineageTag: 038fb9c6-11b1-4c43-9c3c-ce72f7f794df
+
+	measure 'Fato extra título' =
+			VAR topo = TOPN ( 1, game_costs, game_costs[extra_spend_brl], DESC )
+			RETURN "Gastei dentro do " & MAXX ( topo, game_costs[name] ) & ", um jogo que me custou " & FORMAT ( MAXX ( topo, game_costs[game_value_brl] ) + 0, "\R$ #,0.00" )
+		lineageTag: f467b01a-57a5-495d-8676-3ad8efaf5514
+
+	measure 'Fato extra valor' = FORMAT ( MAXX ( TOPN ( 1, game_costs, game_costs[extra_spend_brl], DESC ), game_costs[extra_spend_brl] ) + 0, "\R$ #,0.00" )
+		lineageTag: 3444b754-a9f5-4f3a-82dd-ed1c5175d5a7
 
 	column user_id
 		dataType: string

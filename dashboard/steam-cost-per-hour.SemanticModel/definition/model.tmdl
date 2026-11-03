@@ -22,7 +22,6 @@ ref table collection_days
 ref table 'Campos da dica'
 ref table Anos
 ref table Origens
-ref table Medalhas
 ref table game_genres
 
 ref cultureInfo pt-BR

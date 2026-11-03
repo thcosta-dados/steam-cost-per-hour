@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "slicer_hours_group",
   "position": {
-    "x": 1620,
-    "y": 14,
+    "x": 1436,
+    "y": 352,
     "z": 62000,
-    "height": 70,
-    "width": 280,
+    "height": 104,
+    "width": 452,
     "tabOrder": 6000
   },
   "visual": {
@@ -23,12 +23,12 @@
                       "Entity": "game_costs"
                     }
                   },
-                  "Property": "hours_group"
+                  "Property": "hours_group_label"
                 }
               },
-              "queryRef": "game_costs.hours_group",
-              "nativeQueryRef": "hours_group",
-              "displayName": "Grupo de horas",
+              "queryRef": "game_costs.hours_group_label",
+              "nativeQueryRef": "hours_group_label",
+              "displayName": "Tempo total no jogo",
               "active": true
             }
           ]
@@ -43,6 +43,81 @@
               "expr": {
                 "Literal": {
                   "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "items": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
                 }
               }
             }

@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "button_game_detail",
   "position": {
-    "x": 970,
-    "y": 26,
+    "x": 1592,
+    "y": 96,
     "z": 54000,
-    "height": 44,
-    "width": 280,
+    "height": 120,
+    "width": 296,
     "tabOrder": 5000
   },
   "visual": {
@@ -45,7 +45,14 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Ver detalhe do jogo →'"
+                  "Value": "'Abrir ficha do jogo →'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
                 }
               }
             },
@@ -70,7 +77,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Selecione um jogo na tabela'"
+                  "Value": "'Clique num jogo da tabela para abrir a ficha'"
                 }
               }
             }

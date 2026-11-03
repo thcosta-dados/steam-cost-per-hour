@@ -179,7 +179,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Porcentagem das minhas horas em jogos que não gastei nada'"
+                  "Value": "'Porcentagem das minhas horas em jogos que não paguei para jogar'"
                 }
               }
             }

@@ -1,0 +1,152 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "text_method",
+  "position": {
+    "x": 32,
+    "y": 232,
+    "z": 3500,
+    "height": 464,
+    "width": 920,
+    "tabOrder": 3500
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Como faço as contas",
+                    "textStyle": {
+                      "fontSize": "14pt",
+                      "color": "#E6EDF3",
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Custo por hora: o que paguei pelo jogo, mais o que gastei dentro dele, dividido pelas horas jogadas.",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#B1BAC4"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Os valores vêm do meu histórico de compras da Steam. Sem o histórico, o painel usa o preço cheio da loja e marca o jogo como estimado.",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#B1BAC4"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Jogo gratuito ou sem compra na Steam entra com R$ 0, mais o que gastei dentro dele.",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#B1BAC4"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Só conto compras feitas na Steam. Chave de outra loja ou compra no site da empresa fica de fora.",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#B1BAC4"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "A Steam só informa o total de horas de cada jogo. Toda manhã o painel anota esse total, e a diferença entre dois dias vira as horas do dia.",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#B1BAC4"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "As regras completas estão na documentação do projeto no GitHub.",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#B1BAC4"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "18D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "18D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

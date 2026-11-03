@@ -327,6 +327,19 @@ table game_costs
 	measure 'Fato extra valor' = FORMAT ( MAXX ( TOPN ( 1, game_costs, game_costs[extra_spend_brl], DESC ), game_costs[extra_spend_brl] ) + 0, "\R$ #,0.00" )
 		lineageTag: 3444b754-a9f5-4f3a-82dd-ed1c5175d5a7
 
+	measure 'Título dos mal começados' = "Comprei e joguei menos de 1 hora: " & [Nomes dos mal começados]
+		lineageTag: cb764e6e-a929-4e58-b604-adb861f7132f
+
+	measure 'Título do dinheiro parado' = "Comprei e nunca abri. " & [Frase do dinheiro parado]
+		lineageTag: 8cb4bee6-d2fb-442f-99fa-c0e18425ceb9
+
+	measure 'Título nível' = IF ( CALCULATE ( COUNTROWS ( game_costs ), game_costs[purchase_history_loaded] = TRUE () ) > 0, "Valores que uso: o que paguei, do meu histórico de compras", "Valores que uso: o preço da loja, porque não há histórico" )
+		lineageTag: c2c0d007-9ced-4e48-beb0-273d7f7a07ac
+
+	measure 'Gastei no grupo' = SUM ( game_costs[total_spend_brl] ) + 0
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: 70d47edf-289e-4fa8-8ebf-8952c18c7bbd
+
 	column user_id
 		dataType: string
 		isHidden

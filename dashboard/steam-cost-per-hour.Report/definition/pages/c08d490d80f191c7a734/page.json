@@ -4,5 +4,107 @@
   "displayName": "Valeu a pena?",
   "displayOption": "FitToPage",
   "height": 1080,
-  "width": 1920
+  "width": 1920,
+  "visualInteractions": [
+    {
+      "source": "table_ranking",
+      "target": "table_free_games",
+      "type": "NoFilter"
+    },
+    {
+      "source": "table_ranking",
+      "target": "scoreboard",
+      "type": "NoFilter"
+    },
+    {
+      "source": "table_ranking",
+      "target": "card_barely_started",
+      "type": "NoFilter"
+    },
+    {
+      "source": "table_ranking",
+      "target": "card_parked",
+      "type": "NoFilter"
+    },
+    {
+      "source": "table_free_games",
+      "target": "table_ranking",
+      "type": "NoFilter"
+    },
+    {
+      "source": "table_free_games",
+      "target": "scoreboard",
+      "type": "NoFilter"
+    },
+    {
+      "source": "table_free_games",
+      "target": "card_barely_started",
+      "type": "NoFilter"
+    },
+    {
+      "source": "table_free_games",
+      "target": "card_parked",
+      "type": "NoFilter"
+    },
+    {
+      "source": "scoreboard",
+      "target": "table_ranking",
+      "type": "NoFilter"
+    },
+    {
+      "source": "scoreboard",
+      "target": "table_free_games",
+      "type": "NoFilter"
+    },
+    {
+      "source": "scoreboard",
+      "target": "card_barely_started",
+      "type": "NoFilter"
+    },
+    {
+      "source": "scoreboard",
+      "target": "card_parked",
+      "type": "NoFilter"
+    },
+    {
+      "source": "card_barely_started",
+      "target": "table_ranking",
+      "type": "NoFilter"
+    },
+    {
+      "source": "card_barely_started",
+      "target": "table_free_games",
+      "type": "NoFilter"
+    },
+    {
+      "source": "card_barely_started",
+      "target": "scoreboard",
+      "type": "NoFilter"
+    },
+    {
+      "source": "card_barely_started",
+      "target": "card_parked",
+      "type": "NoFilter"
+    },
+    {
+      "source": "card_parked",
+      "target": "table_ranking",
+      "type": "NoFilter"
+    },
+    {
+      "source": "card_parked",
+      "target": "table_free_games",
+      "type": "NoFilter"
+    },
+    {
+      "source": "card_parked",
+      "target": "scoreboard",
+      "type": "NoFilter"
+    },
+    {
+      "source": "card_parked",
+      "target": "card_barely_started",
+      "type": "NoFilter"
+    }
+  ]
 }

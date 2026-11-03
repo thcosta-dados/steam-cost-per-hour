@@ -83,6 +83,29 @@ table daily_playtime
 	measure 'Título do gráfico diário' = "Quanto joguei em cada dia, desde " & FORMAT ( MIN ( collection_days[play_date] ), "dd/mm/yyyy" )
 		lineageTag: 3730f9cb-e9ae-4c72-b2ce-cf036b6859e4
 
+	measure 'Horas do período texto' = FORMAT ( [Horas jogadas] + 0, "#,0.0" ) & " h"
+		lineageTag: 72c9bd18-f169-4dad-b43c-8fa00344e05d
+
+	measure 'Título horas do período' = "Horas jogadas, " & [Frase dos dias de jogo]
+		lineageTag: ef996761-8eee-4c34-b452-5f0f0e826efe
+
+	measure 'Título melhor dia' = "Meu melhor dia: " & [Melhor dia frase]
+		lineageTag: 18ac9ede-9254-4498-b32a-ad9074084efa
+
+	measure 'Dias jogados' = DISTINCTCOUNT ( daily_playtime[play_date] )
+		formatString: 0
+		lineageTag: 1c3137c0-410c-4faf-90bf-032d3ffb90dd
+
+	measure 'Cor do dia da semana' = IF ( [Média por dia jogado] = MAXX ( ALLSELECTED ( collection_days[weekday_short] ), [Média por dia jogado] ), "#FFC24B", "#3987E5" )
+		lineageTag: c1433191-44db-4495-a3c0-30089eeaaf89
+
+	measure 'Título dias anotados' = "Dias anotados desde " & FORMAT ( CALCULATE ( MIN ( collection_days[play_date] ), ALL ( collection_days ) ), "dd/mm/yyyy" ) & ", toda manhã"
+		lineageTag: 8067876d-2d21-4f39-8c44-283a4d6674e2
+
+	measure 'Dias anotados no total' = CALCULATE ( COUNTROWS ( collection_days ), ALL ( collection_days ) ) + 0
+		formatString: 0
+		lineageTag: 63338a6f-2236-44b8-967c-3bedebc7f601
+
 	column user_id
 		dataType: string
 		isHidden

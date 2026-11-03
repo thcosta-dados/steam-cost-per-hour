@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "slicer_value_origin",
   "position": {
-    "x": 1320,
-    "y": 14,
+    "x": 1124,
+    "y": 96,
     "z": 60000,
-    "height": 70,
-    "width": 280,
+    "height": 120,
+    "width": 452,
     "tabOrder": 4000
   },
   "visual": {
@@ -28,8 +28,8 @@
               },
               "queryRef": "game_costs.value_origin",
               "nativeQueryRef": "value_origin",
-              "active": true,
-              "displayName": "Origem do valor"
+              "displayName": "De onde vem o valor",
+              "active": true
             }
           ]
         }
@@ -49,9 +49,79 @@
           }
         }
       ],
-      "general": [
+      "header": [
         {
-          "properties": {}
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "items": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            }
+          }
         }
       ]
     }

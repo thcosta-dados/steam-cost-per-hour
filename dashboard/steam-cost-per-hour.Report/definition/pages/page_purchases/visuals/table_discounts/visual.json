@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "table_discounts",
   "position": {
-    "x": 20.199501246882793,
-    "y": 604.63840399002493,
+    "x": 32,
+    "y": 578,
     "z": 3000,
-    "height": 455.16209476309228,
-    "width": 1207.930174563591,
+    "height": 482,
+    "width": 1076,
     "tabOrder": 9000
   },
   "visual": {
@@ -43,7 +43,7 @@
               },
               "queryRef": "purchase_discounts.items",
               "nativeQueryRef": "items",
-              "displayName": "Itens"
+              "displayName": "O que comprei"
             },
             {
               "field": {
@@ -58,7 +58,7 @@
               },
               "queryRef": "purchase_discounts.paid_brl",
               "nativeQueryRef": "paid_brl",
-              "displayName": "Pago"
+              "displayName": "Paguei"
             },
             {
               "field": {
@@ -73,7 +73,7 @@
               },
               "queryRef": "purchase_discounts.original_price_brl",
               "nativeQueryRef": "original_price_brl",
-              "displayName": "Preço original da época"
+              "displayName": "Preço cheio"
             },
             {
               "field": {
@@ -103,7 +103,7 @@
               },
               "queryRef": "purchase_discounts.savings_brl",
               "nativeQueryRef": "savings_brl",
-              "displayName": "Economia"
+              "displayName": "Economizei"
             }
           ]
         }
@@ -133,7 +133,21 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "660.3544382140867D"
+                  "Value": "120D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "purchase_discounts.purchase_date"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "420D"
                 }
               }
             }
@@ -141,11 +155,128 @@
           "selector": {
             "metadata": "purchase_discounts.items"
           }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "120D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "purchase_discounts.paid_brl"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "130D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "purchase_discounts.original_price_brl"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "100D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "purchase_discounts.discount_pct"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "130D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "purchase_discounts.savings_brl"
+          }
         }
       ],
       "columnHeaders": [
         {
-          "properties": {}
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "autoSizeColumnWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
         }
       ]
     },
@@ -160,10 +291,49 @@
                 }
               }
             },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E6EDF3'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            },
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Compras de jogos e DLCs: desconto em relação ao preço da época (reembolsadas ficam de fora)'"
+                  "Value": "'Todas as minhas compras'"
                 }
               }
             }
@@ -177,6 +347,91 @@
               "expr": {
                 "Literal": {
                   "Value": "'Compras de jogos e DLCs: desconto em relação ao preço da época (reembolsadas ficam de fora)'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#B1BAC4'"
+                    }
+                  }
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Preço cheio é o preço da loja no dia da compra. Reembolsos não entram.'"
                 }
               }
             }

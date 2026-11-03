@@ -118,6 +118,37 @@ table purchase_discounts
 			RETURN FORMAT ( MAXX ( TOPN ( 1, anos, [@pago], DESC ), purchase_discounts[purchase_year] ), "0" )
 		lineageTag: 8c08ffe4-57fd-42db-9d15-ba08fef52b13
 
+	measure 'Título economia' = "Economizei com promoções. O preço cheio seria " & FORMAT ( SUM ( purchase_discounts[original_price_brl] ) + 0, "\R$ #,0.00" )
+		lineageTag: f416661e-2c40-4436-ae1b-8616b57da673
+
+	measure 'Título desconto médio' = "Desconto médio sobre o preço cheio. " & [Frase das compras com desconto]
+		lineageTag: 13f39669-5315-476f-9591-cb3ced33e2bb
+
+	measure 'Título do mês' =
+			VAR meses = ADDCOLUMNS ( VALUES ( purchase_discounts[purchase_month] ), "@n", CALCULATE ( COUNTROWS ( purchase_discounts ) ) )
+			RETURN "Mês em que mais compro, com " & MAXX ( meses, [@n] ) & " compras somando todos os anos"
+		lineageTag: ddd121cd-f951-4fe6-9724-f27118227ace
+
+	measure 'Título primeira compra' = [Primeira compra título] & ": " & [Primeira compra frase]
+		lineageTag: db84e2ea-99f2-4917-96c5-641b5cf142d6
+
+	measure 'Título compra mais cara' = "A compra mais cara: " & [Compra mais cara frase]
+		lineageTag: 9aac625c-4407-4b45-a802-5fc86dfd2f62
+
+	measure 'Título maior desconto' = "O maior desconto: " & [Maior desconto frase]
+		lineageTag: 60b78bb5-5d8a-41cf-b6d0-564acffdf1db
+
+	measure 'Título maior economia' = "A maior economia: " & [Maior economia frase]
+		lineageTag: 88adca56-5fff-42d9-84fe-ec275b77b75b
+
+	measure 'Paguei no ano' = SUM ( purchase_discounts[paid_brl] ) + 0
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: 74d9db06-b443-4a17-82ab-ba0ea363b548
+
+	measure 'Economizei no ano' = SUM ( purchase_discounts[savings_brl] ) + 0
+		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
+		lineageTag: efb78054-fd85-424f-aee6-04d639c43573
+
 	column user_id
 		dataType: string
 		isHidden

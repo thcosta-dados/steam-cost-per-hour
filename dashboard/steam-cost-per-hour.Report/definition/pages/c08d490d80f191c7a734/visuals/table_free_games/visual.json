@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "table_free_games",
   "position": {
-    "x": 979.002493765586,
-    "y": 103.69077306733168,
+    "x": 1124,
+    "y": 552,
     "z": 10000,
-    "height": 615.41147132169579,
-    "width": 921.09725685785543,
+    "height": 508,
+    "width": 764,
     "tabOrder": 7000
   },
   "visual": {
@@ -73,7 +73,7 @@
               },
               "queryRef": "game_costs.extra_spend_brl",
               "nativeQueryRef": "extra_spend_brl",
-              "displayName": "Gasto extra"
+              "displayName": "Extras"
             },
             {
               "field": {
@@ -88,7 +88,7 @@
               },
               "queryRef": "game_costs.cost_per_hour_brl",
               "nativeQueryRef": "cost_per_hour_brl",
-              "displayName": "Custo por hora"
+              "displayName": "Por hora"
             },
             {
               "field": {
@@ -103,7 +103,7 @@
               },
               "queryRef": "game_costs.value_origin",
               "nativeQueryRef": "value_origin",
-              "displayName": "Origem do valor"
+              "displayName": "Origem"
             }
           ]
         }
@@ -130,6 +130,20 @@
       "grid": [
         {
           "properties": {
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
             "imageWidth": {
               "expr": {
                 "Literal": {
@@ -218,7 +232,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "110D"
+                  "Value": "90D"
                 }
               }
             }
@@ -232,7 +246,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "280D"
+                  "Value": "230D"
                 }
               }
             }
@@ -274,7 +288,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "100D"
+                  "Value": "90D"
                 }
               }
             }
@@ -288,7 +302,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "210D"
+                  "Value": "130D"
                 }
               }
             }
@@ -301,10 +315,43 @@
       "columnHeaders": [
         {
           "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
             "autoSizeColumnWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }
@@ -323,10 +370,49 @@
                 }
               }
             },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E6EDF3'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            },
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Sem custo de acesso: gratuitos, presentes e cortesias (por horas jogadas)'"
+                  "Value": "'Gratuitos e sem compra na Steam'"
                 }
               }
             }
@@ -360,6 +446,91 @@
               "expr": {
                 "Literal": {
                   "Value": "'Sem custo de acesso: gratuitos, presentes e cortesias (por horas jogadas)'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#B1BAC4'"
+                    }
+                  }
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Do mais jogado ao menos jogado. Sem compra na Steam: presente, cortesia, promoção grátis ou chave de outra loja.'"
                 }
               }
             }

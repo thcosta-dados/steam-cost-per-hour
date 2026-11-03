@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "chart_hours_per_day",
   "position": {
-    "x": 20,
-    "y": 248,
+    "x": 32,
+    "y": 232,
     "z": 0,
-    "height": 446,
-    "width": 1880,
+    "height": 440,
+    "width": 1388,
     "tabOrder": 9000
   },
   "visual": {
@@ -125,10 +125,54 @@
                 }
               }
             },
-            "text": {
+            "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "'Horas jogadas por dia e por jogo'"
+                  "Value": "14D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E6EDF3'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            },
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "daily_playtime"
+                    }
+                  },
+                  "Property": "Título do gráfico diário"
                 }
               }
             }
@@ -145,10 +189,10 @@
                 }
               }
             },
-            "text": {
+            "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "'As horas são medidas toda manhã e contam para o dia anterior. Na dica, dias somados acima de 1 indicam dia sem coleta.'"
+                  "Value": "12D"
                 }
               }
             },
@@ -157,16 +201,16 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#8B949E'"
+                      "Value": "'#B1BAC4'"
                     }
                   }
                 }
               }
             },
-            "fontSize": {
+            "text": {
               "expr": {
                 "Literal": {
-                  "Value": "11D"
+                  "Value": "'Toda manhã o painel anota minhas horas da Steam e conta para o dia anterior. Se a dica mostrar 2 dias somados, um dia ficou sem anotação.'"
                 }
               }
             }
@@ -180,6 +224,53 @@
               "expr": {
                 "Literal": {
                   "Value": "'Horas jogadas por dia e por jogo'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
                 }
               }
             }
@@ -204,6 +295,13 @@
                   "Value": "'Top'"
                 }
               }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
             }
           }
         }
@@ -215,6 +313,26 @@
               "expr": {
                 "Literal": {
                   "Value": "'Categorical'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
                 }
               }
             }

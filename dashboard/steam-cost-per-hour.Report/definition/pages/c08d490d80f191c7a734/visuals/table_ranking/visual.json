@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "table_ranking",
   "position": {
-    "x": 20.199501246882793,
-    "y": 103.69077306733168,
+    "x": 32,
+    "y": 232,
     "z": 9000,
-    "height": 956.10972568578552,
-    "width": 939.95012468827929,
+    "height": 600,
+    "width": 1076,
     "tabOrder": 6000
   },
   "visual": {
@@ -58,7 +58,22 @@
               },
               "queryRef": "game_costs.cost_per_hour_brl",
               "nativeQueryRef": "cost_per_hour_brl",
-              "displayName": "Custo por hora"
+              "displayName": "Por hora"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "game_costs"
+                    }
+                  },
+                  "Property": "Selo"
+                }
+              },
+              "queryRef": "game_costs.Selo",
+              "nativeQueryRef": "Selo",
+              "displayName": "Selo"
             },
             {
               "field": {
@@ -88,7 +103,7 @@
               },
               "queryRef": "game_costs.game_value_brl",
               "nativeQueryRef": "game_value_brl",
-              "displayName": "Valor do jogo"
+              "displayName": "Paguei"
             },
             {
               "field": {
@@ -103,7 +118,7 @@
               },
               "queryRef": "game_costs.extra_spend_brl",
               "nativeQueryRef": "extra_spend_brl",
-              "displayName": "Gasto extra"
+              "displayName": "Extras"
             },
             {
               "field": {
@@ -118,7 +133,7 @@
               },
               "queryRef": "game_costs.value_origin",
               "nativeQueryRef": "value_origin",
-              "displayName": "Origem do valor"
+              "displayName": "Origem"
             }
           ]
         }
@@ -145,6 +160,20 @@
       "grid": [
         {
           "properties": {
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
             "imageWidth": {
               "expr": {
                 "Literal": {
@@ -233,7 +262,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "110D"
+                  "Value": "100D"
                 }
               }
             }
@@ -275,13 +304,13 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "90D"
+                  "Value": "100D"
                 }
               }
             }
           },
           "selector": {
-            "metadata": "game_costs.hours_played"
+            "metadata": "game_costs.Selo"
           }
         },
         {
@@ -295,6 +324,20 @@
             }
           },
           "selector": {
+            "metadata": "game_costs.hours_played"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "110D"
+                }
+              }
+            }
+          },
+          "selector": {
             "metadata": "game_costs.game_value_brl"
           }
         },
@@ -303,7 +346,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "95D"
+                  "Value": "100D"
                 }
               }
             }
@@ -317,7 +360,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "120D"
+                  "Value": "110D"
                 }
               }
             }
@@ -330,10 +373,89 @@
       "columnHeaders": [
         {
           "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
             "autoSizeColumnWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "game_costs"
+                        }
+                      },
+                      "Property": "Cor do selo"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "game_costs"
+                        }
+                      },
+                      "Property": "Fundo do selo"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "game_costs.Selo"
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }
@@ -352,15 +474,49 @@
                 }
               }
             },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E6EDF3'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            },
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
             "text": {
               "expr": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "game_costs"
-                    }
-                  },
-                  "Property": "Título do ranking"
+                "Literal": {
+                  "Value": "'Do mais barato ao mais caro por hora (jogos que comprei e joguei 1 hora ou mais)'"
                 }
               }
             }
@@ -397,28 +553,28 @@
                 }
               }
             },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
             "fontColor": {
               "solid": {
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#8B949E'"
+                      "Value": "'#B1BAC4'"
                     }
                   }
-                }
-              }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "11D"
                 }
               }
             },
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Passe o mouse num jogo para ver mais detalhes ou clique num jogo e depois em Ver detalhe do jogo.'"
+                  "Value": "'Passe o mouse num jogo para ver mais detalhes ou clique num jogo e depois em Abrir ficha do jogo. Selo: Platina até R$ 0,50 por hora, Ouro até R$ 1, Prata até R$ 3, Bronze acima disso.'"
                 }
               }
             }
@@ -432,6 +588,53 @@
               "expr": {
                 "Literal": {
                   "Value": "'Capa'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
                 }
               }
             }

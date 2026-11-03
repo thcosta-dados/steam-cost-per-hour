@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "slicer_period",
   "position": {
-    "x": 950,
-    "y": 14,
+    "x": 1436,
+    "y": 96,
     "z": 60000,
-    "height": 70,
-    "width": 350,
+    "height": 120,
+    "width": 452,
     "tabOrder": 4000
   },
   "visual": {
@@ -28,7 +28,7 @@
               },
               "queryRef": "collection_days.play_date",
               "nativeQueryRef": "play_date",
-              "displayName": "Período (dia de jogo)",
+              "displayName": "Período",
               "active": true
             }
           ]
@@ -39,24 +39,85 @@
       "data": [
         {
           "properties": {
-            "startDate": {
-              "expr": {
-                "Literal": {
-                  "Value": "datetime'2026-10-22T00:00:00'"
-                }
-              }
-            },
-            "endDate": {
-              "expr": {
-                "Literal": {
-                  "Value": "datetime'2026-10-26T00:00:00'"
-                }
-              }
-            },
             "mode": {
               "expr": {
                 "Literal": {
                   "Value": "'Between'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "items": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
                 }
               }
             }

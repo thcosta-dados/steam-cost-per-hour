@@ -273,6 +273,16 @@ def test_collection_days_include_days_with_a_collection_and_no_play(conn):
     assert played == [OLD_DAY]
 
 
+def test_game_genres_has_one_row_per_game_and_genre(conn):
+    conn.execute("UPDATE games SET store_genres = ARRAY['Action', 'RPG'] WHERE app_id = 900001")
+    rows = conn.execute(
+        "SELECT app_id, genre FROM game_genres WHERE user_id = %s ORDER BY app_id, genre", (USER,)
+    ).fetchall()
+    # A game with two genres counts in each one; software and test servers are out (rule 17)
+    assert rows == [(900001, "Action"), (900001, "RPG"), (900002, "Action"), (900003, "Action"),
+                    (900004, "Action"), (900005, "Action")]
+
+
 def test_discount_compares_paid_value_with_the_price_at_purchase_time(conn):
     add_purchase(conn, "d1", datetime.date(2025, 1, 1), "purchase", 900001, "Paid Played",
                  Decimal("14.00"), original=Decimal("20.00"), pct=30)

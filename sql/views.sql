@@ -210,6 +210,16 @@ FROM valued v
 JOIN users u USING (user_id);
 
 
+-- Store genres of each game, one row per game and genre (dashboard: hours by genre, ticket 11b).
+-- A game can have several genres and counts in each one; games only, because it starts from
+-- game_costs (rule 17).
+CREATE OR REPLACE VIEW game_genres WITH (security_invoker = true) AS
+SELECT gc.user_id, gc.app_id, gc.game_key, genre
+FROM game_costs gc
+JOIN games g USING (app_id)
+CROSS JOIN LATERAL unnest(g.store_genres) AS genre;
+
+
 -- Discount of each purchase (rule 21): paid value against the price at purchase time shown in the
 -- history. Without a discount on the page, the price at purchase time is the price paid.
 CREATE OR REPLACE VIEW purchase_discounts WITH (security_invoker = true) AS

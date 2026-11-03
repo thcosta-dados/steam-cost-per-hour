@@ -483,7 +483,7 @@ table game_costs
 				        {"hours_played", type number}, {"game_value_brl", Currency.Type}, {"cost_per_hour_brl", Currency.Type},
 				        {"extra_spend_brl", Currency.Type}, {"total_spend_brl", Currency.Type}, {"purchase_history_loaded", type logical},
 				        {"first_purchase_date", type date}
-				    })
+				    }),
 				    // Ticket 11b: groups in plain words and links to the Steam artwork of each game
 				    CostGroup = Table.AddColumn(Typed, "cost_group", each if List.Contains({"pago", "estimado"}, [value_origin]) then "comprei" else if List.Contains({"gratuito", "sem compra na Steam"}, [value_origin]) then "não comprei" else "sem preço conhecido", type text),
 				    HoursLabel = Table.AddColumn(CostGroup, "hours_group_label", each if [hours_group] = "jogado" then "1 hora ou mais" else if [hours_group] = "mal começado" then "menos de 1 hora" else "nunca abri", type text),

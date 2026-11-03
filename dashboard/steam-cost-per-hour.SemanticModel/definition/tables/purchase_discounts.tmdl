@@ -190,7 +190,7 @@ table purchase_discounts
 				        {"purchase_date", type date}, {"paid_brl", Currency.Type}, {"original_price_brl", Currency.Type},
 				        {"discount_pct", Int64.Type}, {"savings_brl", Currency.Type}
 				    }),
-				    WithYear = Table.AddColumn(Typed, "purchase_year", each Date.Year([purchase_date]), Int64.Type)
+				    WithYear = Table.AddColumn(Typed, "purchase_year", each Date.Year([purchase_date]), Int64.Type),
 				    WithMonth = Table.AddColumn(WithYear, "purchase_month", each Date.Month([purchase_date]), Int64.Type),
 				    // Bundles become "Item A e mais 1 item", so the sentence fits
 				    WithShort = Table.AddColumn(WithMonth, "items_short", each let p = Text.Split([items], " + "), n = List.Count(p) in if n = 1 then [items] else p{0} & " e mais " & Text.From(n - 1) & (if n = 2 then " item" else " itens"), type text)

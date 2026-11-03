@@ -41,7 +41,7 @@ table collection_days
 				    Days = Source{[Schema = "public", Item = "collection_days"]}[Data],
 				    // One row per day for all users: the "one" side of the relationship with daily_playtime
 				    Distinct = Table.Distinct(Table.SelectColumns(Days, {"play_date"})),
-				    Typed = Table.TransformColumnTypes(Distinct, {{"play_date", type date}})
+				    Typed = Table.TransformColumnTypes(Distinct, {{"play_date", type date}}),
 				    WeekdayNumber = Table.AddColumn(Typed, "weekday_number", each Date.DayOfWeek([play_date], Day.Monday) + 1, Int64.Type),
 				    WeekdayShort = Table.AddColumn(WeekdayNumber, "weekday_short", each {"seg", "ter", "qua", "qui", "sex", "sáb", "dom"}{[weekday_number] - 1}, type text),
 				    WeekdayName = Table.AddColumn(WeekdayShort, "weekday_name", each {"segunda", "terça", "quarta", "quinta", "sexta", "sábado", "domingo"}{[weekday_number] - 1}, type text)

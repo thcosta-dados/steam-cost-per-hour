@@ -84,6 +84,12 @@ O Supabase publica as tabelas do schema `public` numa API REST automática (Post
 
 ## Painel
 
+![Página Minha Steam: total de horas, jogo mais jogado, os seis jogos com mais horas, gêneros e fatos da conta](docs/images/minha-steam.png)
+
+![Página Valeu a pena?: ranking de custo por hora com selos, placar entre jogos comprados e não comprados e lista dos jogos sem compra](docs/images/valeu-a-pena.png)
+
+![Ficha do jogo Dead by Daylight: selo, origem do valor, horas, gastos e a evolução das horas por dia](docs/images/ficha-do-jogo.png)
+
 O painel do Power BI está em `dashboard/`, salvo como projeto (`.pbip`), com o modelo semântico em TMDL e o relatório em PBIR. São arquivos de texto, então cada medida DAX ou visual alterado aparece no diff do Git. O painel importa as views do banco (modo Import), e o servidor e o nome do banco são parâmetros do Power Query, o que permite apontar o mesmo arquivo para o banco local ou para o Supabase. O cache com os dados importados fica fora do Git.
 
 O Supabase assina os certificados do banco com uma autoridade certificadora (CA) própria, que o Windows não conhece, e o conector PostgreSQL do Power BI só confia nas CAs instaladas no Windows. Em vez de instalar essa autoridade no sistema, o painel passa pelo container `supabase-tunnel` (pasta `tunnel/`). O Power BI conecta em `localhost:5434`, um trecho que não sai do computador, e o túnel (stunnel) abre a conexão TLS com o pooler do Supabase e confere a cadeia do certificado até a CA raiz do Supabase e o nome do servidor. Para atualizar o painel, o ambiente precisa estar ligado (`docker compose up -d`). No Power BI, essa fonte de dados fica com "Criptografar conexões" desmarcado, já que a criptografia é feita pelo túnel.

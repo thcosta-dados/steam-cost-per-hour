@@ -160,7 +160,7 @@
             "axisType": {
               "expr": {
                 "Literal": {
-                  "Value": "'Continuous'"
+                  "Value": "'Scalar'"
                 }
               }
             }

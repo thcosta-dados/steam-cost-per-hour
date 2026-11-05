@@ -23,13 +23,13 @@
                       "Entity": "playtime_history"
                     }
                   },
-                  "Property": "snapshot_label"
+                  "Property": "snapshot_date"
                 }
               },
-              "queryRef": "playtime_history.snapshot_label",
-              "nativeQueryRef": "snapshot_label",
-              "active": true,
-              "displayName": "Dia anotado"
+              "queryRef": "playtime_history.snapshot_date",
+              "nativeQueryRef": "snapshot_date",
+              "displayName": "Dia anotado",
+              "active": true
             }
           ]
         },
@@ -63,7 +63,7 @@
                     "Entity": "playtime_history"
                   }
                 },
-                "Property": "snapshot_label"
+                "Property": "snapshot_date"
               }
             },
             "direction": "Ascending"
@@ -160,7 +160,7 @@
             "axisType": {
               "expr": {
                 "Literal": {
-                  "Value": "'Categorical'"
+                  "Value": "'Continuous'"
                 }
               }
             }

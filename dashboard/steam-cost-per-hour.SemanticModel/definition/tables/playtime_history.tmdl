@@ -62,14 +62,6 @@ table playtime_history
 		summarizeBy: none
 		sourceColumn: game_key
 
-	/// Collection day as dd/MM/yy for the chart axis, sorted by the date
-	column snapshot_label
-		dataType: string
-		lineageTag: be77a735-e5d8-4d39-92c4-9b3bd1bada4c
-		summarizeBy: none
-		sourceColumn: snapshot_label
-		sortByColumn: snapshot_date
-
 	partition playtime_history = m
 		mode: import
 		source =
@@ -79,11 +71,9 @@ table playtime_history
 				    Typed = Table.TransformColumnTypes(History, {
 				        {"app_id", Int64.Type}, {"snapshot_date", type date},
 				        {"minutes_played", Int64.Type}, {"hours_played", type number}
-				    }),
-				    // Short label for the chart axis, like collection_days[day_label]
-				    SnapshotLabel = Table.AddColumn(Typed, "snapshot_label", each Date.ToText([snapshot_date], "dd/MM/yy"), type text)
+				    })
 				in
-				    SnapshotLabel
+				    Typed
 
 	annotation PBI_ResultType = Table
 

@@ -23,13 +23,13 @@
                       "Entity": "collection_days"
                     }
                   },
-                  "Property": "day_label"
+                  "Property": "play_date"
                 }
               },
-              "queryRef": "collection_days.day_label",
-              "nativeQueryRef": "day_label",
-              "active": true,
-              "displayName": "Dia"
+              "queryRef": "collection_days.play_date",
+              "nativeQueryRef": "play_date",
+              "displayName": "Dia",
+              "active": true
             }
           ]
         },
@@ -63,7 +63,7 @@
                     "Entity": "collection_days"
                   }
                 },
-                "Property": "day_label"
+                "Property": "play_date"
               }
             },
             "direction": "Ascending"
@@ -160,7 +160,7 @@
             "axisType": {
               "expr": {
                 "Literal": {
-                  "Value": "'Categorical'"
+                  "Value": "'Continuous'"
                 }
               }
             }

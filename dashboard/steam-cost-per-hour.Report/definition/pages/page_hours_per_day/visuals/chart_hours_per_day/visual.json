@@ -23,11 +23,11 @@
                       "Entity": "collection_days"
                     }
                   },
-                  "Property": "day_label"
+                  "Property": "play_date"
                 }
               },
-              "queryRef": "collection_days.day_label",
-              "nativeQueryRef": "day_label",
+              "queryRef": "collection_days.play_date",
+              "nativeQueryRef": "play_date",
               "displayName": "Dia de jogo",
               "active": true
             }
@@ -106,7 +106,7 @@
                     "Entity": "collection_days"
                   }
                 },
-                "Property": "day_label"
+                "Property": "play_date"
               }
             },
             "direction": "Ascending"
@@ -148,7 +148,7 @@
             "axisType": {
               "expr": {
                 "Literal": {
-                  "Value": "'Categorical'"
+                  "Value": "'Continuous'"
                 }
               }
             },

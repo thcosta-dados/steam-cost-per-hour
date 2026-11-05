@@ -4,10 +4,10 @@
   "position": {
     "x": 968,
     "y": 536,
-    "z": 4000,
+    "z": 6000,
     "height": 520,
     "width": 920,
-    "tabOrder": 4000
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "clusteredColumnChart",
@@ -28,8 +28,8 @@
               },
               "queryRef": "collection_days.day_label",
               "nativeQueryRef": "day_label",
-              "displayName": "Dia",
-              "active": true
+              "active": true,
+              "displayName": "Dia"
             }
           ]
         },

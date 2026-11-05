@@ -4,10 +4,10 @@
   "position": {
     "x": 32,
     "y": 536,
-    "z": 4000,
+    "z": 7000,
     "height": 520,
     "width": 920,
-    "tabOrder": 4000
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "lineChart",
@@ -28,8 +28,8 @@
               },
               "queryRef": "playtime_history.snapshot_label",
               "nativeQueryRef": "snapshot_label",
-              "displayName": "Dia anotado",
-              "active": true
+              "active": true,
+              "displayName": "Dia anotado"
             }
           ]
         },

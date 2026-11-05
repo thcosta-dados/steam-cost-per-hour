@@ -475,19 +475,7 @@ cultureInfo pt-BR
 			          "ConceptualProperty": "snapshot_date"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Dia anotado": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "playtime_history.horas_totais": {
 			      "Definition": {
@@ -728,16 +716,6 @@ cultureInfo pt-BR
 			      "Terms": [
 			        {
 			          "% das horas": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        },
-			        {
-			          "Fatia": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -1118,19 +1096,7 @@ cultureInfo pt-BR
 			          "ConceptualProperty": "Posição texto"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Posição": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "campos_da_dica.campo": {
 			      "Definition": {
@@ -1342,6 +1308,48 @@ cultureInfo pt-BR
 			      "Terms": [
 			        {
 			          "Jogos": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "daily_playtime.horas_no_dia_do_jogo": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "daily_playtime",
+			          "ConceptualProperty": "Horas no dia do jogo"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Horas jogadas": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "playtime_history.snapshot_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "playtime_history",
+			          "ConceptualProperty": "snapshot_label"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Dia anotado": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",

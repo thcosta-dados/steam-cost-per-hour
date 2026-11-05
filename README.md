@@ -2,7 +2,9 @@
 
 > **EN:** A case study of my own Steam account: a data pipeline that combines my library's playtime (collected daily from the Steam Web API) with my purchase history to show the cost per hour of each game in a Power BI dashboard. Work in progress.
 
-> 🚧 **README provisório.** O projeto está em construção. A versão final, com diagrama do fluxo, prints e GIF do painel, entra no fim da v1.
+> 🚧 **README provisório.** O projeto está em construção. A versão final, com diagrama do fluxo e prints do painel, entra no fim da v1.
+
+![Demonstração do painel no Power BI: navegação entre as páginas, dica de um jogo, ficha do jogo e filtros](docs/images/dashboard-demo.gif)
 
 ## O que é
 

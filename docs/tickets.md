@@ -214,7 +214,7 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 - [x] A página Dia a dia tem os filtros de período, origem do valor e tempo de jogo, e cada filtro atualiza todos os visuais da página. Selecionar um jogo numa tabela não esvazia as outras.
 - [x] Uma revisão independente com o checklist da pesquisa ("parece IA ou feito por gente?") dá nota 8 ou mais em todas as páginas.
 - [x] A spec registra o novo objetivo, as user stories e as regras novas.
-- [ ] O GIF de demonstração mostra filtros, clique no jogo e navegação, em menos de 30 segundos (vindo do ticket 11).
+- [x] O GIF de demonstração mostra filtros, clique no jogo e navegação, em menos de 30 segundos (vindo do ticket 11). Gravado em 05/11/2026: docs/images/dashboard-demo.gif, 27 s e 4,2 MB.
 - [ ] Verificado se é possível publicar o painel em link aberto com a conta disponível, e a resposta registrada (vindo do ticket 11).
 
 ---

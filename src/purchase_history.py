@@ -248,8 +248,8 @@ def load_history(conn, user_id, page, games, aliases):
     # Transactions refunded in the page (a refund reuses the transaction id of its purchase)
     refunded = {row["transaction_id"] for row in rows if row["type_text"] == "Refund" and row["transaction_id"]}
     accepted = quarantined = 0
-    # DO UPDATE (not DO NOTHING) on values, links and reasons: loading again applies new rules
-    # to rows already stored, still without duplicating anything
+    # Upserts (ON CONFLICT DO UPDATE) refresh the refund link, the item values and the quarantine
+    # reasons, so loading the file again applies new rules to stored rows without duplicating them
     with conn.transaction():
         for row, key in zip(rows, fingerprints(user_id, rows)):
             purchase_type, app_ids, reason = classify(row, index, games)
@@ -299,7 +299,7 @@ def read_aliases(path=ALIASES_FILE):
 
 
 def main():
-    # Imported here so the parsing functions above can be tested without these modules
+    # Needed only by the command line; load_history receives the connection, games and aliases
     from src.collect import hash_steam_id
     from src.db import get_connection
     from src.run_daily import parse_users

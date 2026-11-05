@@ -6,14 +6,14 @@ on:
   schedule:
     # 06:17 UTC = 03:17 in Brasília. GitHub often starts scheduled runs hours late (observed
     # between 08:05 and 10:07 in Brasília in October 2026); scheduling early keeps the run on
-    # the same day even so. An odd minute avoids the busiest moments.
+    # the same day even so. Minute 17 stays away from the top of the hour, when GitHub's queue is busiest.
     - cron: "17 6 * * *"
   workflow_dispatch: # "Run workflow" button for manual runs
 
 permissions:
-  contents: read # the job only reads the code
+  contents: read # least privilege for GITHUB_TOKEN: the job only checks out the code
 
-concurrency: # never two runs at the same time (e.g. scheduled + manual)
+concurrency: # never two runs at once (e.g. scheduled + manual); the second one waits in the queue
   group: daily-collection
   cancel-in-progress: false
 

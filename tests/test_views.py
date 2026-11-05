@@ -206,7 +206,7 @@ def test_partial_refund_shares_the_net_total_without_losing_cents(conn):
     values = dict(conn.execute(
         "SELECT item_name, net_value_brl FROM net_purchase_items WHERE purchase_key = 'cart'"
     ).fetchall())
-    # R$ 20.01 / 2 = R$ 10.005 each: rounding both would give R$ 20.02, so the last item takes the rest
+    # R$ 20.01 / 2 = R$ 10.005 each: rounding both would give R$ 20.02, so the last item takes the rounding remainder
     assert values == {"Paid Played": Decimal("10.01"), "Barely Started": Decimal("10.00")}
 
 

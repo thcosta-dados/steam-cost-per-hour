@@ -1,4 +1,4 @@
-"""One-off data fix (27/10/2026): add disconnected playtime to the existing snapshots.
+"""One-off data fix, applied to both databases on 2026-10-27: add disconnected playtime to past snapshots.
 
 Until then the collection stored only playtime_forever, while the Steam library shows
 playtime_forever + playtime_disconnected (spec, open question 7). Changing only the collection

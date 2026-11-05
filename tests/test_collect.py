@@ -28,7 +28,7 @@ def conn():
 def test_hash_does_not_contain_the_steam_id():
     user_id = hash_steam_id(FAKE_STEAM_ID, "secret-key")
     assert FAKE_STEAM_ID not in user_id
-    assert len(user_id) == 64  # SHA-256 in hexadecimal
+    assert len(user_id) == 64  # HMAC-SHA256 in hex: 64 characters
 
 
 def test_same_steam_id_always_gives_same_hash():

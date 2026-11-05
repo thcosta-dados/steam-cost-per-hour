@@ -1,4 +1,4 @@
-/// Todos os anos entre a primeira e a última compra, inclusive os sem compra.
+/// Every year from the first to the last purchase, years without purchases included (axis of the yearly chart on Compras).
 table Anos
 	lineageTag: a95f61a2-b8cd-4a63-8743-dd4bef8db94b
 

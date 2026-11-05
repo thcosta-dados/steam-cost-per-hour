@@ -244,7 +244,7 @@ table purchase_discounts
 		summarizeBy: none
 		sourceColumn: purchase_month
 
-	/// Itens da compra com pacote encurtado
+	/// Purchase items with bundles shortened to "first item e mais N itens", so the sentences fit.
 	column items_short
 		dataType: string
 		lineageTag: 64a18aa8-7c49-40b9-822f-8e7a33501343

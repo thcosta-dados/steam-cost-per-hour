@@ -1,4 +1,4 @@
-/// Linhas da dica do jogo, no estilo de atributos de item.
+/// Rows of the game tooltip, laid out like the attribute list of an RPG item.
 table 'Campos da dica'
 	lineageTag: ddfc7808-fd97-4ae1-b15f-f22dcdf94e0b
 

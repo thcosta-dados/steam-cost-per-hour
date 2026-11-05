@@ -8,11 +8,11 @@ from src.steam_api import get_owned_games
 
 
 def hash_steam_id(steam_id, secret_key):
-    """Anonymous user code: HMAC-SHA256 of the SteamID.
+    """Pseudonymous user code: HMAC-SHA256 of the SteamID.
 
     A plain SHA-256 is not enough: SteamIDs fall in a known range, so anyone
     with the database could hash every possible SteamID until one matches.
-    With a secret key (kept only in .env), that guessing is not possible.
+    With a secret key (kept only in .env and in the GitHub secrets), nobody without the key can do that.
     """
     return hmac.new(secret_key.encode(), steam_id.encode(), hashlib.sha256).hexdigest()
 
@@ -28,7 +28,7 @@ def library_minutes(game):
 def save_collection(conn, user_id, nickname, games, licensed_app_ids, snapshot_date):
     """Save one collection: user, games, library and the day's snapshot.
 
-    `games` uses the Steam API format: {"appid", "name", "playtime_forever"}.
+    `games` uses the Steam API format: {"appid", "name", "playtime_forever", optional "playtime_disconnected"}.
     `licensed_app_ids`: games the user has a license for; the others are played for free.
     Does not commit: the caller decides (all or nothing).
     """

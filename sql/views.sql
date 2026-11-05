@@ -12,7 +12,7 @@ SELECT
     app_id,
     name,
     CASE
-        WHEN store_genres && ARRAY[  -- && = the two lists share at least one item
+        WHEN store_genres && ARRAY[  -- && = the arrays overlap (at least one genre in common)
             'Utilities', 'Design & Illustration', 'Photo Editing', 'Animation & Modeling',
             'Video Production', 'Audio Production', 'Software Training', 'Web Publishing',
             'Accounting', 'Education', 'Game Development'
@@ -87,7 +87,7 @@ SELECT
     item_position,
     item_name,
     app_id,
-    -- The last item takes the rounding rest, so the items always add up to the net total
+    -- The last item takes the rounding remainder, so the items always add up to the net total
     CASE
         WHEN last_item THEN net_total_brl - (sum(share) OVER (PARTITION BY purchase_key) - share)
         ELSE share
@@ -117,7 +117,6 @@ first_purchase AS (
 SELECT
     p.user_id,
     p.app_id,
-    -- FILTER: a sum over only the rows that meet the condition
     sum(p.value_brl) FILTER (WHERE p.purchase_key = f.purchase_key) AS game_paid_brl,
     coalesce(sum(p.value_brl) FILTER (WHERE p.purchase_key IS DISTINCT FROM f.purchase_key), 0) AS extra_spend_brl,
     -- Date of the purchase that is the game value (one per group; NULL without one)
@@ -273,10 +272,10 @@ WHERE coalesce(previous_game_date, previous_collection_date) IS NOT NULL;
 
 
 -- Hours played per day and game, games only (rules 11, 12 and 17).
--- The collection runs in the morning (scheduled at 03:17, usually started by GitHub between
--- 08:00 and 10:00), so a snapshot taken on day N covers the play of day N-1: a "play day"
--- that ends in the morning, like the play of a night owl. With a missing collection day, the whole interval goes
--- to the last day and days_covered tells how many days it spans: nothing is invented.
+-- The collection runs in the morning (scheduled at 03:17; GitHub started it between 08:05 and
+-- 10:07 in October 2026), so a snapshot taken on day N covers the play of day N-1 and a play day
+-- ends in the morning. When a collection day is missing, the whole interval goes to the last play
+-- day and days_covered says how many days it spans, so no hours are spread by guesswork.
 CREATE OR REPLACE VIEW daily_playtime WITH (security_invoker = true) AS
 SELECT
     i.user_id,
@@ -293,7 +292,7 @@ FROM snapshot_intervals i
 JOIN games g USING (app_id)
 JOIN games_classified c USING (app_id)
 WHERE c.item_category = 'game'
-  AND i.minutes_difference > 0;  -- days without play are left out; decreases go to the quarantine
+  AND i.minutes_difference > 0;  -- days without play are left out; decreases go to collection_quarantine
 
 
 -- Play days covered by a collection (ticket 11): the axis of the daily charts in the dashboard, so a

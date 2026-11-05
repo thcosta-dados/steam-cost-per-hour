@@ -8,18 +8,17 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- Store columns are filled once by the catalog (src/catalog.py), raw as the store returns them.
--- Migration (ticket 08b): column added to a table that already has data in Supabase.
--- ADD COLUMN IF NOT EXISTS keeps the data and does nothing when the column is already there.
--- Set when the user loads the complete purchase history: enables rule 24 (spec).
+-- Migration (ticket 08b): users already had rows in Supabase, so the column is added in place and
+-- IF NOT EXISTS makes later runs a no-op. Set when the complete purchase history is loaded (rule 24).
 ALTER TABLE users ADD COLUMN IF NOT EXISTS purchase_history_loaded_at TIMESTAMPTZ;
 
+-- Store columns are filled once by the catalog (src/catalog.py), raw as the store returns them.
 CREATE TABLE IF NOT EXISTS games (
     app_id            INTEGER PRIMARY KEY,  -- game id on Steam
     name              TEXT NOT NULL,
     store_type        TEXT,                 -- store "type" (not enough to tell games from software)
     store_genres      TEXT[],               -- store genres, used by the games_classified view (views.sql)
-    list_price_brl    NUMERIC(10, 2),       -- full list price, without discount; NULL when not on sale
+    list_price_brl    NUMERIC(10, 2),       -- full list price, without discount; NULL when free, not for sale or not in BRL
     price_recorded_at DATE,                 -- date the store was checked (set even when there is no price)
     header_image_url  TEXT,
     is_free           BOOLEAN
@@ -41,12 +40,12 @@ CREATE TABLE IF NOT EXISTS playtime_snapshots (
     user_id        TEXT    NOT NULL,
     app_id         INTEGER NOT NULL,
     snapshot_date  DATE    NOT NULL,
-    minutes_played INTEGER NOT NULL CHECK (minutes_played >= 0),  -- accumulated total, as returned by the API
+    minutes_played INTEGER NOT NULL CHECK (minutes_played >= 0),  -- accumulated total as the library shows it (online + disconnected)
     PRIMARY KEY (user_id, app_id, snapshot_date),
     FOREIGN KEY (user_id, app_id) REFERENCES library (user_id, app_id)
 );
 
--- Purchase history (ticket 08), loaded from the page saved by the user (src/load_purchases.py).
+-- Purchase history (ticket 08), loaded from the page saved by the user (src/purchase_history.py).
 -- purchase_key: SHA-256 "fingerprint" of the row (Steam transaction id, or the row content):
 -- loading the same file twice never duplicates a purchase. The transaction id itself is not stored.
 CREATE TABLE IF NOT EXISTS purchases (
@@ -86,7 +85,7 @@ CREATE TABLE IF NOT EXISTS quarantine (
 -- One row per pipeline execution (spec, rule 15). Status: running while it works, then
 -- success (no errors), partial (some user or step failed, some data collected) or failed.
 CREATE TABLE IF NOT EXISTS pipeline_runs (
-    run_id          BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,  -- automatic increasing number
+    run_id          BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     started_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
     finished_at     TIMESTAMPTZ,
     status          TEXT NOT NULL CHECK (status IN ('running', 'success', 'partial', 'failed')),
@@ -96,9 +95,9 @@ CREATE TABLE IF NOT EXISTS pipeline_runs (
     error_message   TEXT  -- nicknames only, never SteamIDs
 );
 
--- Row Level Security with no policies: nobody but the table owner can read or write.
--- Supabase publishes every table in "public" through an automatic API; this blocks it.
--- The pipeline and Power BI connect as the owner, which RLS does not restrict.
+-- Row Level Security with no policies: the anon and authenticated roles of Supabase's Data API
+-- (PostgREST, which publishes every table in "public") see no rows.
+-- The pipeline and Power BI connect as the table owner, which RLS does not restrict.
 -- On the local database it changes nothing (same owner), so one script serves both.
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE games ENABLE ROW LEVEL SECURITY;

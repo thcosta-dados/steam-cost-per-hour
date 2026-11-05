@@ -14,7 +14,7 @@ REQUEST_INTERVAL_SECONDS = 1.5
 def parse_app_details(raw):
     """Turn a raw store response into the catalog columns."""
     if not raw.get("success"):
-        # No store page (test servers, removed items): nothing to record
+        # No store page (test servers, removed items): store columns stay NULL, but the game is marked as checked
         return {"store_type": None, "store_genres": [], "list_price_brl": None,
                 "header_image_url": None, "is_free": None}
 
@@ -25,7 +25,7 @@ def parse_app_details(raw):
     if price and price["currency"] == "BRL":
         list_price = Decimal(price["initial"]) / 100
     else:
-        list_price = None  # not on sale, free, or another currency
+        list_price = None  # free, not for sale, or priced in another currency
     return {
         "store_type": data.get("type"),
         "store_genres": [g["description"] for g in data.get("genres", [])],

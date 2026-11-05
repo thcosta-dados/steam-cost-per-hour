@@ -35,7 +35,7 @@ services:
     command: sleep infinity
 
   # Same code and image, pointed at Supabase through .env.cloud.
-  # Only runs on explicit request, e.g.: docker compose run --rm app-cloud python -m src.collect
+  # Only runs on explicit request, e.g.: docker compose run --rm app-cloud python -m src.run_daily
   app-cloud:
     build: .
     env_file: .env.cloud

@@ -42,7 +42,7 @@ table game_costs
 	measure 'Custo por hora do jogo' = VAR cost = SUM ( game_costs[cost_per_hour_brl] ) RETURN IF ( ISBLANK ( cost ), IF ( SUM ( game_costs[minutes_played] ) = 0, "nunca abri", "sem preço" ), "R$" & UNICHAR ( 160 ) & FORMAT ( cost, "#,0.00" ) )
 		lineageTag: 44d9e389-c6b4-49ae-9e18-94d7665ad96a
 
-	/// Manchete do ranking: o jogo pago (1 h ou mais) que custou menos por hora
+	/// Ranking headline: the paid or estimated game with 1 h or more and the lowest cost per hour.
 	measure 'Título do ranking' =
 			VAR elegiveis = FILTER ( game_costs, game_costs[hours_group] = "jogado" && game_costs[value_origin] IN { "pago", "estimado" } )
 			VAR melhor = TOPN ( 1, elegiveis, game_costs[cost_per_hour_brl], ASC )
@@ -50,7 +50,7 @@ table game_costs
 			    MAXX ( melhor, game_costs[name] ) & " foi o jogo que mais valeu a pena: " & "R$" & UNICHAR ( 160 ) & FORMAT ( MAXX ( melhor, game_costs[cost_per_hour_brl] ), "#,0.00" ) & " por hora" )
 		lineageTag: ef820eca-795b-48c0-ac50-c3ff57bd067d
 
-	/// Spec rule 25: total spending on paid (or estimated) games divided by their hours, 0 h games included.
+	/// Total spending on paid or estimated games divided by their hours, 0 h games included (spec rule 25).
 	measure 'Custo médio por hora (jogos pagos)' = DIVIDE ( CALCULATE ( SUM ( game_costs[total_spend_brl] ), game_costs[value_origin] IN { "pago", "estimado" } ), CALCULATE ( SUM ( game_costs[minutes_played] ), game_costs[value_origin] IN { "pago", "estimado" } ) / 60 )
 		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
 		lineageTag: 74ae5d52-239c-4fff-95ba-e1e870917b40
@@ -71,7 +71,7 @@ table game_costs
 		formatString: #,0" h"
 		lineageTag: edf9bf1d-b048-4501-b7f3-1b5fa7913a68
 
-	/// Horas para ler: minutos abaixo de 1 h, uma casa abaixo de 100 h, inteiro acima
+	/// Readable hours: minutes below 1 h, one decimal below 100 h, whole hours above.
 	measure 'Horas texto' =
 			VAR m = SUM ( game_costs[minutes_played] )
 			VAR h = m / 60
@@ -169,7 +169,7 @@ table game_costs
 			RETURN IF ( razao >= 2, MAXX ( caro, game_costs[name] ) & " foi o mais caro. Uma hora dele custou o mesmo que " & razao & " horas do primeiro da lista.", "" )
 		lineageTag: a580067a-36b8-4c5b-b88f-3b000bfe7fd4
 
-	/// Selo de custo-benefício (regra 28): Platina até R$ 0,50/h, Ouro até R$ 1, Prata até R$ 3, Bronze acima
+	/// Value-for-money badge (spec rule 29), only for paid or estimated games with 1 h or more: Platina up to R$ 0.50/h, Ouro up to R$ 1, Prata up to R$ 3, Bronze above.
 	measure Selo =
 			VAR custo = SELECTEDVALUE ( game_costs[cost_per_hour_brl] )
 			VAR elegivel = SELECTEDVALUE ( game_costs[hours_group] ) = "jogado" && SELECTEDVALUE ( game_costs[value_origin] ) IN { "pago", "estimado" }
@@ -238,7 +238,7 @@ table game_costs
 		formatString: 0
 		lineageTag: bba5f275-1dff-44ed-bf68-ab87fc4e3e40
 
-	/// Posição pelo total de horas; o ALL ignora o filtro do drill-through
+	/// Rank by total hours (spec rule 28); ALL removes the drillthrough filter so the game is compared with the whole library.
 	measure 'Posição em horas' =
 			VAR meu = SUM ( game_costs[minutes_played] )
 			RETURN COUNTROWS ( FILTER ( ALL ( game_costs ), game_costs[minutes_played] > meu ) ) + 1
@@ -360,7 +360,7 @@ table game_costs
 		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
 		lineageTag: 70d47edf-289e-4fa8-8ebf-8952c18c7bbd
 
-	/// Average hours per day since the first purchase (account age), up to the last snapshot.
+	/// Hours per day from the first purchase to the last snapshot; the first purchase stands in for the account creation date, which the API does not give (spec rule 26).
 	measure 'Horas por dia de conta' =
 			VAR primeira = CALCULATE ( MIN ( purchase_discounts[purchase_date] ), ALL ( purchase_discounts ) )
 			VAR ultima = CALCULATE ( MAX ( game_costs[last_snapshot_date] ), ALL ( game_costs ) )
@@ -547,7 +547,7 @@ table game_costs
 		summarizeBy: none
 		sourceColumn: game_key
 
-	/// comprei / sem comprar / sem preço conhecido (placar de Valeu a pena?)
+	/// Side of the Valeu a pena? scoreboard (spec rule 31): comprei, sem comprar or sem preço conhecido.
 	column cost_group
 		dataType: string
 		lineageTag: 5a434729-601c-473f-b1a3-0bb27ddde630
@@ -562,7 +562,7 @@ table game_costs
 		summarizeBy: none
 		sourceColumn: hours_group_order
 
-	/// Tempo total no jogo em palavras: 1 hora ou mais, menos de 1 hora, nunca abri
+	/// Hours group in plain words: 1 hora ou mais, menos de 1 hora or nunca abri.
 	column hours_group_label
 		dataType: string
 		lineageTag: 3aed68e0-34b6-476c-9cf2-6e6f921e7c03
@@ -570,7 +570,7 @@ table game_costs
 		sourceColumn: hours_group_label
 		sortByColumn: hours_group_order
 
-	/// Arte larga do jogo na CDN da Steam
+	/// Wide library hero art from the Steam CDN (library_hero.jpg).
 	column hero_url
 		dataType: string
 		lineageTag: 4759cfdb-0012-4fd1-a847-600f1804cc2a
@@ -578,7 +578,7 @@ table game_costs
 		summarizeBy: none
 		sourceColumn: hero_url
 
-	/// Capa em pé do jogo na CDN da Steam
+	/// Portrait library cover from the Steam CDN (library_600x900.jpg).
 	column portrait_url
 		dataType: string
 		lineageTag: 01ee9369-7073-4cda-a584-fb8392f80de9

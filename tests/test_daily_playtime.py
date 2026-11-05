@@ -1,7 +1,7 @@
 """Hours per day (views daily_playtime and collection_quarantine), tested with a fictional history.
 
 Collections on days 1, 2 and 4: day 3 has no collection on purpose (missing day).
-A snapshot taken on day N (at 03:17) covers the play of day N-1, so hours are labeled N-1.
+A snapshot taken on the morning of day N covers the play of day N-1, so hours are labeled N-1.
 """
 import datetime
 

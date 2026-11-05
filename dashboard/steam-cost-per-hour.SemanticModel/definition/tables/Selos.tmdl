@@ -1,4 +1,4 @@
-/// Faixas do selo de custo-benefício (spec, regra 29), para a tabela da página Bastidores.
+/// Value-for-money badge tiers (spec rule 29), for the table on the Bastidores page.
 table Selos
 	lineageTag: 14121a55-572b-4ed5-8295-f3c2de8570bf
 

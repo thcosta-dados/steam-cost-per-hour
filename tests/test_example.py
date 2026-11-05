@@ -1,5 +1,4 @@
-# Example test: only proves that pytest runs inside the Docker environment.
-# Business rule tests are added in later tickets.
+# Smoke test: proves that pytest runs inside the Docker environment.
 
 
 def test_example():

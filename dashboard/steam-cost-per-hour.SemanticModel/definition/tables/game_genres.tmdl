@@ -1,8 +1,8 @@
-/// Gêneros da loja de cada jogo (view public.game_genres): um jogo conta em cada gênero que tem.
+/// Store genres of each game (view public.game_genres); a game counts in every genre it has.
 table game_genres
 	lineageTag: 165bef0b-2033-4b5e-b121-1598004b17ea
 
-	/// Soma das horas dos jogos que têm o gênero
+	/// Total hours of the games that have the genre.
 	measure 'Horas do gênero' = DIVIDE ( SUMX ( game_genres, RELATED ( game_costs[minutes_played] ) ), 60 )
 		formatString: #,0" h"
 		lineageTag: 16e18dd5-489d-45db-bef8-8db1af828756
@@ -47,7 +47,7 @@ table game_genres
 		summarizeBy: none
 		sourceColumn: genre
 
-	/// Gênero em português; Free to Play e Early Access saem (são modelo de venda)
+	/// Genre in Portuguese; Free to Play and Early Access are left out because they are sales models (spec rule 30).
 	column genre_label
 		dataType: string
 		lineageTag: 8cfe18ae-58f4-4205-9b18-894f62a5bcab
@@ -60,7 +60,7 @@ table game_genres
 				let
 				    Source = PostgreSQL.Database(DatabaseServer, DatabaseName),
 				    Genres = Source{[Schema = "public", Item = "game_genres"]}[Data],
-				    // Business model, not a style of game
+				    // Free to Play and Early Access are sales models, so they leave the list (spec rule 30)
 				    Styles = Table.SelectRows(Genres, each not List.Contains({"Free To Play", "Free to Play", "Early Access"}, [genre])),
 				    Labels = [Action = "Ação", Adventure = "Aventura", Strategy = "Estratégia", Simulation = "Simulação", Racing = "Corrida", Sports = "Esportes", Indie = "Indie", Casual = "Casual", RPG = "RPG"],
 				    Result = Table.AddColumn(Styles, "genre_label", each Record.FieldOrDefault(Labels, [genre], [genre]), type text)

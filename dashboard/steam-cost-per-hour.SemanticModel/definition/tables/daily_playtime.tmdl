@@ -6,7 +6,7 @@ table daily_playtime
 		formatString: #,0.0" h"
 		lineageTag: a623bec7-0f34-419d-ab62-33f8abc84c76
 
-	/// Hours per collection day: 0 on a day with a collection and no play (axis: collection_days).
+	/// Hours per play day, with 0 on a collected day without play (the axis comes from collection_days).
 	measure 'Horas jogadas no dia' = [Horas jogadas] + 0
 		formatString: #,0.0" h";-#,0.0" h";""
 		lineageTag: 99cbfb03-df4a-408c-86e6-a25093f95fe4
@@ -35,7 +35,7 @@ table daily_playtime
 			RETURN IF ( ISEMPTY ( topo ), "nenhum dia com jogo", FORMAT ( MAXX ( topo, collection_days[play_date] ), "dddd, dd/mm/yyyy" ) )
 		lineageTag: 10b761d6-65a0-411c-80ec-e0efd1329cbd
 
-	/// Maior sequência de dias anotados seguidos com jogo; dia sem anotação não quebra nem soma
+	/// Longest run of consecutive collected days with play; a day without a collection neither breaks nor extends it (spec rule 32).
 	measure 'Maior sequência de dias' =
 			VAR jogados = FILTER ( VALUES ( collection_days[play_date] ), CALCULATE ( SUM ( daily_playtime[minutes_played] ) ) > 0 )
 			VAR semJogo = FILTER ( ALLSELECTED ( collection_days[play_date] ), CALCULATE ( SUM ( daily_playtime[minutes_played] ) ) + 0 = 0 )
@@ -116,7 +116,7 @@ table daily_playtime
 	measure 'Fatia do período texto' = VAR f = [Fatia do período] RETURN IF ( ISBLANK ( f ), BLANK (), IF ( f > 0 && f < 0.01, "<1%", FORMAT ( f, "0%" ) ) )
 		lineageTag: e045bd37-1083-4788-86ab-63b07b1db4ef
 
-	/// Per-day hours of one game; blank for every day when the game was not opened, so the chart stays empty
+	/// Per-day hours of one game, with 0 on days without play; blank on every day if the game has no hours on any collected day, so the chart stays empty.
 	measure 'Horas no dia do jogo' = IF ( CALCULATE ( [Horas jogadas], ALL ( collection_days ) ) > 0, [Horas jogadas no dia] )
 		formatString: #,0.0" h";-#,0.0" h";""
 		lineageTag: 245bb342-25d0-4a44-a8bf-61157c713fd3

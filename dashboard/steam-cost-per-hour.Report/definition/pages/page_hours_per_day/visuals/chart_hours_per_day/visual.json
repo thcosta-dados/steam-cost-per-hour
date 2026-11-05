@@ -72,7 +72,7 @@
               },
               "queryRef": "Max(daily_playtime.days_covered)",
               "nativeQueryRef": "Max of days_covered",
-              "displayName": "Dias somados (1 = coleta normal)"
+              "displayName": "Dias somados"
             }
           ]
         },
@@ -272,7 +272,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Toda manhã o painel anota minhas horas da Steam e conta para o dia anterior. Se, ao passar o mouse, aparecer 2 dias somados, faltou a anotação de um dia.'"
+                  "Value": "'Todo dia o painel anota minhas horas da Steam e conta para o dia anterior. Se, ao passar o mouse, aparecerem 2 dias somados, faltou a anotação de um dia.'"
                 }
               }
             },

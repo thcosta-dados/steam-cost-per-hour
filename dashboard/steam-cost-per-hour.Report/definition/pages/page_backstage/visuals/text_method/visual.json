@@ -87,7 +87,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "A Steam só mostra o total de horas de cada jogo. Por isso, toda manhã o painel anota esse total, e a diferença de um dia para o outro vira as horas do dia anterior.",
+                    "value": "A Steam só mostra o total de horas de cada jogo. Por isso, todo dia o painel anota esse total, e a diferença de um dia para o outro vira as horas do dia anterior.",
                     "textStyle": {
                       "fontSize": "13pt",
                       "color": "#B1BAC4"

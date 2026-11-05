@@ -38,8 +38,8 @@ table game_costs
 	measure 'Data da compra' = VAR purchase_date = MIN ( game_costs[first_purchase_date] ) RETURN IF ( ISBLANK ( purchase_date ), "não comprei", FORMAT ( purchase_date, "dd/mm/yyyy" ) )
 		lineageTag: fd98d026-a2ac-413b-8578-8a493f714f25
 
-	/// Cost per hour of one game, as text: "—" when it is not calculated (0 hours or unknown value, rules 9 and 18).
-	measure 'Custo por hora do jogo' = VAR cost = SUM ( game_costs[cost_per_hour_brl] ) RETURN IF ( ISBLANK ( cost ), "—", "R$" & UNICHAR ( 160 ) & FORMAT ( cost, "#,0.00" ) )
+	/// Cost per hour of one game, as text: "nunca abri" for 0 hours, "sem preço" for an unknown value (rules 9 and 18).
+	measure 'Custo por hora do jogo' = VAR cost = SUM ( game_costs[cost_per_hour_brl] ) RETURN IF ( ISBLANK ( cost ), IF ( SUM ( game_costs[minutes_played] ) = 0, "nunca abri", "sem preço" ), "R$" & UNICHAR ( 160 ) & FORMAT ( cost, "#,0.00" ) )
 		lineageTag: 44d9e389-c6b4-49ae-9e18-94d7665ad96a
 
 	/// Manchete do ranking: o jogo pago (1 h ou mais) que custou menos por hora
@@ -166,7 +166,7 @@ table game_costs
 			VAR barato = TOPN ( 1, elegiveis, game_costs[cost_per_hour_brl], ASC )
 			VAR caro = TOPN ( 1, elegiveis, game_costs[cost_per_hour_brl], DESC )
 			VAR razao = INT ( DIVIDE ( MAXX ( caro, game_costs[cost_per_hour_brl] ), MAXX ( barato, game_costs[cost_per_hour_brl] ) ) )
-			RETURN IF ( razao >= 2, MAXX ( caro, game_costs[name] ) & " foi o mais caro. 1 hora dele custou o mesmo que " & razao & " horas do primeiro da lista.", "" )
+			RETURN IF ( razao >= 2, MAXX ( caro, game_costs[name] ) & " foi o mais caro. Uma hora dele custou o mesmo que " & razao & " horas do primeiro da lista.", "" )
 		lineageTag: a580067a-36b8-4c5b-b88f-3b000bfe7fd4
 
 	/// Selo de custo-benefício (regra 28): Platina até R$ 0,50/h, Ouro até R$ 1, Prata até R$ 3, Bronze acima
@@ -289,7 +289,7 @@ table game_costs
 			VAR pos = [Posição em horas]
 			VAR p1 = SWITCH ( TRUE (),
 			    minutos = 0, "Ainda não abri este jogo.",
-			    minutos < 60, "Joguei só " & minutos & " minutos.",
+			    minutos < 60, "Joguei só " & minutos & IF ( minutos = 1, " minuto.", " minutos." ),
 			    pos = 1, "É o jogo que mais joguei, com " & fatia & " das minhas horas.",
 			    "É o meu " & pos & "º jogo mais jogado, com " & fatia & " das minhas horas." )
 			VAR p2 = SWITCH ( TRUE (),
@@ -332,7 +332,8 @@ table game_costs
 
 	measure 'Fato extra título' =
 			VAR topo = TOPN ( 1, game_costs, game_costs[extra_spend_brl], DESC )
-			RETURN "Gastei dentro do " & MAXX ( topo, game_costs[name] ) & ", um jogo que me custou " & "R$" & UNICHAR ( 160 ) & FORMAT ( MAXX ( topo, game_costs[game_value_brl] ) + 0, "#,0.00" )
+			VAR preco = MAXX ( topo, game_costs[game_value_brl] ) + 0
+			RETURN "Gastei dentro do " & MAXX ( topo, game_costs[name] ) & IF ( preco = 0, ", um jogo que não me custou nada", ", um jogo que me custou " & "R$" & UNICHAR ( 160 ) & FORMAT ( preco, "#,0.00" ) )
 		lineageTag: f467b01a-57a5-495d-8676-3ad8efaf5514
 
 	measure 'Fato extra valor' = "R$" & UNICHAR ( 160 ) & FORMAT ( MAXX ( TOPN ( 1, game_costs, game_costs[extra_spend_brl], DESC ), game_costs[extra_spend_brl] ) + 0, "#,0.00" )
@@ -344,9 +345,9 @@ table game_costs
 			VAR lista = CONCATENATEX ( jogos, game_costs[minutes_played] & " min de " & game_costs[name], " e ", game_costs[minutes_played], ASC )
 			RETURN SWITCH ( TRUE (),
 			    n = 0, "Nenhum jogo que comprei ficou com menos de 1 hora",
-			    n = 1, "Paguei em 1 jogo que mal abri. Joguei " & lista,
-			    n = 2, "Paguei em 2 jogos que mal abri. Joguei " & lista,
-			    "Paguei em " & n & " jogos que joguei menos de 1 hora" )
+			    n = 1, "Comprei 1 jogo que mal abri. Joguei " & lista,
+			    n = 2, "Comprei 2 jogos que mal abri. Joguei " & lista,
+			    "Comprei " & n & " jogos que joguei menos de 1 hora" )
 		lineageTag: 645c47bb-5a56-4bfc-a88a-ba39ee7857b7
 
 	measure 'Título do dinheiro parado' = VAR n = [Jogos pagos nunca abertos] RETURN IF ( n = 0, "Todo jogo que comprei, eu abri pelo menos uma vez", "Tenho " & n & IF ( n = 1, " jogo comprado que nunca abri", " jogos comprados que nunca abri" ) )

@@ -52,7 +52,7 @@ table purchase_discounts
 			VAR ultimo = MAXX ( eco, purchase_discounts[purchase_year] )
 			VAR lista = IF ( n <= 1, ultimo & "", CONCATENATEX ( FILTER ( eco, purchase_discounts[purchase_year] < ultimo ), purchase_discounts[purchase_year], ", ", purchase_discounts[purchase_year], ASC ) & " e " & ultimo )
 			RETURN IF ( ISEMPTY ( anos ), "",
-			    "Fiz mais compras em " & MAXX ( mais, purchase_discounts[purchase_year] ) & IF ( nMais = 1, ", foi 1.", ", foram " & nMais & "." )
+			    "Fiz mais compras em " & MAXX ( mais, purchase_discounts[purchase_year] ) & IF ( nMais = 1, ", com 1 compra.", ", foram " & nMais & "." )
 			    & IF ( n = 0, "", " Em " & lista & ", economizei mais do que paguei." ) )
 		lineageTag: 0d2b4679-12c5-4179-8d4b-b6707b10ff91
 

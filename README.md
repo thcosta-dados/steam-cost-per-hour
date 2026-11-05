@@ -2,13 +2,13 @@
 
 > **EN:** A case study of my own Steam account: a data pipeline that combines my library's playtime (collected daily from the Steam Web API) with my purchase history to show the cost per hour of each game in a Power BI dashboard. Work in progress.
 
-> 🚧 **README provisório.** O projeto está em construção. A versão final, com diagrama do fluxo e prints do painel, entra no fim da v1.
+> Este README ainda é provisório, porque o projeto está em construção. A versão final, com o diagrama do fluxo e prints do painel, fica pronta no fim da v1.
 
 ![Demonstração do painel no Power BI: navegação entre as páginas, dica de um jogo, ficha do jogo e filtros](docs/images/dashboard-demo.gif)
 
 ## O que é
 
-Um estudo de caso da minha própria conta na Steam. Um pipeline de dados junta as horas jogadas de cada jogo com o valor que paguei por ele, e o painel conta essa história e responde perguntas como:
+Um estudo de caso da minha própria conta na Steam. Um pipeline de dados junta as horas jogadas de cada jogo com o valor que paguei por ele, e o painel responde perguntas como:
 
 - Qual jogo saiu mais barato por hora de diversão?
 - Quanto dinheiro está parado em jogos que nunca abri?
@@ -47,11 +47,11 @@ docker compose exec app python -m src.run_daily      # coleta todos os usuários
 docker compose exec app python -m src.catalog        # só o catálogo, com a lista de jogos sem preço
 ```
 
-Os usuários coletados ficam na variável `STEAM_USERS` (`steamid:apelido`, separados por `;`), só de pessoas que concordaram. Cada execução fica registrada na tabela `pipeline_runs`.
+As contas coletadas ficam na variável `STEAM_USERS` (`steamid:apelido`, separadas por `;`), e a lista só tem pessoas que concordaram. Cada execução fica registrada na tabela `pipeline_runs`.
 
 ## Banco na nuvem (Supabase)
 
-O mesmo código roda contra o Supabase trocando só as variáveis de ambiente. Crie o `.env.cloud` com os dados do *Session pooler* do projeto e `POSTGRES_SSLMODE=require` (veja o `.env.example`), e use o serviço `app-cloud`:
+O mesmo código roda no Supabase, só trocando as variáveis de ambiente. Crie o `.env.cloud` com os dados do *Session pooler* do projeto e `POSTGRES_SSLMODE=require` (veja o `.env.example`), e use o serviço `app-cloud`:
 
 ```bash
 docker compose run --rm app-cloud python -m src.create_tables
@@ -60,7 +60,7 @@ docker compose run --rm app-cloud python -m src.run_daily
 
 ## Coleta automática (GitHub Actions)
 
-O workflow `.github/workflows/daily-collection.yml` roda o pipeline contra o Supabase uma vez por dia, agendado para as 03:17 (horário de Brasília), e também pelo botão *Run workflow*. Na prática, o GitHub costuma iniciar execuções agendadas com horas de atraso (entre 8h e 10h, em outubro de 2026), o que não muda a data do snapshot. As credenciais ficam nos segredos do repositório. Se a execução falhar, ou falhar para algum usuário, ela fica vermelha na aba Actions e o GitHub envia um e-mail.
+O workflow `.github/workflows/daily-collection.yml` roda o pipeline no Supabase uma vez por dia, agendado para as 03:17 (horário de Brasília), e também pode ser disparado pelo botão *Run workflow*. Na prática, o GitHub costuma iniciar execuções agendadas com atraso (em outubro de 2026, foram de 8 a 10 horas), o que não muda a data do snapshot. As credenciais ficam nos segredos do repositório. Se a execução falhar, ou falhar para algum usuário, ela fica vermelha na aba Actions e o GitHub envia um e-mail.
 
 O GitHub desativa agendamentos em repositórios sem commits há 60 dias. Se isso acontecer, basta reativar o workflow na aba Actions.
 
@@ -78,10 +78,10 @@ Credenciais ficam só no `.env` (ignorado pelo Git) e nos segredos do GitHub. Ar
 
 ## Próximos passos
 
-Os dados são só da minha conta, mas o banco já foi desenhado para vários usuários: cada linha tem um código anônimo de usuário, as tabelas têm Row Level Security e a coleta só inclui quem concordou. A ideia para uma segunda fase é um site em que outra pessoa informa o próprio perfil público e vê a sua biblioteca, as suas horas e um custo por hora estimado pelo preço da loja. O envio do histórico de compras seria opcional, para quem quiser o valor exato. Essa fase ainda vai ganhar uma especificação própria.
+Os dados são só da minha conta, mas o banco já foi desenhado para vários usuários: cada linha tem um código anônimo de usuário, as tabelas têm Row Level Security e a coleta só inclui quem concordou. A ideia para uma segunda fase é um site em que outra pessoa informa o próprio perfil público e vê a biblioteca dela, com as horas e um custo por hora estimado pelo preço da loja. O envio do histórico de compras seria opcional, para quem quiser o valor exato. Essa fase ainda vai ganhar uma especificação própria.
 
-## Considerações finais
+## O que aprendi
 
 O projeto me fez pensar em quanto um dado pode se distanciar da realidade que ele parece descrever. A Steam diz que tenho mais de 2.000 horas de Warframe, mas isso não quer dizer que passei esse tempo todo jogando. O que ela mede é o tempo com o jogo aberto, e isso inclui partidas de verdade, o jogo esquecido em segundo plano e as horas em que fiquei logado e parado só para ganhar recompensas. Existem até jogos feitos para isso, os *idle games*, que progridem sozinhos enquanto ficam abertos.
 
-Ou seja, o número está certo, mas responde a uma pergunta diferente da que parece. O custo por hora deste painel é, na verdade, o custo por hora com o jogo aberto, e por isso pode sair mais baixo do que o custo por hora em que eu estava de fato jogando. Levo isso como lição para qualquer análise: antes de tirar conclusões, entender como o dado foi gerado e o que ele realmente mede.
+Ou seja, o número está certo, mas responde a uma pergunta diferente da que parece. O custo por hora deste painel é o custo por hora com o jogo aberto, e por isso pode sair mais baixo do que o custo de cada hora em que eu estava de fato jogando. A lição que levo para outras análises é entender como o dado foi gerado e o que ele mede antes de tirar conclusões.

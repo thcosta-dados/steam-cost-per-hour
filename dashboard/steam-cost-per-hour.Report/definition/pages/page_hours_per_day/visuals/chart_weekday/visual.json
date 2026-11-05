@@ -369,7 +369,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Média dos dias em que joguei. Com poucas semanas anotadas, isso ainda muda.'"
+                  "Value": "'Média dos dias em que joguei. Com poucas semanas anotadas, isso ainda pode mudar.'"
                 }
               }
             }

@@ -121,8 +121,8 @@ table purchase_discounts
 			RETURN FORMAT ( MAXX ( TOPN ( 1, anos, [@pago], DESC ), purchase_discounts[purchase_year] ), "0" )
 		lineageTag: 8c08ffe4-57fd-42db-9d15-ba08fef52b13
 
-	measure 'Título economia' = "Economizei com promoções. Sem elas, teria pago " & "R$" & UNICHAR ( 160 ) & FORMAT ( SUM ( purchase_discounts[original_price_brl] ) + 0, "#,0.00" )
-		lineageTag: 1eb9f22f-48d2-4fef-8bdc-e7681d02b4c5
+	measure 'Título economia' = "R$" & UNICHAR ( 160 ) & FORMAT ( SUM ( purchase_discounts[original_price_brl] ) + 0, "#,0.00" ) & " era o preço cheio. Com as promoções, economizei"
+		lineageTag: 51e87f22-2ad2-4701-94bd-3b7ff13b1ad2
 
 	measure 'Título desconto médio' = "Desconto médio que consegui. " & FORMAT ( DIVIDE ( CALCULATE ( COUNTROWS ( purchase_discounts ), purchase_discounts[discount_pct] > 0 ), COUNTROWS ( purchase_discounts ) ), "0%" ) & " das compras foram em promoção"
 		lineageTag: 0facdd06-ff1b-48d2-a7ee-f8160b0cd269
@@ -132,8 +132,15 @@ table purchase_discounts
 			RETURN "Somando todos os anos, é o mês em que mais compro. Foram " & MAXX ( meses, [@n] ) & " compras"
 		lineageTag: 26296f3d-687d-488a-ab76-a0ae0ba61e0f
 
-	measure 'Título primeira compra' = IF ( ISBLANK ( MIN ( purchase_discounts[purchase_date] ) ), "Nenhuma compra no período", IF ( ISFILTERED ( purchase_discounts[purchase_date] ), "A primeira compra do período foi ", "Comecei na Steam com " ) & [Primeira compra frase] )
-		lineageTag: b0b4e80b-cf77-4d26-8ad3-1d718093a808
+	measure 'Título primeira compra' =
+			VAR d = MIN ( purchase_discounts[purchase_date] )
+			VAR linha = TOPN ( 1, FILTER ( purchase_discounts, purchase_discounts[purchase_date] = d ), purchase_discounts[paid_brl], DESC )
+			VAR valor = "R$" & UNICHAR ( 160 ) & FORMAT ( MAXX ( linha, purchase_discounts[paid_brl] ), "#,0.00" )
+			VAR jogo = MAXX ( linha, purchase_discounts[items_short] )
+			RETURN IF ( ISBLANK ( d ), "Nenhuma compra no período",
+			    IF ( ISFILTERED ( purchase_discounts[purchase_date] ), "Por " & valor & ", a primeira compra do período foi " & jogo,
+			        "Por " & valor & ", comecei na Steam com " & jogo ) )
+		lineageTag: 6a4e038f-ae46-42b1-aaf9-79504445094a
 
 	measure 'Título compra mais cara' =
 			VAR linha = TOPN ( 1, purchase_discounts, purchase_discounts[paid_brl], DESC, purchase_discounts[purchase_date], ASC )

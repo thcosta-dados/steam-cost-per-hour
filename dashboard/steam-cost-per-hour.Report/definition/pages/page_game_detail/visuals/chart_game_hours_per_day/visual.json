@@ -340,7 +340,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Dia com 0 h: o painel anotou, mas não abri o jogo.'"
+                  "Value": "'Dia com 0 h é dia em que o painel anotou, mas não abri o jogo.'"
                 }
               }
             }

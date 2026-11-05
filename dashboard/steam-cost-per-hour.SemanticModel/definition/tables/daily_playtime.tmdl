@@ -8,7 +8,7 @@ table daily_playtime
 
 	/// Hours per collection day: 0 on a day with a collection and no play (axis: collection_days).
 	measure 'Horas jogadas no dia' = [Horas jogadas] + 0
-		formatString: #,0.0" h"
+		formatString: #,0.0" h";-#,0.0" h";""
 		lineageTag: 99cbfb03-df4a-408c-86e6-a25093f95fe4
 
 	/// Days with play in the filter context.

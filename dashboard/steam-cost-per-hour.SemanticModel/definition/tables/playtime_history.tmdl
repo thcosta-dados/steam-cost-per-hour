@@ -11,7 +11,8 @@ table playtime_history
 			VAR ultimo = MAX ( playtime_history[snapshot_date] )
 			VAR h0 = CALCULATE ( SUM ( playtime_history[hours_played] ), playtime_history[snapshot_date] = primeiro )
 			VAR h1 = CALCULATE ( SUM ( playtime_history[hours_played] ), playtime_history[snapshot_date] = ultimo )
-			RETURN "Desde " & FORMAT ( primeiro, "dd/mm/yyyy" ) & ", somei mais " & FORMAT ( h1 - h0, "#,0.0" ) & " h."
+			RETURN IF ( h1 - h0 <= 0, "Não abri este jogo desde " & FORMAT ( primeiro, "dd/mm/yyyy" ) & ".",
+			    "Desde " & FORMAT ( primeiro, "dd/mm/yyyy" ) & ", joguei mais " & FORMAT ( h1 - h0, "#,0.0" ) & " h nele." )
 		lineageTag: d08b5f88-6566-4d33-bc53-9b8565a90518
 
 	column user_id
@@ -61,6 +62,14 @@ table playtime_history
 		summarizeBy: none
 		sourceColumn: game_key
 
+	/// Collection day as dd/MM/yy for the chart axis, sorted by the date
+	column snapshot_label
+		dataType: string
+		lineageTag: be77a735-e5d8-4d39-92c4-9b3bd1bada4c
+		summarizeBy: none
+		sourceColumn: snapshot_label
+		sortByColumn: snapshot_date
+
 	partition playtime_history = m
 		mode: import
 		source =
@@ -70,9 +79,11 @@ table playtime_history
 				    Typed = Table.TransformColumnTypes(History, {
 				        {"app_id", Int64.Type}, {"snapshot_date", type date},
 				        {"minutes_played", Int64.Type}, {"hours_played", type number}
-				    })
+				    }),
+				    // Short label for the chart axis, like collection_days[day_label]
+				    SnapshotLabel = Table.AddColumn(Typed, "snapshot_label", each Date.ToText([snapshot_date], "dd/MM/yy"), type text)
 				in
-				    Typed
+				    SnapshotLabel
 
 	annotation PBI_ResultType = Table
 

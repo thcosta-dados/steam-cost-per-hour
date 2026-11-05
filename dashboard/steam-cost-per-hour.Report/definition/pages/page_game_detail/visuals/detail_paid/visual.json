@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "detail_paid",
   "position": {
-    "x": 656,
+    "x": 968,
     "y": 400,
     "z": 4002,
     "height": 120,
-    "width": 296,
+    "width": 452,
     "tabOrder": 4002
   },
   "visual": {
@@ -179,13 +179,8 @@
             },
             "text": {
               "expr": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "game_costs"
-                    }
-                  },
-                  "Property": "Título do card paguei"
+                "Literal": {
+                  "Value": "'Paguei pelo jogo'"
                 }
               }
             }

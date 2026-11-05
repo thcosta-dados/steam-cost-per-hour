@@ -215,7 +215,7 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 - [x] Uma revisão independente com o checklist da pesquisa ("parece IA ou feito por gente?") dá nota 8 ou mais em todas as páginas.
 - [x] A spec registra o novo objetivo, as user stories e as regras novas.
 - [x] O GIF de demonstração mostra filtros, clique no jogo e navegação, em menos de 30 segundos (vindo do ticket 11). Gravado em 05/11/2026: docs/images/dashboard-demo.gif, 27 s e 4,2 MB.
-- [ ] Verificado se é possível publicar o painel em link aberto com a conta disponível, e a resposta registrada (vindo do ticket 11).
+- [x] Verificado se é possível publicar o painel em link aberto com a conta disponível, e a resposta registrada (vindo do ticket 11). Resposta em 05/11/2026: não é possível. "Publicar na Web" exige entrar no serviço do Power BI com uma conta de trabalho ou de escola, e o autor só tem contas pessoais. O painel é apresentado pelo GIF e pelos prints no README, e o arquivo .pbip fica no repositório para quem tiver o Power BI Desktop.
 
 ---
 

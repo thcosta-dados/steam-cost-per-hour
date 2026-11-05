@@ -4,10 +4,10 @@
   "position": {
     "x": 32,
     "y": 232,
-    "z": 5000,
-    "height": 464,
+    "z": 3500,
+    "height": 400,
     "width": 920,
-    "tabOrder": 5000
+    "tabOrder": 3500
   },
   "visual": {
     "visualType": "textbox",
@@ -26,12 +26,13 @@
                       "fontWeight": "bold"
                     }
                   }
-                ]
+                ],
+                "horizontalTextAlignment": "center"
               },
               {
                 "textRuns": [
                   {
-                    "value": "Custo por hora: o que paguei pelo jogo, mais o que gastei dentro dele, dividido pelas horas jogadas.",
+                    "value": "",
                     "textStyle": {
                       "fontSize": "13pt",
                       "color": "#B1BAC4"
@@ -42,7 +43,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Os valores vêm do meu histórico de compras da Steam. Sem o histórico, o painel usa o preço cheio da loja e marca o jogo como estimado.",
+                    "value": "Para achar o custo por hora, somo o que paguei pelo jogo e o que gastei dentro dele, e divido pelas horas que a Steam mostra.",
                     "textStyle": {
                       "fontSize": "13pt",
                       "color": "#B1BAC4"
@@ -53,7 +54,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Jogo gratuito ou sem compra na Steam entra com R$ 0, mais o que gastei dentro dele.",
+                    "value": "",
                     "textStyle": {
                       "fontSize": "13pt",
                       "color": "#B1BAC4"
@@ -64,7 +65,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Só conto compras feitas na Steam. Chave de outra loja ou compra no site da empresa fica de fora.",
+                    "value": "Os valores vêm do meu histórico de compras da Steam. Jogo grátis ou que veio sem compra entra com R$ 0, mais o que gastei dentro dele. Não conto o que comprei fora da Steam, como chave de outra loja ou compra no site do jogo. Sem o histórico, uso o preço cheio da loja e marco o jogo como estimado.",
                     "textStyle": {
                       "fontSize": "13pt",
                       "color": "#B1BAC4"
@@ -75,7 +76,51 @@
               {
                 "textRuns": [
                   {
-                    "value": "A Steam só informa o total de horas de cada jogo. Toda manhã o painel anota esse total, e a diferença entre dois dias vira as horas do dia.",
+                    "value": "",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#B1BAC4"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "A Steam só mostra o total de horas de cada jogo. Por isso, toda manhã o painel anota esse total, e a diferença de um dia para o outro vira as horas do dia anterior.",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#B1BAC4"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#B1BAC4"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "A Steam conta o tempo com o jogo aberto. Isso inclui jogo esquecido aberto ou parado esperando recompensa, então o custo por hora real pode ser maior.",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#B1BAC4"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "",
                     "textStyle": {
                       "fontSize": "13pt",
                       "color": "#B1BAC4"

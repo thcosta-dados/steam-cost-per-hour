@@ -29,7 +29,7 @@
               "queryRef": "game_costs.hours_group_label",
               "nativeQueryRef": "hours_group_label",
               "active": true,
-              "displayName": "Tempo total no jogo"
+              "displayName": "Quanto joguei no total"
             }
           ]
         }

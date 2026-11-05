@@ -178,8 +178,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Porcentagem das minhas horas em jogos que não paguei para jogar'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "game_costs"
+                    }
+                  },
+                  "Property": "Título fato grátis"
                 }
               }
             }

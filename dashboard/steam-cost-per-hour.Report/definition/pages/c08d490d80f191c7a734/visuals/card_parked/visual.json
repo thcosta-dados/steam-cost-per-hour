@@ -23,11 +23,11 @@
                       "Entity": "game_costs"
                     }
                   },
-                  "Property": "Dinheiro parado texto"
+                  "Property": "Dinheiro parado valor"
                 }
               },
-              "queryRef": "game_costs.Dinheiro parado texto",
-              "nativeQueryRef": "Dinheiro parado texto"
+              "queryRef": "game_costs.Dinheiro parado valor",
+              "nativeQueryRef": "Dinheiro parado valor"
             }
           ]
         }

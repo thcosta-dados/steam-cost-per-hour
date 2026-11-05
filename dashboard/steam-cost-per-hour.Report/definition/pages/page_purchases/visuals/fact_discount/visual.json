@@ -23,11 +23,11 @@
                       "Entity": "purchase_discounts"
                     }
                   },
-                  "Property": "Maior desconto texto"
+                  "Property": "Compras pela metade valor"
                 }
               },
-              "queryRef": "purchase_discounts.Maior desconto texto",
-              "nativeQueryRef": "Maior desconto texto"
+              "queryRef": "purchase_discounts.Compras pela metade valor",
+              "nativeQueryRef": "Compras pela metade valor"
             }
           ]
         }
@@ -184,7 +184,7 @@
                       "Entity": "purchase_discounts"
                     }
                   },
-                  "Property": "Título maior desconto"
+                  "Property": "Título compras pela metade"
                 }
               }
             }

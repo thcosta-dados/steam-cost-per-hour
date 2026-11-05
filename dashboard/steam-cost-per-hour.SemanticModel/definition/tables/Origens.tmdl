@@ -28,11 +28,11 @@ table Origens
 		source =
 				let
 				    Result = #table(type table [Ordem = Int64.Type, Origem = text, #"O que quer dizer" = text], {
-				        {1, "pago", "Comprei, e o valor vem do histórico de compras"},
-				        {2, "gratuito", "Jogo grátis para jogar; conto só o que gastei dentro"},
+				        {1, "pago", "Comprei na Steam. O valor vem do histórico de compras"},
+				        {2, "gratuito", "Jogo grátis. Conto só o que gastei dentro dele"},
 				        {3, "sem compra na Steam", "Presente, cortesia, promoção grátis ou chave de outra loja"},
-				        {4, "estimado", "Sem histórico carregado: uso o preço cheio da loja"},
-				        {5, "sem valor conhecido", "Sem histórico e sem preço na loja: fica fora do custo"}})
+				        {4, "estimado", "Sem histórico carregado, uso o preço cheio da loja"},
+				        {5, "sem valor conhecido", "Sem histórico e sem preço na loja. Fica fora do custo"}})
 				in
 				    Result
 

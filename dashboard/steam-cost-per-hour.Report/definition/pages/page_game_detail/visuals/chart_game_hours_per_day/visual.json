@@ -23,11 +23,11 @@
                       "Entity": "collection_days"
                     }
                   },
-                  "Property": "play_date"
+                  "Property": "day_label"
                 }
               },
-              "queryRef": "collection_days.play_date",
-              "nativeQueryRef": "play_date",
+              "queryRef": "collection_days.day_label",
+              "nativeQueryRef": "day_label",
               "displayName": "Dia",
               "active": true
             }
@@ -63,7 +63,7 @@
                     "Entity": "collection_days"
                   }
                 },
-                "Property": "play_date"
+                "Property": "day_label"
               }
             },
             "direction": "Ascending"

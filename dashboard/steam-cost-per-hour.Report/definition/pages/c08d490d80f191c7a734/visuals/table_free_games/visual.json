@@ -73,37 +73,22 @@
               },
               "queryRef": "game_costs.extra_spend_brl",
               "nativeQueryRef": "extra_spend_brl",
-              "displayName": "Extras"
+              "displayName": "Dentro do jogo"
             },
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
                       "Entity": "game_costs"
                     }
                   },
-                  "Property": "cost_per_hour_brl"
+                  "Property": "Como consegui"
                 }
               },
-              "queryRef": "game_costs.cost_per_hour_brl",
-              "nativeQueryRef": "cost_per_hour_brl",
-              "displayName": "Por hora"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "game_costs"
-                    }
-                  },
-                  "Property": "value_origin"
-                }
-              },
-              "queryRef": "game_costs.value_origin",
-              "nativeQueryRef": "value_origin",
-              "displayName": "Origem"
+              "queryRef": "game_costs.Como consegui",
+              "nativeQueryRef": "Como consegui",
+              "displayName": "Como consegui"
             }
           ]
         }
@@ -246,7 +231,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "230D"
+                  "Value": "200D"
                 }
               }
             }
@@ -274,7 +259,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "100D"
+                  "Value": "130D"
                 }
               }
             }
@@ -288,27 +273,13 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "90D"
+                  "Value": "200D"
                 }
               }
             }
           },
           "selector": {
-            "metadata": "game_costs.cost_per_hour_brl"
-          }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "130D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "game_costs.value_origin"
+            "metadata": "game_costs.Como consegui"
           }
         }
       ],
@@ -398,7 +369,7 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },
@@ -412,7 +383,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Gratuitos e sem compra na Steam'"
+                  "Value": "'Jogos que não comprei na Steam'"
                 }
               }
             }
@@ -530,7 +501,14 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Do mais jogado ao menos jogado. Sem compra: presente, cortesia, promoção ou chave de outra loja.'"
+                  "Value": "'Grátis para jogar, presente, cortesia, promoção grátis ou chave de outra loja.'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
                 }
               }
             }

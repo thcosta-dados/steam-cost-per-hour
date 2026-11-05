@@ -9,9 +9,9 @@ table 'Campos da dica'
 			    3, [Selo],
 			    4, [Paguei texto],
 			    5, [Extras texto],
-			    6, SELECTEDVALUE ( game_costs[value_origin] ),
+			    6, [Como consegui],
 			    7, [Data da compra] )
-		lineageTag: de958f6d-fec6-483b-b1c0-28c337954f3f
+		lineageTag: 1cb45baf-cff2-406b-864b-5ea44e713d8e
 
 	measure 'Cor do valor da dica' = IF ( SELECTEDVALUE ( 'Campos da dica'[Ordem] ) = 3, [Cor do selo], "#E6EDF3" )
 		lineageTag: 1cc72e21-85c3-47fb-8989-6ca51807c704
@@ -35,7 +35,7 @@ table 'Campos da dica'
 		mode: import
 		source =
 				let
-				    Result = #table(type table [Ordem = Int64.Type, Campo = text], {{1, "Horas"}, {2, "Por hora"}, {3, "Selo"}, {4, "Paguei"}, {5, "Extras"}, {6, "Origem"}, {7, "Comprei em"}})
+				    Result = #table(type table [Ordem = Int64.Type, Campo = text], {{1, "Horas"}, {2, "Por hora"}, {3, "Selo"}, {4, "Paguei"}, {5, "Dentro do jogo"}, {6, "Como consegui"}, {7, "Comprei em"}})
 				in
 				    Result
 

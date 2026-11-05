@@ -11,7 +11,7 @@ annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_ProTooling = ["DevMode"]
 
-annotation PBI_QueryOrder = ["DatabaseServer","DatabaseName","game_costs","items_out_of_metrics","daily_playtime","purchase_discounts","playtime_history","collection_days","game_genres","Campos da dica","Anos","Origens"]
+annotation PBI_QueryOrder = ["DatabaseServer","DatabaseName","game_costs","items_out_of_metrics","daily_playtime","purchase_discounts","playtime_history","collection_days","game_genres","Campos da dica","Anos","Origens","Selos"]
 
 ref table game_costs
 ref table items_out_of_metrics
@@ -23,6 +23,7 @@ ref table 'Campos da dica'
 ref table Anos
 ref table Origens
 ref table game_genres
+ref table Selos
 
 ref cultureInfo pt-BR
 

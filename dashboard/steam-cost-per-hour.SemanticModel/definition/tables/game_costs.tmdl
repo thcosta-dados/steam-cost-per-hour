@@ -32,16 +32,14 @@ table game_costs
 		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
 		lineageTag: cb7cd97b-d6b8-41ab-becc-83c9f45733b1
 
-	/// Which level the data is at: complete (purchase history loaded) or basic (only the SteamID).
-	measure 'Nível dos dados' = IF ( CALCULATE ( COUNTROWS ( game_costs ), game_costs[purchase_history_loaded] = TRUE () ) > 0, "Completo", "Básico" )
-		lineageTag: 7808bca7-2f54-417f-b85a-80e801db9111
+	measure 'Nível dos dados' = IF ( CALCULATE ( COUNTROWS ( game_costs ), game_costs[purchase_history_loaded] = TRUE () ) > 0, "Completo", "Estimado" )
+		lineageTag: aa6c2bc1-b18f-4866-b9bb-94d45963159c
 
-	/// Date of the purchase that is the game value, as text: games without a Steam purchase show "sem compra".
-	measure 'Data da compra' = VAR purchase_date = MIN ( game_costs[first_purchase_date] ) RETURN IF ( ISBLANK ( purchase_date ), "sem compra", FORMAT ( purchase_date, "dd/mm/yyyy" ) )
-		lineageTag: dc1e6edb-cdaa-4664-ae15-65bb109bc5b1
+	measure 'Data da compra' = VAR purchase_date = MIN ( game_costs[first_purchase_date] ) RETURN IF ( ISBLANK ( purchase_date ), "não comprei", FORMAT ( purchase_date, "dd/mm/yyyy" ) )
+		lineageTag: fd98d026-a2ac-413b-8578-8a493f714f25
 
 	/// Cost per hour of one game, as text: "—" when it is not calculated (0 hours or unknown value, rules 9 and 18).
-	measure 'Custo por hora do jogo' = VAR cost = SUM ( game_costs[cost_per_hour_brl] ) RETURN IF ( ISBLANK ( cost ), "—", FORMAT ( cost, "\R$ #,0.00" ) )
+	measure 'Custo por hora do jogo' = VAR cost = SUM ( game_costs[cost_per_hour_brl] ) RETURN IF ( ISBLANK ( cost ), "—", FORMAT ( cost, "\R$\ #,0.00" ) )
 		lineageTag: 44d9e389-c6b4-49ae-9e18-94d7665ad96a
 
 	/// Manchete do ranking: o jogo pago (1 h ou mais) que custou menos por hora
@@ -49,7 +47,7 @@ table game_costs
 			VAR elegiveis = FILTER ( game_costs, game_costs[hours_group] = "jogado" && game_costs[value_origin] IN { "pago", "estimado" } )
 			VAR melhor = TOPN ( 1, elegiveis, game_costs[cost_per_hour_brl], ASC )
 			RETURN IF ( ISEMPTY ( melhor ), "Nenhum jogo pago com esse filtro",
-			    MAXX ( melhor, game_costs[name] ) & " foi o jogo que mais valeu a pena: " & FORMAT ( MAXX ( melhor, game_costs[cost_per_hour_brl] ), "\R$ #,0.00" ) & " por hora" )
+			    MAXX ( melhor, game_costs[name] ) & " foi o jogo que mais valeu a pena: " & FORMAT ( MAXX ( melhor, game_costs[cost_per_hour_brl] ), "\R$\ #,0.00" ) & " por hora" )
 		lineageTag: ef820eca-795b-48c0-ac50-c3ff57bd067d
 
 	/// Spec rule 25: total spending on paid (or estimated) games divided by their hours, 0 h games included.
@@ -58,15 +56,15 @@ table game_costs
 		lineageTag: 74ae5d52-239c-4fff-95ba-e1e870917b40
 
 	/// Money parked with the number of games, so "R$ 0,00" does not look like an error.
-	measure 'Dinheiro parado com contagem' = VAR games = CALCULATE ( COUNTROWS ( game_costs ), game_costs[hours_group] = "não jogado", game_costs[game_value_brl] > 0 ) + 0 RETURN FORMAT ( [Dinheiro parado] + 0, "\R$ #,0.00" ) & " · " & games & IF ( games = 1, " jogo", " jogos" )
+	measure 'Dinheiro parado com contagem' = VAR games = CALCULATE ( COUNTROWS ( game_costs ), game_costs[hours_group] = "não jogado", game_costs[game_value_brl] > 0 ) + 0 RETURN FORMAT ( [Dinheiro parado] + 0, "\R$\ #,0.00" ) & " · " & games & IF ( games = 1, " jogo", " jogos" )
 		lineageTag: e1829d89-db9e-4003-a67b-db2c7acfd067
 
 	/// Value of paid games played for less than 1 hour, with the number of games.
-	measure 'Mal começados com contagem' = VAR games = CALCULATE ( COUNTROWS ( game_costs ), game_costs[hours_group] = "mal começado", game_costs[game_value_brl] > 0 ) + 0 RETURN FORMAT ( [Valor em jogos mal começados] + 0, "\R$ #,0.00" ) & " · " & games & IF ( games = 1, " jogo", " jogos" )
+	measure 'Mal começados com contagem' = VAR games = CALCULATE ( COUNTROWS ( game_costs ), game_costs[hours_group] = "mal começado", game_costs[game_value_brl] > 0 ) + 0 RETURN FORMAT ( [Valor em jogos mal começados] + 0, "\R$\ #,0.00" ) & " · " & games & IF ( games = 1, " jogo", " jogos" )
 		lineageTag: b0caad86-a7b6-4d0f-b5e8-2cd2b0c904aa
 
 	/// Context line of the home page: total spending, what cost per hour means and the last collection.
-	measure 'Contexto do início' = "Gasto total na Steam: " & FORMAT ( [Gasto total], "\R$ #,0.00" ) & "   ·   Custo por hora = (valor do jogo + gasto extra) ÷ horas jogadas   ·   Última coleta: " & FORMAT ( MAX ( game_costs[last_snapshot_date] ), "dd/mm/yyyy" )
+	measure 'Contexto do início' = "Gasto total na Steam: " & FORMAT ( [Gasto total], "\R$\ #,0.00" ) & "   ·   Custo por hora = (valor do jogo + gasto extra) ÷ horas jogadas   ·   Última coleta: " & FORMAT ( MAX ( game_costs[last_snapshot_date] ), "dd/mm/yyyy" )
 		lineageTag: 655deefc-5b8c-4f9e-a357-10dc6e3a7094
 
 	measure 'Horas na biblioteca' = DIVIDE ( SUM ( game_costs[minutes_played] ), 60 )
@@ -103,10 +101,10 @@ table game_costs
 			RETURN pagos & " pagos, " & gratis & " grátis, " & semCompra & " sem compra" & IF ( outros > 0, ", " & outros & " estimados ou sem preço", "" )
 		lineageTag: 46b79233-e1f1-4389-8b90-778c40c94571
 
-	measure 'Gasto total texto' = VAR v = [Gasto total] RETURN IF ( ISBLANK ( v ), "sem preço", FORMAT ( v, "\R$ #,0.00" ) )
+	measure 'Gasto total texto' = VAR v = [Gasto total] RETURN IF ( ISBLANK ( v ), "sem preço", FORMAT ( v, "\R$\ #,0.00" ) )
 		lineageTag: 62c12da5-8692-47f7-b4f6-302b0c94ef12
 
-	measure 'Custo médio texto' = FORMAT ( [Custo médio por hora (jogos pagos)] + 0, "\R$ #,0.00" )
+	measure 'Custo médio texto' = FORMAT ( [Custo médio por hora (jogos pagos)] + 0, "\R$\ #,0.00" )
 		lineageTag: cd47d17b-777f-4eef-8ec2-7a0dd39d1a6b
 
 	measure 'Tem estimado' = CALCULATE ( COUNTROWS ( game_costs ), game_costs[value_origin] = "estimado" ) > 0
@@ -144,7 +142,7 @@ table game_costs
 	measure 'Título do gasto no jogo' = IF ( SELECTEDVALUE ( game_costs[value_origin] ) IN { "gratuito", "sem compra na Steam" }, "Gastei dentro dele", "Gastei no jogo e extras" )
 		lineageTag: 26b2dee4-3bbe-4056-a12b-7b61161a93f9
 
-	measure 'Gasto no jogo texto' = VAR v = SUM ( game_costs[total_spend_brl] ) RETURN IF ( ISBLANK ( v ), "sem preço", FORMAT ( v, "\R$ #,0.00" ) )
+	measure 'Gasto no jogo texto' = VAR v = SUM ( game_costs[total_spend_brl] ) RETURN IF ( ISBLANK ( v ), "sem preço", FORMAT ( v, "\R$\ #,0.00" ) )
 		lineageTag: 35471a04-8df7-4c15-98f4-c1af9db2b352
 
 	measure 'Frase da origem curta' =
@@ -160,17 +158,16 @@ table game_costs
 		formatString: 0
 		lineageTag: 624a79f5-bb42-400a-ac6b-2eb1da022355
 
-	measure 'Frase do pódio' = [Jogos com 100 h ou mais] & " jogos chegaram a 100 horas. " & [Jogos com 500 h ou mais] & " chegaram a 500."
-		lineageTag: 769e6e56-1ba6-4236-8cce-7051c3d6fd70
+	measure 'Frase do pódio' = VAR resto = CALCULATE ( COUNTROWS ( game_costs ), ALL ( game_costs ) ) - 6 RETURN "Os outros " & resto & " jogos dividem os " & FORMAT ( 1 - [Fatia dos seis mais jogados], "0%" ) & " restantes."
+		lineageTag: c2c68160-2ffa-4968-a3ba-5dd6561bb68d
 
-	/// Quantas horas do mais barato valem 1 hora do mais caro (parte inteira)
 	measure 'Frase de contraste' =
 			VAR elegiveis = FILTER ( game_costs, game_costs[hours_group] = "jogado" && game_costs[value_origin] IN { "pago", "estimado" } )
 			VAR barato = TOPN ( 1, elegiveis, game_costs[cost_per_hour_brl], ASC )
 			VAR caro = TOPN ( 1, elegiveis, game_costs[cost_per_hour_brl], DESC )
 			VAR razao = INT ( DIVIDE ( MAXX ( caro, game_costs[cost_per_hour_brl] ), MAXX ( barato, game_costs[cost_per_hour_brl] ) ) )
-			RETURN IF ( razao >= 2, "1 hora de " & MAXX ( caro, game_costs[name] ) & " custou o mesmo que " & razao & " horas desse jogo.", "" )
-		lineageTag: 68df45d7-ce53-4567-a577-82b1058cf371
+			RETURN IF ( razao >= 2, MAXX ( caro, game_costs[name] ) & " foi o mais caro. 1 hora dele custou o mesmo que " & razao & " horas do primeiro da lista.", "" )
+		lineageTag: a580067a-36b8-4c5b-b88f-3b000bfe7fd4
 
 	/// Selo de custo-benefício (regra 28): Platina até R$ 0,50/h, Ouro até R$ 1, Prata até R$ 3, Bronze acima
 	measure Selo =
@@ -189,26 +186,26 @@ table game_costs
 	measure 'Origens do grupo' = CONCATENATEX ( VALUES ( game_costs[value_origin] ), game_costs[value_origin], ", ", game_costs[value_origin], ASC )
 		lineageTag: 37336f53-96f4-4d4b-a3d2-263584c60c21
 
-	measure 'Custo por hora do grupo' = VAR v = DIVIDE ( SUM ( game_costs[total_spend_brl] ), [Horas na biblioteca] ) RETURN IF ( ISBLANK ( v ), "sem preço", FORMAT ( v, "\R$ #,0.00" ) )
+	measure 'Custo por hora do grupo' = VAR v = DIVIDE ( SUM ( game_costs[total_spend_brl] ), [Horas na biblioteca] ) RETURN IF ( ISBLANK ( v ), "sem preço", FORMAT ( v, "\R$\ #,0.00" ) )
 		lineageTag: dfc95d11-ef1c-42f3-bd06-1418bc94c669
 
 	measure 'Manchete das metades' =
-			VAR hNao = CALCULATE ( [Horas na biblioteca], game_costs[cost_group] = "não comprei" )
-			VAR gNao = CALCULATE ( SUM ( game_costs[total_spend_brl] ), game_costs[cost_group] = "não comprei" ) + 0
+			VAR hNao = CALCULATE ( [Horas na biblioteca], game_costs[cost_group] = "sem comprar" )
+			VAR gNao = CALCULATE ( SUM ( game_costs[total_spend_brl] ), game_costs[cost_group] = "sem comprar" ) + 0
 			VAR p = DIVIDE ( hNao, [Horas na biblioteca] )
 			RETURN IF ( ISFILTERED ( game_costs[value_origin] ), "Placar com o filtro escolhido",
-			    IF ( ABS ( p - 0.5 ) <= 0.03, "Metade das minhas horas", FORMAT ( p, "0%" ) & " das minhas horas" ) & " me custou " & FORMAT ( gNao, "\R$ #,0.00" ) )
-		lineageTag: f5d00b91-918c-440e-8a2b-bae52099555e
+			    IF ( ABS ( p - 0.5 ) <= 0.03, "Metade das minhas horas", FORMAT ( p, "0%" ) & " das minhas horas" ) & " me custou " & FORMAT ( gNao, "\R$\ #,0.00" ) )
+		lineageTag: 2bf27f58-418d-4cab-b35a-0128c244f543
 
 	measure 'Frase da outra metade' =
 			VAR hSim = CALCULATE ( [Horas na biblioteca], game_costs[cost_group] = "comprei" )
 			VAR gSim = CALCULATE ( SUM ( game_costs[total_spend_brl] ), game_costs[cost_group] = "comprei" ) + 0
 			VAR p = DIVIDE ( hSim, [Horas na biblioteca] )
 			RETURN IF ( ISFILTERED ( game_costs[value_origin] ), "",
-			    IF ( ABS ( p - 0.5 ) <= 0.03, "A outra metade, em jogos pagos, custou ", "Os outros " & FORMAT ( p, "0%" ) & ", em jogos pagos, custaram " ) & FORMAT ( gSim, "\R$ #,0.00" ) & "." )
-		lineageTag: be44f4fe-4a67-45e8-8dd7-d1fb221e3df1
+			    IF ( ABS ( p - 0.5 ) <= 0.03, "A outra metade foi em jogos pagos e custou ", "Os outros " & FORMAT ( p, "0%" ) & " foram em jogos pagos e custaram " ) & FORMAT ( gSim, "\R$\ #,0.00" ) & "." )
+		lineageTag: fd37b28b-44bf-415e-984c-06e126cca229
 
-	measure 'Mal começados texto' = FORMAT ( [Valor em jogos mal começados] + 0, "\R$ #,0.00" )
+	measure 'Mal começados texto' = FORMAT ( [Valor em jogos mal começados] + 0, "\R$\ #,0.00" )
 		lineageTag: 0de0c6f3-81d1-457c-93d2-4ad4f32c6bbb
 
 	measure 'Nomes dos mal começados' =
@@ -219,7 +216,7 @@ table game_costs
 			RETURN SWITCH ( TRUE (), n = 0, "Nenhum jogo nesse grupo", n <= 2, lista, lista & " e mais " & ( n - 2 ) & IF ( n - 2 = 1, " jogo", " jogos" ) )
 		lineageTag: 9fd96fe7-dafa-4990-bab0-9a52aea5d45f
 
-	measure 'Dinheiro parado texto' = FORMAT ( [Dinheiro parado] + 0, "\R$ #,0.00" )
+	measure 'Dinheiro parado texto' = FORMAT ( [Dinheiro parado] + 0, "\R$\ #,0.00" )
 		lineageTag: 8954af9f-232e-412a-a407-274a3aeb3d0e
 
 	measure 'Jogos pagos nunca abertos' = CALCULATE ( COUNTROWS ( game_costs ), game_costs[hours_group] = "não jogado", game_costs[value_origin] IN { "pago", "estimado" } ) + 0
@@ -251,10 +248,10 @@ table game_costs
 	measure 'Posição texto' = [Posição em horas] & "º"
 		lineageTag: b5ecf01a-edec-43e1-bffb-37934f029bbf
 
-	measure 'Paguei texto' = VAR v = SUM ( game_costs[game_value_brl] ) RETURN IF ( ISBLANK ( v ), "sem preço", FORMAT ( v, "\R$ #,0.00" ) )
+	measure 'Paguei texto' = VAR v = SUM ( game_costs[game_value_brl] ) RETURN IF ( ISBLANK ( v ), "sem preço", FORMAT ( v, "\R$\ #,0.00" ) )
 		lineageTag: c92d2c67-0254-4027-b09f-e39ceb3c2f46
 
-	measure 'Extras texto' = FORMAT ( SUM ( game_costs[extra_spend_brl] ) + 0, "\R$ #,0.00" )
+	measure 'Extras texto' = FORMAT ( SUM ( game_costs[extra_spend_brl] ) + 0, "\R$\ #,0.00" )
 		lineageTag: ddd777b4-be6b-4772-82d9-aae320eb6e40
 
 	measure 'Frase da compra' = VAR d = MIN ( game_costs[first_purchase_date] ) RETURN IF ( ISBLANK ( d ), "não comprei na Steam", "em " & FORMAT ( d, "dd/mm/yyyy" ) )
@@ -263,17 +260,26 @@ table game_costs
 	measure 'Frase do selo' =
 			VAR s = [Selo]
 			VAR o = SELECTEDVALUE ( game_costs[value_origin] )
+			VAR m = SUM ( game_costs[minutes_played] )
 			RETURN IF ( s = "sem selo",
-			    IF ( o IN { "pago", "estimado" }, "Sem selo: precisa de 1 hora ou mais", "Sem selo: jogo " & o ),
-			    "Selo " & s & ": " & [Custo por hora do jogo] & " por hora" )
-		lineageTag: 1e6489ea-edb3-4ad8-b049-f34a323826fb
+			    SWITCH ( TRUE (),
+			        o = "sem valor conhecido", "Sem selo, porque não sei quanto o jogo custou",
+			        NOT ( o IN { "pago", "estimado" } ), "Sem selo, porque não comprei na Steam",
+			        m = 0, "Sem selo, porque ainda não abri o jogo",
+			        "Sem selo, porque joguei menos de 1 hora" ),
+			    "Selo " & s & ", com " & [Custo por hora do jogo] & " por hora" )
+		lineageTag: 762ce81c-0505-47d5-a5de-3ed36a3eee11
 
 	measure 'Frase de origem' =
 			VAR d = MIN ( game_costs[first_purchase_date] )
-			RETURN "Origem: " & SELECTEDVALUE ( game_costs[value_origin] ) & "." & IF ( ISBLANK ( d ), "", " Comprei em " & FORMAT ( d, "dd/mm/yyyy" ) & "." )
-		lineageTag: 798f752b-9fda-4e4b-9f10-b28189cb941b
+			RETURN SWITCH ( SELECTEDVALUE ( game_costs[value_origin] ),
+			    "pago", IF ( ISBLANK ( d ), "Comprei na Steam.", "Comprei na Steam em " & FORMAT ( d, "dd/mm/yyyy" ) & "." ),
+			    "gratuito", "Jogo grátis para jogar.",
+			    "sem compra na Steam", "Entrou sem compra na Steam, por presente, cortesia, promoção grátis ou chave de outra loja.",
+			    "estimado", "Valor estimado pelo preço cheio da loja.",
+			    "Sem preço conhecido na loja." )
+		lineageTag: ba31a79b-0795-48a1-bbd3-c91b49974140
 
-	/// Curiosidades do jogo, montadas pelos dados
 	measure 'Curiosidades do jogo' =
 			VAR fatia = FORMAT ( [Fatia das minhas horas], "0.0%" )
 			VAR o = SELECTEDVALUE ( game_costs[value_origin] )
@@ -282,26 +288,34 @@ table game_costs
 			VAR minutos = SUM ( game_costs[minutes_played] )
 			VAR recentes = [Horas jogadas]
 			VAR inicio = CALCULATE ( MIN ( collection_days[play_date] ), ALL ( collection_days ) )
+			VAR pos = [Posição em horas]
 			VAR p1 = SWITCH ( TRUE (),
 			    minutos = 0, "Ainda não abri este jogo.",
 			    minutos < 60, "Joguei só " & minutos & " minutos.",
-			    "É o " & [Posição em horas] & "º jogo que mais joguei, com " & fatia & " das minhas horas." )
+			    pos = 1, "É o jogo que mais joguei, com " & fatia & " das minhas horas.",
+			    "É o meu " & pos & "º jogo mais jogado, com " & fatia & " das minhas horas." )
 			VAR p2 = SWITCH ( TRUE (),
-			    o IN { "gratuito", "sem compra na Steam" } && extras > 0, " Não paguei para jogar, mas gastei " & FORMAT ( extras, "\R$ #,0.00" ) & " dentro dele.",
-			    valor > 0 && extras > valor, " Gastei em extras " & FORMAT ( DIVIDE ( extras, valor ), "0.0" ) & " vezes o preço do jogo.",
+			    o IN { "gratuito", "sem compra na Steam" } && extras > 0, " Não paguei para jogar, mas gastei " & FORMAT ( extras, "\R$\ #,0.00" ) & " dentro dele.",
+			    valor > 0 && extras > valor, " Dentro dele, gastei " & FORMAT ( DIVIDE ( extras, valor ), "0.0" ) & " vezes o que paguei pelo jogo.",
 			    "" )
-			VAR p3 = IF ( recentes > 0, " Desde " & FORMAT ( inicio, "dd/mm/yyyy" ) & ", joguei mais " & FORMAT ( recentes, "#,0.0" ) & " h.", "" )
+			VAR p3 = IF ( recentes > 0, " Desde " & FORMAT ( inicio, "dd/mm/yyyy" ) & ", joguei mais " & FORMAT ( recentes, "#,0.0" ) & " h nele.", "" )
 			RETURN p1 & p2 & p3
-		lineageTag: a51c9787-000c-4f20-b91e-ade2d5f4dbd9
+		lineageTag: 0501caf6-e089-404a-937b-6cda7d1e9f4e
 
 	measure 'Título do card horas' = "Total de horas jogadas na Steam, durante " & [Anos desde a primeira compra] & " anos (cerca de " & FORMAT ( [Horas por dia de conta], "0.0" ) & " h por dia)"
 		lineageTag: 1fde3c55-0a43-4726-8786-fbc87e91d613
 
-	measure 'Título do card jogos' = "Jogos na conta: " & [Frase da biblioteca]
-		lineageTag: 6ddcd766-eb92-4409-be3c-5700c9dbc2e5
+	measure 'Título do card jogos' =
+			VAR pagos = CALCULATE ( COUNTROWS ( game_costs ), game_costs[value_origin] = "pago" ) + 0
+			VAR gratis = CALCULATE ( COUNTROWS ( game_costs ), game_costs[value_origin] = "gratuito" ) + 0
+			VAR semCompra = CALCULATE ( COUNTROWS ( game_costs ), game_costs[value_origin] = "sem compra na Steam" ) + 0
+			VAR outros = [Jogos na conta] - pagos - gratis - semCompra
+			RETURN "Jogos na minha conta. Comprei " & pagos & ", " & gratis & " são grátis e " & semCompra & " vieram sem compra na Steam"
+			    & IF ( outros > 0, ". " & outros & " têm valor estimado ou desconhecido", "" )
+		lineageTag: b4bbc294-8d35-44c0-81e8-de3ed90d4cf5
 
-	measure 'Título do card gasto' = IF ( [Tem estimado], "Gastei na Steam, somando o pago e o estimado", "Gastei na Steam, pelo meu histórico de compras" )
-		lineageTag: 834b5dc4-eb78-42d2-92f8-2d7346b69890
+	measure 'Título do card gasto' = IF ( [Tem estimado], "Gastei na Steam, somando o pago, o estimado e o que comprei dentro dos jogos", "Gastei na Steam, somando os jogos e o que comprei dentro deles" )
+		lineageTag: a879c4ce-9068-462f-8837-1a7f1d42b377
 
 	measure 'Título do card média' = IF ( [Tem estimado], "Cada hora de jogo me custou, em média", "Cada hora de jogo pago me custou, em média" )
 		lineageTag: 66e9f935-e12a-46d2-8bbd-68ee9efd7953
@@ -315,26 +329,34 @@ table game_costs
 	measure 'Título do coração gasto' = "Quanto gastei com ele:"
 		lineageTag: 06477ab5-1227-4741-a50c-a9be35ae28aa
 
-	measure 'Fatia das horas sem custo' = DIVIDE ( CALCULATE ( [Horas na biblioteca], game_costs[cost_group] = "não comprei" ), [Horas na biblioteca] )
+	measure 'Fatia das horas sem custo' = DIVIDE ( CALCULATE ( [Horas na biblioteca], game_costs[cost_group] = "sem comprar" ), [Horas na biblioteca] )
 		formatString: 0.0%
-		lineageTag: 038fb9c6-11b1-4c43-9c3c-ce72f7f794df
+		lineageTag: b9c8de75-fbab-47b4-a8fa-15815e9a3eba
 
 	measure 'Fato extra título' =
 			VAR topo = TOPN ( 1, game_costs, game_costs[extra_spend_brl], DESC )
-			RETURN "Gastei dentro do " & MAXX ( topo, game_costs[name] ) & ", um jogo que me custou " & FORMAT ( MAXX ( topo, game_costs[game_value_brl] ) + 0, "\R$ #,0.00" )
+			RETURN "Gastei dentro do " & MAXX ( topo, game_costs[name] ) & ", um jogo que me custou " & FORMAT ( MAXX ( topo, game_costs[game_value_brl] ) + 0, "\R$\ #,0.00" )
 		lineageTag: f467b01a-57a5-495d-8676-3ad8efaf5514
 
-	measure 'Fato extra valor' = FORMAT ( MAXX ( TOPN ( 1, game_costs, game_costs[extra_spend_brl], DESC ), game_costs[extra_spend_brl] ) + 0, "\R$ #,0.00" )
+	measure 'Fato extra valor' = FORMAT ( MAXX ( TOPN ( 1, game_costs, game_costs[extra_spend_brl], DESC ), game_costs[extra_spend_brl] ) + 0, "\R$\ #,0.00" )
 		lineageTag: 3444b754-a9f5-4f3a-82dd-ed1c5175d5a7
 
-	measure 'Título dos mal começados' = "Comprei e joguei menos de 1 hora: " & [Nomes dos mal começados]
-		lineageTag: cb764e6e-a929-4e58-b604-adb861f7132f
+	measure 'Título dos mal começados' =
+			VAR jogos = FILTER ( game_costs, game_costs[hours_group] = "mal começado" && game_costs[value_origin] IN { "pago", "estimado" } )
+			VAR n = COUNTROWS ( jogos ) + 0
+			VAR lista = CONCATENATEX ( jogos, game_costs[minutes_played] & " min de " & game_costs[name], " e ", game_costs[minutes_played], ASC )
+			RETURN SWITCH ( TRUE (),
+			    n = 0, "Nenhum jogo que comprei ficou com menos de 1 hora",
+			    n = 1, "Paguei em 1 jogo que mal abri. Joguei " & lista,
+			    n = 2, "Paguei em 2 jogos que mal abri. Joguei " & lista,
+			    "Paguei em " & n & " jogos que joguei menos de 1 hora" )
+		lineageTag: 645c47bb-5a56-4bfc-a88a-ba39ee7857b7
 
-	measure 'Título do dinheiro parado' = "Comprei e nunca abri. " & [Frase do dinheiro parado]
-		lineageTag: 8cb4bee6-d2fb-442f-99fa-c0e18425ceb9
+	measure 'Título do dinheiro parado' = VAR n = [Jogos pagos nunca abertos] RETURN IF ( n = 0, "Todo jogo que comprei, eu abri pelo menos uma vez", "Tenho " & n & IF ( n = 1, " jogo comprado que nunca abri", " jogos comprados que nunca abri" ) )
+		lineageTag: a59ca83c-7858-456b-80c2-139cb856164a
 
-	measure 'Título nível' = IF ( CALCULATE ( COUNTROWS ( game_costs ), game_costs[purchase_history_loaded] = TRUE () ) > 0, "Valores que uso: o que paguei, do meu histórico de compras", "Valores que uso: o preço da loja, porque não há histórico" )
-		lineageTag: c2c0d007-9ced-4e48-beb0-273d7f7a07ac
+	measure 'Título nível' = IF ( CALCULATE ( COUNTROWS ( game_costs ), game_costs[purchase_history_loaded] = TRUE () ) > 0, "Histórico de compras que carreguei", "Sem histórico de compras, uso o preço da loja" )
+		lineageTag: b90fd693-bdbe-4ec2-ad68-a4b73815f3a0
 
 	measure 'Gastei no grupo' = SUM ( game_costs[total_spend_brl] ) + 0
 		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
@@ -353,6 +375,53 @@ table game_costs
 
 	measure 'Título do card posição' = "Posição entre os meus " & CALCULATE ( COUNTROWS ( game_costs ), ALL ( game_costs ) ) & " jogos"
 		lineageTag: 10b43df3-afbb-4ae6-a15a-dfebb856dffc
+
+	measure 'Fatia dos seis mais jogados' = DIVIDE ( SUMX ( TOPN ( 6, ALL ( game_costs ), game_costs[minutes_played], DESC ), game_costs[minutes_played] ), CALCULATE ( SUM ( game_costs[minutes_played] ), ALL ( game_costs ) ) )
+		formatString: 0%
+		lineageTag: 44d96998-48ec-46b7-a93d-f25b3b79c458
+
+	measure 'Título do pódio' = "Seis jogos somam " & FORMAT ( [Fatia dos seis mais jogados], "0%" ) & " das minhas horas"
+		lineageTag: 22d180a3-831f-49ab-b4a9-a2123c8cc8cb
+
+	measure 'Fato poucas horas título' = "Jogos que joguei menos de 10 horas"
+		lineageTag: 2c695f02-2774-4bd2-981e-9478c838019d
+
+	measure 'Fato poucas horas valor' = VAR n = CALCULATE ( COUNTROWS ( game_costs ), game_costs[minutes_played] < 600 ) + 0 RETURN n & " de " & [Jogos na conta]
+		lineageTag: 562500ac-cf7d-45df-90fd-2d07378147fc
+
+	measure 'Título fato grátis' =
+			VAR p = [Fatia das horas sem custo]
+			VAR inicio = SWITCH ( TRUE (),
+			    ABS ( p - 0.5 ) < 0.005, "Metade das minhas horas foi",
+			    p >= 0.45 && p < 0.5, "Quase metade das minhas horas foi",
+			    p > 0.5 && p <= 0.55, "Pouco mais da metade das minhas horas foi",
+			    FORMAT ( p, "0%" ) & " das minhas horas foram" )
+			RETURN inicio & " em jogos que não paguei para jogar"
+		lineageTag: dbc001e9-c67f-4948-97e7-fb811e709ff1
+
+	measure 'Fato dentro título' =
+			VAR r = ROUND ( DIVIDE ( SUM ( game_costs[extra_spend_brl] ), [Gasto total] ) * 10, 0 )
+			RETURN "De cada R$ 10 que gastei na Steam, " & SWITCH ( TRUE (), r < 1, "menos de R$ 1 foi", r = 1, "R$ 1 foi", "R$ " & r & " foram" ) & " dentro dos jogos"
+		lineageTag: cce6e0bc-3169-44ee-8e76-1d480a8659ad
+
+	measure 'Fato dentro valor' = FORMAT ( SUM ( game_costs[extra_spend_brl] ) + 0, "\R$\ #,0.00" )
+		lineageTag: 103eb215-5bc4-4a6a-b572-b7733046326c
+
+	measure 'Fato 100 horas título' = VAR n500 = [Jogos com 500 h ou mais] RETURN "Passei de 100 horas nestes jogos" & IF ( n500 > 0, ". Em " & n500 & " deles, passei de 500", "" )
+		lineageTag: d1b05d87-865c-4926-8d2e-45360cc2a7bb
+
+	measure 'Fato 100 horas valor' = VAR n = [Jogos com 100 h ou mais] RETURN n & IF ( n = 1, " jogo", " jogos" )
+		lineageTag: a9feaced-4602-4b1e-835d-c520f7611111
+
+	measure 'Dinheiro parado valor' = IF ( [Jogos pagos nunca abertos] = 0, "nenhum parado", [Dinheiro parado texto] )
+		lineageTag: 5d6a6a61-bf1f-4828-b575-7cb53122f168
+
+	measure 'Horas da origem' = [Horas na biblioteca] + 0
+		formatString: #,0" h"
+		lineageTag: 31efd734-d1a9-459d-a44f-041d49dd9a38
+
+	measure 'Como consegui' = SWITCH ( SELECTEDVALUE ( game_costs[value_origin] ), "pago", "comprei", "gratuito", "grátis para jogar", "sem compra na Steam", "sem comprar na Steam", "estimado", "valor estimado", "sem preço conhecido" )
+		lineageTag: 3a6be3bc-c721-4de4-a103-30ef3007a25e
 
 	column user_id
 		dataType: string
@@ -409,7 +478,7 @@ table game_costs
 
 	column hours_played
 		dataType: double
-		formatString: #,0.00
+		formatString: #,0.0" h"
 		lineageTag: c4c05576-6490-4e03-b702-ae0680273816
 		summarizeBy: none
 		sourceColumn: hours_played
@@ -480,7 +549,7 @@ table game_costs
 		summarizeBy: none
 		sourceColumn: game_key
 
-	/// comprei / não comprei / sem preço conhecido (placar de Valeu a pena?)
+	/// comprei / sem comprar / sem preço conhecido (placar de Valeu a pena?)
 	column cost_group
 		dataType: string
 		lineageTag: 5a434729-601c-473f-b1a3-0bb27ddde630
@@ -540,7 +609,7 @@ table game_costs
 				        {"first_purchase_date", type date}
 				    }),
 				    // Ticket 11b: groups in plain words and links to the Steam artwork of each game
-				    CostGroup = Table.AddColumn(Typed, "cost_group", each if List.Contains({"pago", "estimado"}, [value_origin]) then "comprei" else if List.Contains({"gratuito", "sem compra na Steam"}, [value_origin]) then "não comprei" else "sem preço conhecido", type text),
+				    CostGroup = Table.AddColumn(Typed, "cost_group", each if List.Contains({"pago", "estimado"}, [value_origin]) then "comprei" else if List.Contains({"gratuito", "sem compra na Steam"}, [value_origin]) then "sem comprar" else "sem preço conhecido", type text),
 				    HoursLabel = Table.AddColumn(CostGroup, "hours_group_label", each if [hours_group] = "jogado" then "1 hora ou mais" else if [hours_group] = "mal começado" then "menos de 1 hora" else "nunca abri", type text),
 				    HoursOrder = Table.AddColumn(HoursLabel, "hours_group_order", each if [hours_group] = "jogado" then 1 else if [hours_group] = "mal começado" then 2 else 3, Int64.Type),
 				    Hero = Table.AddColumn(HoursOrder, "hero_url", each "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/" & Text.From([app_id]) & "/library_hero.jpg", type text),

@@ -46,10 +46,10 @@ table items_out_of_metrics
 				    Source = PostgreSQL.Database(DatabaseServer, DatabaseName),
 				    OutOfMetrics = Source{[Schema = "public", Item = "items_out_of_metrics"]}[Data],
 				    // Portuguese labels; unknown values pass through unchanged
-				    CategoryLabels = [software = "programa", other = "outro"],
+				    CategoryLabels = [software = "programa", other = "teste ou removido"],
 				    ReasonLabels = [
 				        #"Software genre in the store (e.g. Utilities)" = "É um programa, não um jogo",
-				        #"No genres or no store page (test server, playtest or removed item)" = "Sem página na loja: teste ou item removido"
+				        #"No genres or no store page (test server, playtest or removed item)" = "Não tem página na loja"
 				    ],
 				    Labeled = Table.TransformColumns(OutOfMetrics, {
 				        {"item_category", each Record.FieldOrDefault(CategoryLabels, _, _), type text},

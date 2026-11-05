@@ -3,12 +3,12 @@ table daily_playtime
 	lineageTag: ef6f0657-ce54-412c-b3b6-c2544310bdd7
 
 	measure 'Horas jogadas' = SUM ( daily_playtime[hours_played] )
-		formatString: #,0.0
+		formatString: #,0.0" h"
 		lineageTag: a623bec7-0f34-419d-ab62-33f8abc84c76
 
 	/// Hours per collection day: 0 on a day with a collection and no play (axis: collection_days).
 	measure 'Horas jogadas no dia' = [Horas jogadas] + 0
-		formatString: #,0.0
+		formatString: #,0.0" h"
 		lineageTag: 99cbfb03-df4a-408c-86e6-a25093f95fe4
 
 	/// Days with play in the filter context.
@@ -52,7 +52,7 @@ table daily_playtime
 			AVERAGEX (
 			    FILTER ( VALUES ( collection_days[play_date] ), CALCULATE ( SUM ( daily_playtime[hours_played] ), daily_playtime[days_covered] = 1 ) > 0 ),
 			    CALCULATE ( SUM ( daily_playtime[hours_played] ), daily_playtime[days_covered] = 1 ) )
-		formatString: 0.0
+		formatString: 0.0" h"
 		lineageTag: b1a419ae-74aa-4091-9d94-d9716061269a
 
 	measure 'Título do dia da semana' =
@@ -89,22 +89,32 @@ table daily_playtime
 	measure 'Título horas do período' = "Horas jogadas, " & [Frase dos dias de jogo]
 		lineageTag: ef996761-8eee-4c34-b452-5f0f0e826efe
 
-	measure 'Título melhor dia' = "Meu melhor dia: " & [Melhor dia frase]
-		lineageTag: 18ac9ede-9254-4498-b32a-ad9074084efa
+	measure 'Título melhor dia' = VAR f = [Melhor dia frase] RETURN IF ( f = "nenhum dia com jogo", "Ainda não tenho um dia com jogo neste período", "Meu melhor dia foi " & f )
+		lineageTag: 06b59be1-3983-4be7-813f-6be6b3e46512
 
 	measure 'Dias jogados' = DISTINCTCOUNT ( daily_playtime[play_date] )
 		formatString: 0
 		lineageTag: 1c3137c0-410c-4faf-90bf-032d3ffb90dd
 
-	measure 'Cor do dia da semana' = IF ( [Média por dia jogado] = MAXX ( ALLSELECTED ( collection_days[weekday_short] ), [Média por dia jogado] ), "#FFC24B", "#3987E5" )
-		lineageTag: c1433191-44db-4495-a3c0-30089eeaaf89
+	measure 'Cor do dia da semana' = VAR topo = MAXX ( ALLSELECTED ( collection_days[weekday_short], collection_days[weekday_number] ), [Média por dia jogado] ) RETURN IF ( [Média por dia jogado] = topo, "#FFC24B", "#3987E5" )
+		lineageTag: 63820229-3847-48c3-bdea-f87059e7beca
 
-	measure 'Título dias anotados' = "Dias anotados desde " & FORMAT ( CALCULATE ( MIN ( collection_days[play_date] ), ALL ( collection_days ) ), "dd/mm/yyyy" ) & ", toda manhã"
-		lineageTag: 8067876d-2d21-4f39-8c44-283a4d6674e2
+	measure 'Título dias anotados' = "Dias que o painel anotou, desde " & FORMAT ( CALCULATE ( MIN ( collection_days[play_date] ), ALL ( collection_days ) ), "dd/mm/yyyy" )
+		lineageTag: 7ca6ca03-59e0-490c-a5df-feede192a00f
 
 	measure 'Dias anotados no total' = CALCULATE ( COUNTROWS ( collection_days ), ALL ( collection_days ) ) + 0
 		formatString: 0
 		lineageTag: 63338a6f-2236-44b8-967c-3bedebc7f601
+
+	measure 'Média por dia jogado texto' = FORMAT ( [Média por dia jogado] + 0, "0.0" ) & " h"
+		lineageTag: 3c188374-6034-4edf-ad08-ad135aea7ccd
+
+	measure 'Média do dia da semana' = [Média por dia jogado] + 0
+		formatString: 0.0" h"
+		lineageTag: bd573288-aae8-48c0-892d-a701205f77a5
+
+	measure 'Fatia do período texto' = VAR f = [Fatia do período] RETURN IF ( ISBLANK ( f ), BLANK (), IF ( f > 0 && f < 0.01, "<1%", FORMAT ( f, "0%" ) ) )
+		lineageTag: e045bd37-1083-4788-86ab-63b07b1db4ef
 
 	column user_id
 		dataType: string

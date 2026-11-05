@@ -20,14 +20,14 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "purchase_discounts"
+                      "Entity": "game_costs"
                     }
                   },
-                  "Property": "Fato ano valor"
+                  "Property": "Fato 100 horas valor"
                 }
               },
-              "queryRef": "purchase_discounts.Fato ano valor",
-              "nativeQueryRef": "Fato ano valor"
+              "queryRef": "game_costs.Fato 100 horas valor",
+              "nativeQueryRef": "Fato 100 horas valor"
             }
           ]
         }
@@ -181,10 +181,10 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "purchase_discounts"
+                      "Entity": "game_costs"
                     }
                   },
-                  "Property": "Fato ano título"
+                  "Property": "Fato 100 horas título"
                 }
               }
             }

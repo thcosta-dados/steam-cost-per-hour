@@ -16,7 +16,7 @@ table purchase_discounts
 		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
 		lineageTag: ab893814-cc1b-4130-ad76-7211243eebb2
 
-	measure 'Frase do preço cheio' = "o preço cheio seria " & FORMAT ( SUM ( purchase_discounts[original_price_brl] ) + 0, "\R$ #,0.00" )
+	measure 'Frase do preço cheio' = "o preço cheio seria " & FORMAT ( SUM ( purchase_discounts[original_price_brl] ) + 0, "\R$\ #,0.00" )
 		lineageTag: 5497ee31-3023-48ec-8fdb-9aaa82f96652
 
 	measure 'Frase das compras com desconto' = FORMAT ( DIVIDE ( CALCULATE ( COUNTROWS ( purchase_discounts ), purchase_discounts[discount_pct] > 0 ), COUNTROWS ( purchase_discounts ) ), "0%" ) & " das compras tiveram desconto"
@@ -37,7 +37,7 @@ table purchase_discounts
 			VAR anos = ADDCOLUMNS ( VALUES ( purchase_discounts[purchase_year] ), "@pago", CALCULATE ( SUM ( purchase_discounts[paid_brl] ) ) )
 			VAR topo = TOPN ( 1, anos, [@pago], DESC )
 			RETURN IF ( ISEMPTY ( anos ), "Nenhuma compra no período",
-			    MAXX ( topo, purchase_discounts[purchase_year] ) & " foi o ano em que mais gastei: " & FORMAT ( MAXX ( topo, [@pago] ), "\R$ #,0.00" ) )
+			    MAXX ( topo, purchase_discounts[purchase_year] ) & " foi o ano em que mais gastei: " & FORMAT ( MAXX ( topo, [@pago] ), "\R$\ #,0.00" ) )
 		lineageTag: e21b4952-26f3-4aa8-85f4-37d60963068a
 
 	measure 'Subtítulo do gráfico de anos' =
@@ -46,12 +46,15 @@ table purchase_discounts
 			    "@pago", CALCULATE ( SUM ( purchase_discounts[paid_brl] ) ),
 			    "@eco", CALCULATE ( SUM ( purchase_discounts[savings_brl] ) ) )
 			VAR mais = TOPN ( 1, anos, [@n], DESC, purchase_discounts[purchase_year], DESC )
+			VAR nMais = MAXX ( mais, [@n] )
 			VAR eco = FILTER ( anos, [@eco] > [@pago] )
 			VAR n = COUNTROWS ( eco ) + 0
+			VAR ultimo = MAXX ( eco, purchase_discounts[purchase_year] )
+			VAR lista = IF ( n <= 1, ultimo & "", CONCATENATEX ( FILTER ( eco, purchase_discounts[purchase_year] < ultimo ), purchase_discounts[purchase_year], ", ", purchase_discounts[purchase_year], ASC ) & " e " & ultimo )
 			RETURN IF ( ISEMPTY ( anos ), "",
-			    MAXX ( mais, purchase_discounts[purchase_year] ) & " foi o ano com mais compras: " & MAXX ( mais, [@n] ) & "."
-			    & IF ( n = 0, "", " Em " & CONCATENATEX ( eco, purchase_discounts[purchase_year], ", ", purchase_discounts[purchase_year], ASC ) & ", economizei mais do que paguei." ) )
-		lineageTag: a34e421d-d32e-4f68-b509-0652cd9d8227
+			    "Fiz mais compras em " & MAXX ( mais, purchase_discounts[purchase_year] ) & IF ( nMais = 1, ", foi 1.", ", foram " & nMais & "." )
+			    & IF ( n = 0, "", " Em " & lista & ", economizei mais do que paguei." ) )
+		lineageTag: 0d2b4679-12c5-4179-8d4b-b6707b10ff91
 
 	measure 'Primeira compra título' = IF ( ISFILTERED ( purchase_discounts[purchase_date] ), "Primeira compra do período", "Minha primeira compra" )
 		lineageTag: 84399a7c-3a7b-4348-9ef2-05768c92930a
@@ -62,10 +65,10 @@ table purchase_discounts
 	measure 'Primeira compra frase' =
 			VAR d = MIN ( purchase_discounts[purchase_date] )
 			VAR linha = TOPN ( 1, FILTER ( purchase_discounts, purchase_discounts[purchase_date] = d ), purchase_discounts[paid_brl], DESC )
-			RETURN IF ( ISBLANK ( d ), "Nenhuma compra no período", MAXX ( linha, purchase_discounts[items_short] ) & ", por " & FORMAT ( MAXX ( linha, purchase_discounts[paid_brl] ), "\R$ #,0.00" ) )
+			RETURN IF ( ISBLANK ( d ), "Nenhuma compra no período", MAXX ( linha, purchase_discounts[items_short] ) & ", por " & FORMAT ( MAXX ( linha, purchase_discounts[paid_brl] ), "\R$\ #,0.00" ) )
 		lineageTag: d486575d-737c-4568-938f-6f9cd32f6e71
 
-	measure 'Compra mais cara texto' = FORMAT ( MAX ( purchase_discounts[paid_brl] ) + 0, "\R$ #,0.00" )
+	measure 'Compra mais cara texto' = FORMAT ( MAX ( purchase_discounts[paid_brl] ) + 0, "\R$\ #,0.00" )
 		lineageTag: 133ad230-ff6b-434f-b7c6-9c3309b020d4
 
 	measure 'Compra mais cara frase' =
@@ -79,10 +82,10 @@ table purchase_discounts
 	measure 'Maior desconto frase' =
 			VAR linha = TOPN ( 1, purchase_discounts, purchase_discounts[discount_pct], DESC, purchase_discounts[savings_brl], DESC )
 			RETURN IF ( ISEMPTY ( linha ), "Nenhuma compra no período",
-			    MAXX ( linha, purchase_discounts[items_short] ) & ": " & FORMAT ( MAXX ( linha, purchase_discounts[paid_brl] ), "\R$ #,0.00" ) & " em vez de " & FORMAT ( MAXX ( linha, purchase_discounts[original_price_brl] ), "\R$ #,0.00" ) )
+			    MAXX ( linha, purchase_discounts[items_short] ) & ": " & FORMAT ( MAXX ( linha, purchase_discounts[paid_brl] ), "\R$\ #,0.00" ) & " em vez de " & FORMAT ( MAXX ( linha, purchase_discounts[original_price_brl] ), "\R$\ #,0.00" ) )
 		lineageTag: 184ef584-9519-4af7-943f-c3dd7726b2c9
 
-	measure 'Maior economia texto' = FORMAT ( MAX ( purchase_discounts[savings_brl] ) + 0, "\R$ #,0.00" )
+	measure 'Maior economia texto' = FORMAT ( MAX ( purchase_discounts[savings_brl] ) + 0, "\R$\ #,0.00" )
 		lineageTag: d1cef71f-035f-4e7b-96cc-123acac85165
 
 	measure 'Maior economia frase' =
@@ -99,18 +102,18 @@ table purchase_discounts
 	measure 'Fato desde valor' = [Anos desde a primeira compra] & " anos"
 		lineageTag: 3c32f1d5-c196-48d9-9125-5a820d4ad572
 
-	measure 'Fato economia título' = "Economizei com promoções, pagando " & FORMAT ( SUM ( purchase_discounts[paid_brl] ) + 0, "\R$ #,0.00" ) & " em vez de " & FORMAT ( SUM ( purchase_discounts[original_price_brl] ) + 0, "\R$ #,0.00" )
+	measure 'Fato economia título' = "Economizei com promoções, pagando " & FORMAT ( SUM ( purchase_discounts[paid_brl] ) + 0, "\R$\ #,0.00" ) & " em vez de " & FORMAT ( SUM ( purchase_discounts[original_price_brl] ) + 0, "\R$\ #,0.00" )
 		lineageTag: e3fa388e-d5f2-47ed-9dbe-b443b501b2d5
 
 	measure 'Fato pechincha título' =
 			VAR linha = TOPN ( 1, purchase_discounts, purchase_discounts[discount_pct], DESC, purchase_discounts[savings_brl], DESC )
-			RETURN "Minha maior pechincha foi " & MAXX ( linha, purchase_discounts[items_short] ) & ", por " & FORMAT ( MAXX ( linha, purchase_discounts[paid_brl] ), "\R$ #,0.00" ) & " em vez de " & FORMAT ( MAXX ( linha, purchase_discounts[original_price_brl] ), "\R$ #,0.00" )
-		lineageTag: aa51ee0e-4257-4c8e-8ef1-65f331dc2514
+			RETURN "Paguei " & FORMAT ( MAXX ( linha, purchase_discounts[paid_brl] ), "\R$\ #,0.00" ) & " no " & MAXX ( linha, purchase_discounts[items_short] ) & ", que custava " & FORMAT ( MAXX ( linha, purchase_discounts[original_price_brl] ), "\R$\ #,0.00" )
+		lineageTag: bee8e610-652c-41cd-a729-daba3e5ba2a8
 
 	measure 'Fato ano título' =
 			VAR anos = ADDCOLUMNS ( VALUES ( purchase_discounts[purchase_year] ), "@pago", CALCULATE ( SUM ( purchase_discounts[paid_brl] ) ), "@n", CALCULATE ( COUNTROWS ( purchase_discounts ) ) )
 			VAR topo = TOPN ( 1, anos, [@pago], DESC )
-			RETURN "O ano em que mais gastei: " & FORMAT ( MAXX ( topo, [@pago] ), "\R$ #,0.00" ) & " em " & MAXX ( topo, [@n] ) & " compras"
+			RETURN "O ano em que mais gastei: " & FORMAT ( MAXX ( topo, [@pago] ), "\R$\ #,0.00" ) & " em " & MAXX ( topo, [@n] ) & " compras"
 		lineageTag: 5c890092-e0a2-4d80-830e-7a8a576c357f
 
 	measure 'Fato ano valor' =
@@ -118,28 +121,32 @@ table purchase_discounts
 			RETURN FORMAT ( MAXX ( TOPN ( 1, anos, [@pago], DESC ), purchase_discounts[purchase_year] ), "0" )
 		lineageTag: 8c08ffe4-57fd-42db-9d15-ba08fef52b13
 
-	measure 'Título economia' = "Economizei com promoções. O preço cheio seria " & FORMAT ( SUM ( purchase_discounts[original_price_brl] ) + 0, "\R$ #,0.00" )
-		lineageTag: f416661e-2c40-4436-ae1b-8616b57da673
+	measure 'Título economia' = "Economizei com promoções. Sem elas, teria pago " & FORMAT ( SUM ( purchase_discounts[original_price_brl] ) + 0, "\R$\ #,0.00" )
+		lineageTag: 1eb9f22f-48d2-4fef-8bdc-e7681d02b4c5
 
-	measure 'Título desconto médio' = "Desconto médio sobre o preço cheio. " & [Frase das compras com desconto]
-		lineageTag: 13f39669-5315-476f-9591-cb3ced33e2bb
+	measure 'Título desconto médio' = "Desconto médio que consegui. " & FORMAT ( DIVIDE ( CALCULATE ( COUNTROWS ( purchase_discounts ), purchase_discounts[discount_pct] > 0 ), COUNTROWS ( purchase_discounts ) ), "0%" ) & " das compras foram em promoção"
+		lineageTag: 0facdd06-ff1b-48d2-a7ee-f8160b0cd269
 
 	measure 'Título do mês' =
 			VAR meses = ADDCOLUMNS ( VALUES ( purchase_discounts[purchase_month] ), "@n", CALCULATE ( COUNTROWS ( purchase_discounts ) ) )
-			RETURN "Mês em que mais compro, com " & MAXX ( meses, [@n] ) & " compras somando todos os anos"
-		lineageTag: ddd121cd-f951-4fe6-9724-f27118227ace
+			RETURN "Somando todos os anos, é o mês em que mais compro. Foram " & MAXX ( meses, [@n] ) & " compras"
+		lineageTag: 26296f3d-687d-488a-ab76-a0ae0ba61e0f
 
-	measure 'Título primeira compra' = [Primeira compra título] & ": " & [Primeira compra frase]
-		lineageTag: db84e2ea-99f2-4917-96c5-641b5cf142d6
+	measure 'Título primeira compra' = IF ( ISBLANK ( MIN ( purchase_discounts[purchase_date] ) ), "Nenhuma compra no período", IF ( ISFILTERED ( purchase_discounts[purchase_date] ), "A primeira compra do período foi ", "Comecei na Steam com " ) & [Primeira compra frase] )
+		lineageTag: b0b4e80b-cf77-4d26-8ad3-1d718093a808
 
-	measure 'Título compra mais cara' = "A compra mais cara: " & [Compra mais cara frase]
-		lineageTag: 9aac625c-4407-4b45-a802-5fc86dfd2f62
+	measure 'Título compra mais cara' =
+			VAR linha = TOPN ( 1, purchase_discounts, purchase_discounts[paid_brl], DESC, purchase_discounts[purchase_date], ASC )
+			RETURN IF ( ISEMPTY ( linha ), "Nenhuma compra no período", MAXX ( linha, purchase_discounts[items_short] ) & " foi a compra mais cara, em " & FORMAT ( MAXX ( linha, purchase_discounts[purchase_date] ), "dd/mm/yyyy" ) )
+		lineageTag: e72cb14a-7fe0-47b1-ad37-daf3878fd8ce
 
 	measure 'Título maior desconto' = "O maior desconto: " & [Maior desconto frase]
 		lineageTag: 60b78bb5-5d8a-41cf-b6d0-564acffdf1db
 
-	measure 'Título maior economia' = "A maior economia: " & [Maior economia frase]
-		lineageTag: 88adca56-5fff-42d9-84fe-ec275b77b75b
+	measure 'Título maior economia' =
+			VAR linha = TOPN ( 1, purchase_discounts, purchase_discounts[savings_brl], DESC )
+			RETURN IF ( ISEMPTY ( linha ), "Nenhuma compra no período", "Minha maior economia foi no " & MAXX ( linha, purchase_discounts[items_short] ) & ", com " & MAXX ( linha, purchase_discounts[discount_pct] ) & "% de desconto" )
+		lineageTag: 0435fcb2-ad97-40ae-aa0d-eb8ecde7355e
 
 	measure 'Paguei no ano' = SUM ( purchase_discounts[paid_brl] ) + 0
 		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
@@ -148,6 +155,15 @@ table purchase_discounts
 	measure 'Economizei no ano' = SUM ( purchase_discounts[savings_brl] ) + 0
 		formatString: \R$ #,0.00;-\R$ #,0.00;\R$ #,0.00
 		lineageTag: efb78054-fd85-424f-aee6-04d639c43573
+
+	measure 'Título compras pela metade' = "Compras em que paguei metade do preço ou menos"
+		lineageTag: ee005151-2d6c-4e04-a45c-b70eb082e1e8
+
+	measure 'Compras pela metade valor' = VAR n = CALCULATE ( COUNTROWS ( purchase_discounts ), purchase_discounts[discount_pct] >= 50 ) + 0 RETURN n & " de " & ( COUNTROWS ( purchase_discounts ) + 0 )
+		lineageTag: de0dfaf2-2e5c-4a9c-95b9-4e3a14209429
+
+	measure 'Fato pechincha valor' = FORMAT ( MAX ( purchase_discounts[discount_pct] ) + 0, "0" ) & "% de desconto"
+		lineageTag: c272ef80-b22d-4864-a438-f3d05b4793ed
 
 	column user_id
 		dataType: string
@@ -241,7 +257,7 @@ table purchase_discounts
 				    WithYear = Table.AddColumn(Typed, "purchase_year", each Date.Year([purchase_date]), Int64.Type),
 				    WithMonth = Table.AddColumn(WithYear, "purchase_month", each Date.Month([purchase_date]), Int64.Type),
 				    // Bundles become "Item A e mais 1 item", so the sentence fits
-				    WithShort = Table.AddColumn(WithMonth, "items_short", each let p = Text.Split([items], " + "), n = List.Count(p) in if n = 1 then [items] else p{0} & " e mais " & Text.From(n - 1) & (if n = 2 then " item" else " itens"), type text)
+				    WithShort = Table.AddColumn(WithMonth, "items_short", each let p = Text.Split(Text.Remove([items], {"™", "®"}), " + "), n = List.Count(p) in if n = 1 then p{0} else p{0} & " e mais " & Text.From(n - 1) & (if n = 2 then " item" else " itens"), type text)
 				in
 				    WithShort
 

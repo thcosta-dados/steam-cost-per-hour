@@ -3,9 +3,9 @@
   "name": "table_out_of_metrics",
   "position": {
     "x": 32,
-    "y": 712,
+    "y": 648,
     "z": 7000,
-    "height": 348,
+    "height": 412,
     "width": 920,
     "tabOrder": 7000
   },
@@ -127,6 +127,13 @@
                   "Value": "false"
                 }
               }
+            },
+            "rowPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
             }
           }
         }
@@ -137,7 +144,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "380D"
+                  "Value": "320D"
                 }
               }
             }
@@ -151,7 +158,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "110D"
+                  "Value": "170D"
                 }
               }
             }
@@ -215,7 +222,7 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },
@@ -327,7 +334,14 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Estão na minha biblioteca, mas não são jogos. Ficam guardados, só não entram nas contas.'"
+                  "Value": "'Estão na minha biblioteca, mas não entram nas contas.'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
                 }
               }
             }

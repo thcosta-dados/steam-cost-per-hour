@@ -20,14 +20,14 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "purchase_discounts"
+                      "Entity": "game_costs"
                     }
                   },
-                  "Property": "Economia com descontos"
+                  "Property": "Fato dentro valor"
                 }
               },
-              "queryRef": "purchase_discounts.Economia com descontos",
-              "nativeQueryRef": "Economia com descontos"
+              "queryRef": "game_costs.Fato dentro valor",
+              "nativeQueryRef": "Fato dentro valor"
             }
           ]
         }
@@ -181,10 +181,10 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "purchase_discounts"
+                      "Entity": "game_costs"
                     }
                   },
-                  "Property": "Fato economia título"
+                  "Property": "Fato dentro título"
                 }
               }
             }

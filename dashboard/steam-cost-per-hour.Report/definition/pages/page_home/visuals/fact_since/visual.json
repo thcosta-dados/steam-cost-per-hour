@@ -20,14 +20,14 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "purchase_discounts"
+                      "Entity": "game_costs"
                     }
                   },
-                  "Property": "Fato desde valor"
+                  "Property": "Fato poucas horas valor"
                 }
               },
-              "queryRef": "purchase_discounts.Fato desde valor",
-              "nativeQueryRef": "Fato desde valor"
+              "queryRef": "game_costs.Fato poucas horas valor",
+              "nativeQueryRef": "Fato poucas horas valor"
             }
           ]
         }
@@ -181,10 +181,10 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "purchase_discounts"
+                      "Entity": "game_costs"
                     }
                   },
-                  "Property": "Fato desde título"
+                  "Property": "Fato poucas horas título"
                 }
               }
             }

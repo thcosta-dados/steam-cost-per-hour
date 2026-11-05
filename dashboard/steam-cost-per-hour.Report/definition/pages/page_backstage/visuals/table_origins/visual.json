@@ -5,7 +5,7 @@
     "x": 968,
     "y": 232,
     "z": 4000,
-    "height": 464,
+    "height": 400,
     "width": 920,
     "tabOrder": 4000
   },
@@ -68,11 +68,11 @@
                       "Entity": "game_costs"
                     }
                   },
-                  "Property": "Horas na biblioteca"
+                  "Property": "Horas da origem"
                 }
               },
-              "queryRef": "game_costs.Horas na biblioteca",
-              "nativeQueryRef": "Horas na biblioteca",
+              "queryRef": "game_costs.Horas da origem",
+              "nativeQueryRef": "Horas da origem",
               "displayName": "Horas"
             }
           ]
@@ -159,6 +159,13 @@
                   "Value": "false"
                 }
               }
+            },
+            "rowPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
             }
           }
         }
@@ -217,7 +224,7 @@
             }
           },
           "selector": {
-            "metadata": "game_costs.Horas na biblioteca"
+            "metadata": "game_costs.Horas da origem"
           }
         }
       ]
@@ -308,7 +315,7 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },

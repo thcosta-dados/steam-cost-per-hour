@@ -73,7 +73,7 @@
               },
               "queryRef": "game_costs.Fatia das minhas horas",
               "nativeQueryRef": "Fatia das minhas horas",
-              "displayName": "Fatia"
+              "displayName": "% das horas"
             }
           ]
         }
@@ -342,8 +342,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Os 6 jogos que mais joguei'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "game_costs"
+                    }
+                  },
+                  "Property": "Título do pódio"
                 }
               }
             }

@@ -23,13 +23,13 @@
                       "Entity": "collection_days"
                     }
                   },
-                  "Property": "play_date"
+                  "Property": "day_label"
                 }
               },
-              "queryRef": "collection_days.play_date",
-              "nativeQueryRef": "play_date",
-              "active": true,
-              "displayName": "Dia de jogo"
+              "queryRef": "collection_days.day_label",
+              "nativeQueryRef": "day_label",
+              "displayName": "Dia de jogo",
+              "active": true
             }
           ]
         },
@@ -106,7 +106,7 @@
                     "Entity": "collection_days"
                   }
                 },
-                "Property": "play_date"
+                "Property": "day_label"
               }
             },
             "direction": "Ascending"
@@ -272,7 +272,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Toda manhã o painel anota minhas horas da Steam e conta para o dia anterior. Se a dica mostrar 2 dias somados, um dia ficou sem anotação.'"
+                  "Value": "'Toda manhã o painel anota minhas horas da Steam e conta para o dia anterior. Se, ao passar o mouse, aparecer 2 dias somados, faltou a anotação de um dia.'"
                 }
               }
             },

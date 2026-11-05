@@ -77,17 +77,17 @@
             },
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
                       "Entity": "game_costs"
                     }
                   },
-                  "Property": "hours_played"
+                  "Property": "Horas na biblioteca"
                 }
               },
-              "queryRef": "game_costs.hours_played",
-              "nativeQueryRef": "hours_played",
+              "queryRef": "game_costs.Horas na biblioteca",
+              "nativeQueryRef": "Horas na biblioteca",
               "displayName": "Horas"
             },
             {
@@ -118,22 +118,7 @@
               },
               "queryRef": "game_costs.extra_spend_brl",
               "nativeQueryRef": "extra_spend_brl",
-              "displayName": "Extras"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "game_costs"
-                    }
-                  },
-                  "Property": "value_origin"
-                }
-              },
-              "queryRef": "game_costs.value_origin",
-              "nativeQueryRef": "value_origin",
-              "displayName": "Origem"
+              "displayName": "Dentro do jogo"
             }
           ]
         }
@@ -324,7 +309,7 @@
             }
           },
           "selector": {
-            "metadata": "game_costs.hours_played"
+            "metadata": "game_costs.Horas na biblioteca"
           }
         },
         {
@@ -346,27 +331,13 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "100D"
+                  "Value": "130D"
                 }
               }
             }
           },
           "selector": {
             "metadata": "game_costs.extra_spend_brl"
-          }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "110D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "game_costs.value_origin"
           }
         }
       ],
@@ -574,7 +545,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Passe o mouse num jogo para ver mais detalhes. Selos: Platina até R$ 0,50 por hora, Ouro até R$ 1, Prata até R$ 3, Bronze acima disso.'"
+                  "Value": "'Só entram jogos que comprei e joguei 1 hora ou mais. Passe o mouse num jogo para ver mais detalhes.'"
                 }
               }
             },

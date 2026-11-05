@@ -43,11 +43,11 @@
                       "Entity": "daily_playtime"
                     }
                   },
-                  "Property": "Média por dia jogado"
+                  "Property": "Média do dia da semana"
                 }
               },
-              "queryRef": "daily_playtime.Média por dia jogado",
-              "nativeQueryRef": "Média por dia jogado",
+              "queryRef": "daily_playtime.Média do dia da semana",
+              "nativeQueryRef": "Média do dia da semana",
               "displayName": "Média"
             }
           ]

@@ -23,11 +23,11 @@
                       "Entity": "purchase_discounts"
                     }
                   },
-                  "Property": "Maior desconto texto"
+                  "Property": "Fato pechincha valor"
                 }
               },
-              "queryRef": "purchase_discounts.Maior desconto texto",
-              "nativeQueryRef": "Maior desconto texto"
+              "queryRef": "purchase_discounts.Fato pechincha valor",
+              "nativeQueryRef": "Fato pechincha valor"
             }
           ]
         }

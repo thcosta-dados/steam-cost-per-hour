@@ -1,0 +1,47 @@
+/// Faixas do selo de custo-benefício (spec, regra 29), para a tabela da página Bastidores.
+table Selos
+	lineageTag: 14121a55-572b-4ed5-8295-f3c2de8570bf
+
+	measure 'Jogos com o selo' = COUNTROWS ( FILTER ( game_costs, [Selo] = SELECTEDVALUE ( Selos[Selo] ) ) ) + 0
+		formatString: 0
+		lineageTag: 24c56158-0108-4c97-9562-b78f439fefa1
+
+	measure 'Cor da faixa do selo' = SWITCH ( SELECTEDVALUE ( Selos[Selo] ), "Platina", "#8FD8FF", "Ouro", "#FFC24B", "Prata", "#C3CCD6", "Bronze", "#E0A27A", "#B1BAC4" )
+		lineageTag: 064ff2fd-79aa-42a1-acdc-200d202a126e
+
+	column Ordem
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a4506d9b-2955-4138-9e6d-214b54bfb75d
+		summarizeBy: none
+		sourceColumn: Ordem
+
+	column Selo
+		dataType: string
+		lineageTag: 01ec45a5-5af7-4cc0-8075-9ad43f518f05
+		summarizeBy: none
+		sourceColumn: Selo
+		sortByColumn: Ordem
+
+	column 'Custo por hora'
+		dataType: string
+		lineageTag: f3637b8f-43b9-419c-8c48-8ecedb3442a7
+		summarizeBy: none
+		sourceColumn: Custo por hora
+
+	partition Selos = m
+		mode: import
+		source =
+				let
+				    Result = #table(type table [Ordem = Int64.Type, Selo = text, #"Custo por hora" = text], {
+				        {1, "Platina", "até R$ 0,50"},
+				        {2, "Ouro", "até R$ 1,00"},
+				        {3, "Prata", "até R$ 3,00"},
+				        {4, "Bronze", "acima de R$ 3,00"},
+				        {5, "Sem selo", "grátis, sem compra na Steam ou menos de 1 hora"}})
+				in
+				    Result
+
+	annotation PBI_ResultType = Table
+

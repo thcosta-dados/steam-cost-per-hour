@@ -68,12 +68,12 @@
                       "Entity": "daily_playtime"
                     }
                   },
-                  "Property": "Fatia do período"
+                  "Property": "Fatia do período texto"
                 }
               },
-              "queryRef": "daily_playtime.Fatia do período",
-              "nativeQueryRef": "Fatia do período",
-              "displayName": "Fatia"
+              "queryRef": "daily_playtime.Fatia do período texto",
+              "nativeQueryRef": "Fatia do período texto",
+              "displayName": "% das horas"
             },
             {
               "field": {
@@ -246,7 +246,7 @@
             }
           },
           "selector": {
-            "metadata": "daily_playtime.Fatia do período"
+            "metadata": "daily_playtime.Fatia do período texto"
           }
         },
         {

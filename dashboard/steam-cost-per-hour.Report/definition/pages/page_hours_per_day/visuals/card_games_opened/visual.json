@@ -23,11 +23,11 @@
                       "Entity": "daily_playtime"
                     }
                   },
-                  "Property": "Jogos que abri"
+                  "Property": "Média por dia jogado texto"
                 }
               },
-              "queryRef": "daily_playtime.Jogos que abri",
-              "nativeQueryRef": "Jogos que abri"
+              "queryRef": "daily_playtime.Média por dia jogado texto",
+              "nativeQueryRef": "Média por dia jogado texto"
             }
           ]
         }
@@ -179,7 +179,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Jogos que abri no período'"
+                  "Value": "'Nos dias em que joguei neste período, a média foi'"
                 }
               }
             }

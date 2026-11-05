@@ -28,22 +28,7 @@
               },
               "queryRef": "game_costs.cost_group",
               "nativeQueryRef": "cost_group",
-              "displayName": "Jogos que"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "game_costs"
-                    }
-                  },
-                  "Property": "Origens do grupo"
-                }
-              },
-              "queryRef": "game_costs.Origens do grupo",
-              "nativeQueryRef": "Origens do grupo",
-              "displayName": "Origem"
+              "displayName": "Como consegui"
             },
             {
               "field": {
@@ -184,27 +169,13 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "150D"
+                  "Value": "200D"
                 }
               }
             }
           },
           "selector": {
             "metadata": "game_costs.cost_group"
-          }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "230D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "game_costs.Origens do grupo"
           }
         },
         {

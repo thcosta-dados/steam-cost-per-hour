@@ -116,6 +116,14 @@ table daily_playtime
 	measure 'Fatia do período texto' = VAR f = [Fatia do período] RETURN IF ( ISBLANK ( f ), BLANK (), IF ( f > 0 && f < 0.01, "<1%", FORMAT ( f, "0%" ) ) )
 		lineageTag: e045bd37-1083-4788-86ab-63b07b1db4ef
 
+	/// Per-day hours of one game; blank for every day when the game was not opened, so the chart stays empty
+	measure 'Horas no dia do jogo' = IF ( CALCULATE ( [Horas jogadas], ALL ( collection_days ) ) > 0, [Horas jogadas no dia] )
+		formatString: #,0.0" h";-#,0.0" h";""
+		lineageTag: 245bb342-25d0-4a44-a8bf-61157c713fd3
+
+	measure 'Subtítulo das horas do jogo' = IF ( CALCULATE ( [Horas jogadas], ALL ( collection_days ) ) > 0, "Dia com 0 h é dia em que o painel anotou, mas não abri o jogo.", "Não abri este jogo em nenhum dia anotado." )
+		lineageTag: e0b17bae-cc33-4bf2-9d98-4e7bf48b7a04
+
 	column user_id
 		dataType: string
 		isHidden

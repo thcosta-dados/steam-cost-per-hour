@@ -286,8 +286,6 @@ table game_costs
 			VAR valor = SUM ( game_costs[game_value_brl] )
 			VAR extras = SUM ( game_costs[extra_spend_brl] )
 			VAR minutos = SUM ( game_costs[minutes_played] )
-			VAR recentes = [Horas jogadas]
-			VAR inicio = CALCULATE ( MIN ( collection_days[play_date] ), ALL ( collection_days ) )
 			VAR pos = [Posição em horas]
 			VAR p1 = SWITCH ( TRUE (),
 			    minutos = 0, "Ainda não abri este jogo.",
@@ -298,8 +296,7 @@ table game_costs
 			    o IN { "gratuito", "sem compra na Steam" } && extras > 0, " Não paguei para jogar, mas gastei " & "R$" & UNICHAR ( 160 ) & FORMAT ( extras, "#,0.00" ) & " dentro dele.",
 			    valor > 0 && extras > valor, " Dentro dele, gastei " & FORMAT ( DIVIDE ( extras, valor ), "0.0" ) & " vezes o que paguei pelo jogo.",
 			    "" )
-			VAR p3 = IF ( recentes > 0, " Desde " & FORMAT ( inicio, "dd/mm/yyyy" ) & ", joguei mais " & FORMAT ( recentes, "#,0.0" ) & " h nele.", "" )
-			RETURN p1 & p2 & p3
+			RETURN p1 & p2
 		lineageTag: 0501caf6-e089-404a-937b-6cda7d1e9f4e
 
 	measure 'Título do card horas' = "Total de horas jogadas na Steam, durante " & [Anos desde a primeira compra] & " anos (cerca de " & FORMAT ( [Horas por dia de conta], "0.0" ) & " h por dia)"

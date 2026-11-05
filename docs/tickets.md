@@ -206,14 +206,14 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Blocked by:** 11.
 
 **Acceptance criteria:**
-- [ ] O painel tem cinco páginas visíveis (Minha Steam, Valeu a pena?, Compras, Dia a dia, Bastidores), navegação só por botões, e a ficha do jogo (drill-through) e a dica continuam funcionando.
-- [ ] Nenhum texto visível abaixo de 12 pt, nenhum "..." ou "(Em branco)", e nenhum "·", "÷" ou "→" como separador. Conferido por varredura automática dos arquivos do relatório e pelos prints de cada página.
-- [ ] Todo fato curioso vem de uma medida e bate com uma consulta SQL independente em docs/fact_checks.sql.
-- [ ] Cinco fatos conferidos contra a própria Steam (biblioteca e página de Histórico de compras).
-- [ ] Toda métrica de custo mostra a origem do valor (regra 2), e um placar compara o gasto em jogos pagos e em jogos sem custo de acesso.
-- [ ] A página Dia a dia tem os filtros de período, origem do valor e tempo de jogo, e cada filtro atualiza todos os visuais da página. Selecionar um jogo numa tabela não esvazia as outras.
-- [ ] Uma revisão independente com o checklist da pesquisa ("parece IA ou feito por gente?") dá nota 8 ou mais em todas as páginas.
-- [ ] A spec registra o novo objetivo, as user stories e as regras novas.
+- [x] O painel tem cinco páginas visíveis (Minha Steam, Valeu a pena?, Compras, Dia a dia, Bastidores), navegação só por botões, e a ficha do jogo (drill-through) e a dica continuam funcionando.
+- [x] Nenhum texto visível abaixo de 12 pt, nenhum "..." ou "(Em branco)", e nenhum "·", "÷" ou "→" como separador. Conferido por varredura automática dos arquivos do relatório e pelos prints de cada página.
+- [x] Todo fato curioso vem de uma medida e bate com uma consulta SQL independente em docs/fact_checks.sql.
+- [x] Cinco fatos conferidos contra a própria Steam (biblioteca e página de Histórico de compras).
+- [x] Toda métrica de custo mostra a origem do valor (regra 2), e um placar compara o gasto em jogos pagos e em jogos sem custo de acesso.
+- [x] A página Dia a dia tem os filtros de período, origem do valor e tempo de jogo, e cada filtro atualiza todos os visuais da página. Selecionar um jogo numa tabela não esvazia as outras.
+- [x] Uma revisão independente com o checklist da pesquisa ("parece IA ou feito por gente?") dá nota 8 ou mais em todas as páginas.
+- [x] A spec registra o novo objetivo, as user stories e as regras novas.
 - [ ] O GIF de demonstração mostra filtros, clique no jogo e navegação, em menos de 30 segundos (vindo do ticket 11).
 - [ ] Verificado se é possível publicar o painel em link aberto com a conta disponível, e a resposta registrada (vindo do ticket 11).
 

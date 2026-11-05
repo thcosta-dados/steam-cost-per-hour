@@ -43,11 +43,11 @@
                       "Entity": "daily_playtime"
                     }
                   },
-                  "Property": "Horas jogadas no dia"
+                  "Property": "Horas no dia do jogo"
                 }
               },
-              "queryRef": "daily_playtime.Horas jogadas no dia",
-              "nativeQueryRef": "Horas jogadas no dia",
+              "queryRef": "daily_playtime.Horas no dia do jogo",
+              "nativeQueryRef": "Horas no dia do jogo",
               "displayName": "Horas jogadas"
             }
           ]
@@ -339,8 +339,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Dia com 0 h é dia em que o painel anotou, mas não abri o jogo.'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "daily_playtime"
+                    }
+                  },
+                  "Property": "Subtítulo das horas do jogo"
                 }
               }
             }

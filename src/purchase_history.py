@@ -265,8 +265,15 @@ def load_history(conn, user_id, page, games, aliases):
                        SET original_content = EXCLUDED.original_content, reason = EXCLUDED.reason""",
                     (key, user_id, row["date"], content, reason),
                 )
+                # Accepted on an earlier load (the rules or the catalog changed): it leaves purchases,
+                # so each row of the page is in exactly one table
+                conn.execute("DELETE FROM purchase_items WHERE purchase_key = %s", (key,))
+                conn.execute("DELETE FROM purchases WHERE purchase_key = %s", (key,))
                 quarantined += 1
                 continue
+            # Quarantined on an earlier load (e.g. a new alias, or a game that reached the catalog
+            # after that load): it leaves the quarantine
+            conn.execute("DELETE FROM quarantine WHERE quarantine_key = %s", (key,))
             # A refund points to the purchase it cancels (rule 5): same transaction id, type Purchase
             refunded_key = (transaction_key(user_id, row["transaction_id"], "Purchase")
                             if purchase_type == "refund" and row["transaction_id"] else None)

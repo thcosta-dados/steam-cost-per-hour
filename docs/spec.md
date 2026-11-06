@@ -59,7 +59,7 @@ Um pipeline de dados que junta a biblioteca e as horas jogadas (coletadas todos 
 
 **Ferramentas e motivo de cada uma**
 
-1. Python com Pandas para transformação, por ser o padrão de mercado para manipulação de dados em Python.
+1. Python com psycopg para a coleta e a carga. A transformação fica em SQL, nas views do banco, para que o Power BI e as consultas de conferência usem a mesma regra.
 2. Requests para chamar a API e a loja, por ser simples e padrão de mercado.
 3. BeautifulSoup para ler o HTML do histórico de compras.
 4. PostgreSQL hospedado no Supabase (plano gratuito), porque a coleta roda na nuvem e precisa de um banco acessível pela internet.
@@ -152,7 +152,7 @@ Cada conferência usa uma fonte independente do código, nunca o próprio result
 4. Login automático na Steam ou qualquer coleta que exija a senha do usuário.
 5. Coleta de perfis de pessoas que não deram consentimento, mesmo que públicos.
 6. Docker na execução em nuvem (na v1 ele é só o ambiente local).
-7. Um site em que outras pessoas informam o próprio perfil e veem os seus dados (fase 2, decidido em 03/11/2026). O Power BI não serve para isso sem licença paga e controle de acesso por usuário. A fase 2 ganha uma especificação própria, que precisa resolver o histórico de compras enviado por terceiros (dado financeiro, LGPD), a coleta diária de cada usuário e o login oficial "Entrar com a Steam". A publicação do painel da v1 na web, com os dados do autor, continua no escopo.
+7. Um site em que outras pessoas informam o próprio perfil e veem os seus dados (fase 2, decidido em 03/11/2026). O Power BI não serve para isso sem licença paga e controle de acesso por usuário. A fase 2 ganha uma especificação própria, que precisa resolver o histórico de compras enviado por terceiros (dado financeiro, LGPD), a coleta diária de cada usuário e o login oficial "Entrar com a Steam". A publicação do painel da v1 na web, com os dados do autor, foi avaliada no ticket 11b e não é possível com conta pessoal, porque "Publicar na Web" exige conta de trabalho ou de escola. O painel é apresentado pelo GIF e pelos prints do README.
 8. Plataformas além da Steam (Epic, PlayStation, Xbox).
 9. Compras no jogo feitas fora da Steam. Não existe fonte confiável para elas: os sites de cada empresa exigem login, e uma planilha preenchida à mão foi descartada por ser insustentável (a pessoa não tem esses valores).
 10. Horas em jogos emprestados pela Biblioteca Familiar. A API principal não os devolve, e a de jogos recentes só cobriria o que foi jogado nas últimas 2 semanas, a partir do início da coleta. Avaliado e descartado em 16/10/2026.

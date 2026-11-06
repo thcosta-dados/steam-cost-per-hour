@@ -1,8 +1,6 @@
 # steam-cost-per-hour
 
-> **EN:** A case study of my own Steam account. A Python pipeline on GitHub Actions stores a daily snapshot of my playtime from the Steam Web API in PostgreSQL (Supabase), SQL views combine it with my purchase history, and a Power BI dashboard shows the cost per hour of each game. Work in progress.
-
-> Este README ainda é provisório, porque o projeto está em construção. A versão final, com o diagrama do fluxo e prints do painel, fica pronta no fim da v1.
+> **EN:** A case study of my own Steam account. A Python pipeline on GitHub Actions stores a daily snapshot of my playtime from the Steam Web API in PostgreSQL (Supabase), SQL views combine it with my purchase history, and a Power BI dashboard shows the cost per hour of each game. I checked hours and paid values against my Steam library and purchase history page, and every dashboard fact has an independent SQL check.
 
 ![Demonstração do painel no Power BI: navegação entre as páginas, dica de um jogo, ficha do jogo e filtros](docs/images/dashboard-demo.gif)
 
@@ -15,6 +13,33 @@ Um estudo de caso da minha própria conta na Steam. Um pipeline de dados junta a
 
 A especificação completa está em [docs/spec.md](docs/spec.md) e o plano de trabalho em [docs/tickets.md](docs/tickets.md).
 
+## Fluxo dos dados
+
+```mermaid
+flowchart LR
+    API["Steam Web API<br>minutos de cada jogo"] -->|todo dia| GHA["Python no<br>GitHub Actions"]
+    LOJA["Loja da Steam<br>preço, capa e gêneros"] -->|só jogos novos| GHA
+    HIST["Histórico de compras<br>HTML salvo pelo navegador"] -->|carga manual| PC["Python no<br>meu computador"]
+    GHA --> DB[("PostgreSQL no Supabase<br>snapshots, compras e views")]
+    PC --> DB
+    DB -->|túnel TLS, modo Import| PBI["Power BI"]
+```
+
+A coleta roda sozinha uma vez por dia, grava o total de minutos de cada jogo e consulta a loja só para jogos novos. O histórico de compras eu carrego à mão, porque a Steam não tem API nem exportação para ele. As views calculam o custo e as horas por dia. O Power BI importa esse resultado, e as medidas DAX fazem os totais, os selos e as frases do painel.
+
+## Regras de negócio
+
+- O custo por hora é o que gastei com o jogo (o que paguei por ele, mais DLCs e compras dentro do jogo) dividido pelas horas com o jogo aberto. Só é calculado para jogos com horas e com valor conhecido.
+- Todo valor carrega a origem, nesta ordem de prioridade. É "gratuito" quando jogo sem ter a licença, como nos free-to-play, e "pago" quando a compra está no meu histórico e não foi reembolsada. Com o histórico completo carregado, um jogo com licença e sem compra fica "sem compra na Steam", com valor R$ 0, como presentes, cortesias e promoções de jogo grátis. Sem o histórico, o valor é "estimado" pelo preço cheio da loja, ou fica "sem valor conhecido" se a loja não tem preço, e aí o jogo fica fora das somas.
+- Quem decide se um jogo é gratuito é a licença da minha conta. Um jogo que comprei e depois virou gratuito na loja continua pago para mim.
+- O ranking de custo por hora só tem jogos pagos ou estimados com 1 hora ou mais. Os gratuitos e os sem compra na Steam ficam num ranking próprio, ordenado por horas.
+- Dinheiro parado é o valor dos jogos comprados que nunca abri. Os que abri por menos de 1 hora ficam num grupo à parte, o dos mal começados.
+- O valor de um pacote é dividido entre os jogos pelo preço de tabela de cada um, ou em partes iguais se algum não tiver preço. Uma compra reembolsada se anula com o estorno, e num reembolso parcial saem só os itens devolvidos.
+- As horas de cada dia são a diferença entre duas coletas seguidas e ficam no dia anterior ao da coleta, que roda entre a manhã e o começo da tarde. Um total que diminui vai para a quarentena em vez de virar hora negativa.
+- Programas como o Wallpaper Engine, servidores de teste e playtests ficam guardados no banco, mas fora das contas, numa lista com o motivo na página Bastidores.
+
+A lista completa, com 34 regras, está na [especificação](docs/spec.md).
+
 ## Stack
 
 Python (Requests, BeautifulSoup, psycopg), PostgreSQL (Supabase na nuvem), GitHub Actions, Docker, pytest e Power BI (DAX e Power Query, projeto PBIP).
@@ -23,7 +48,7 @@ Python (Requests, BeautifulSoup, psycopg), PostgreSQL (Supabase na nuvem), GitHu
 
 A API da Steam informa só o total acumulado de minutos de cada jogo, sem histórico. Por isso a coleta diária grava um snapshot desse total em `playtime_snapshots`, e a chave primária garante uma linha por usuário, jogo e dia. As horas de cada dia saem da diferença entre um snapshot e o anterior, calculada no SQL com a função de janela `LAG`. Quando falta um dia de coleta, o intervalo inteiro vai para o último dia, e a coluna `days_covered` mostra quantos dias ele cobre. Se um total diminui, ele aparece na view `collection_quarantine` com o motivo, em vez de virar hora negativa.
 
-Rodar a coleta duas vezes no mesmo dia não duplica nada, porque ela grava com `INSERT ... ON CONFLICT DO UPDATE` e só atualiza o snapshot daquele dia. O catálogo da loja é incremental e só consulta os jogos que ainda não têm preço gravado, com 1,5 s de pausa entre pedidos. Um preço já gravado nunca é sobrescrito.
+Rodar a coleta duas vezes no mesmo dia não duplica nada, porque ela grava com `INSERT ... ON CONFLICT DO UPDATE` e só atualiza o snapshot daquele dia. O catálogo da loja é incremental: cada jogo é consultado uma vez só, com 1,5 s de pausa entre pedidos, e um preço já gravado nunca é sobrescrito.
 
 O histórico de compras não tem API. Salvo a página da Steam pelo navegador, e um script lê o HTML com BeautifulSoup no meu computador. Cada linha vira compra ou vai para a tabela `quarantine` com o motivo (crédito de carteira ou compra em outra moeda, por exemplo). Um hash SHA-256 de cada linha permite carregar o mesmo arquivo de novo sem duplicar nada. Pacotes são divididos entre os jogos pelo preço de tabela de cada um, em centavos inteiros e pelo método dos maiores restos, para que a soma das partes bata com o valor pago.
 
@@ -40,14 +65,17 @@ cp .env.example .env
 # 2. Suba o banco PostgreSQL e o ambiente Python
 docker compose up -d
 
-# 3. Rode os testes dentro do ambiente
+# 3. Crie as tabelas e as views no banco local
+docker compose exec app python -m src.create_tables
+
+# 4. Rode os testes dentro do ambiente
 docker compose exec app pytest
 
 # Para desligar
 docker compose down
 ```
 
-O banco local fica acessível pelo Windows (pgAdmin, DBeaver, Power BI) em `localhost:5433`, com o usuário e a senha definidos no `.env`.
+Para os testes, basta a senha do banco no `.env`. A chave da API, o `STEAM_USERS` e a chave do hash só são necessários para coletar. O banco local fica acessível pelo Windows (pgAdmin, DBeaver, Power BI) em `localhost:5433`, com o usuário e a senha definidos no `.env`.
 
 ## Pipeline
 
@@ -65,7 +93,7 @@ As contas coletadas ficam na variável `STEAM_USERS` (`steamid:apelido`, separad
 
 ## Banco na nuvem (Supabase)
 
-Para usar o Supabase, o código é o mesmo e só mudam as variáveis de ambiente. Uso o *Session pooler* porque a conexão direta do Supabase é só IPv6, e os runners do GitHub não têm IPv6. Crie o `.env.cloud` com os dados do *Session pooler* do projeto e `POSTGRES_SSLMODE=require` (veja o `.env.example`), e use o serviço `app-cloud`:
+Para usar o Supabase, o código é o mesmo e só mudam as variáveis de ambiente. Uso o *Session pooler* porque, no plano gratuito, a conexão direta do Supabase é só IPv6, e os runners do GitHub não têm IPv6. Crie o `.env.cloud` com os dados do *Session pooler* do projeto, `POSTGRES_SSLMODE=verify-full` e `PGSSLROOTCERT=/app/tunnel/supabase-root-ca-2021.crt` (o caminho dentro do container; veja o `.env.example`), e use o serviço `app-cloud`. Com `verify-full`, a conexão só abre se a cadeia do certificado levar à CA raiz do Supabase e o certificado tiver o nome do servidor, a mesma conferência que o túnel do Power BI faz:
 
 ```bash
 docker compose run --rm app-cloud python -m src.create_tables
@@ -74,7 +102,7 @@ docker compose run --rm app-cloud python -m src.run_daily
 
 ## Coleta automática (GitHub Actions)
 
-O workflow `.github/workflows/daily-collection.yml` roda o pipeline uma vez por dia num runner do GitHub, e os dados vão para o Supabase. Ele está agendado para as 03:17 (horário de Brasília) e também pode ser disparado pelo botão *Run workflow*. Na prática, o GitHub costuma iniciar execuções agendadas com atraso. Em outubro de 2026, elas começaram entre 8h05 e 10h07, umas 5 a 7 horas depois do horário marcado. O agendamento de madrugada deixa folga para esse atraso, e a data do snapshot é calculada no fuso de São Paulo (o runner usa UTC), então o dia registrado não muda. As credenciais ficam nos segredos do repositório.
+O workflow `.github/workflows/daily-collection.yml` roda o pipeline uma vez por dia num runner do GitHub, e os dados vão para o Supabase. Ele está agendado para as 03:17 (horário de Brasília) e também pode ser disparado pelo botão *Run workflow*. Na prática, o GitHub costuma iniciar execuções agendadas com atraso. De 23/10 a 05/11/2026, as 14 execuções agendadas começaram entre 8h04 e 12h58, de quase 5 a quase 10 horas depois do horário marcado. O agendamento de madrugada deixa folga para esse atraso, e a data do snapshot é calculada no fuso de São Paulo (o runner usa UTC), então o dia registrado não muda. As credenciais ficam nos segredos do repositório.
 
 Cada usuário é coletado na própria transação, então a falha de um (um perfil privado, por exemplo) desfaz só os dados dele. Se qualquer parte falhar, o script termina com código de saída 1, a execução fica vermelha na aba Actions e o GitHub envia um e-mail.
 
@@ -88,7 +116,7 @@ O Supabase publica as tabelas do schema `public` numa API REST automática (Post
 
 ![Página Valeu a pena?: ranking de custo por hora com selos, placar entre jogos comprados e não comprados e lista dos jogos sem compra](docs/images/valeu-a-pena.png)
 
-![Ficha do jogo Dead by Daylight: selo, origem do valor, horas, gastos e a evolução das horas por dia](docs/images/ficha-do-jogo.png)
+![Ficha do jogo Deadlock: capa, origem do valor (sem compra na Steam, por isso sem selo), horas, posição na conta e os gráficos do total de horas e das horas por dia](docs/images/ficha-do-jogo.png)
 
 O painel do Power BI está em `dashboard/`, salvo como projeto (`.pbip`), com o modelo semântico em TMDL e o relatório em PBIR. São arquivos de texto, então cada medida DAX ou visual alterado aparece no diff do Git. O painel importa as views do banco (modo Import), e o servidor e o nome do banco são parâmetros do Power Query, o que permite apontar o mesmo arquivo para o banco local ou para o Supabase. O cache com os dados importados fica fora do Git.
 
@@ -97,6 +125,10 @@ O Supabase assina os certificados do banco com uma autoridade certificadora (CA)
 ## Privacidade
 
 Credenciais ficam só no `.env` (ignorado pelo Git) e nos segredos do GitHub. O arquivo do histórico de compras é lido no meu computador e nunca vai para o repositório, e a carga não grava forma de pagamento, saldo da carteira, destinatário de presente nem número da transação. O SteamID só entra no banco como HMAC-SHA256, um hash com chave secreta. Um SHA-256 simples não bastaria, porque os SteamIDs ficam numa faixa conhecida e daria para calcular o hash de cada um até achar o meu. As mensagens de erro, que aparecem nos logs públicos do Actions, citam o apelido ou a posição na lista, nunca o SteamID ou a chave da API.
+
+## Validação
+
+Conferi os números principais com fontes que não passam pelo meu código: a biblioteca da Steam, a página de Histórico de compras e contas feitas à mão. Os 9 critérios de sucesso da especificação e o resultado de cada conferência estão em [docs/validation.md](docs/validation.md). A coleta rodou sozinha todos os dias de 23/10 a 05/11/2026: as 14 execuções agendadas terminaram com sucesso, com 79 snapshots em cada dia.
 
 ## Próximos passos
 

@@ -75,12 +75,16 @@ CREATE TABLE IF NOT EXISTS purchase_items (
 CREATE TABLE IF NOT EXISTS quarantine (
     quarantine_key   TEXT PRIMARY KEY,        -- same fingerprint as purchase_key
     user_id          TEXT NOT NULL REFERENCES users (user_id),
-    origin           TEXT NOT NULL CHECK (origin IN ('purchase_history', 'licenses')),
+    origin           TEXT NOT NULL CONSTRAINT quarantine_origin_check CHECK (origin IN ('purchase_history')),
     row_date         DATE,
     original_content TEXT NOT NULL,
     reason           TEXT NOT NULL CHECK (reason <> ''),
     loaded_at        TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+-- Migration (ticket 12): the licenses page was discarded on 27/10/2026 (spec, Data and Sources),
+-- so 'licenses' leaves the allowed origins. Dropped and added again, so it can run more than once.
+ALTER TABLE quarantine DROP CONSTRAINT IF EXISTS quarantine_origin_check;
+ALTER TABLE quarantine ADD CONSTRAINT quarantine_origin_check CHECK (origin IN ('purchase_history'));
 
 -- One row per pipeline execution (spec, rule 15). Status: running while it works, then
 -- success (no errors), partial (some user or step failed, some data collected) or failed.

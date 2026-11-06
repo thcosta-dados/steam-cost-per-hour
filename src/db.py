@@ -11,8 +11,8 @@ def get_connection():
         dbname=os.environ["POSTGRES_DB"],
         user=os.environ["POSTGRES_USER"],
         password=os.environ["POSTGRES_PASSWORD"],
-        # "require" for Supabase: TLS on, but the server certificate is not verified
-        # (that would be "verify-full" with Supabase's root CA, as the Power BI tunnel does).
+        # "verify-full" for Supabase: the server certificate chain must lead to Supabase's root CA
+        # (PGSSLROOTCERT, read by libpq) and the certificate must carry the host name, as the Power BI tunnel checks.
         # Missing or empty = "prefer": TLS only if the server offers it, and local Docker does not.
         sslmode=os.environ.get("POSTGRES_SSLMODE") or "prefer",
     )

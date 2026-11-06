@@ -166,6 +166,18 @@ def test_loading_the_same_page_twice_does_not_duplicate(conn):
     assert (count("purchases"), count("quarantine")) == (7, 11)
 
 
+def test_a_row_moves_between_quarantine_and_purchases_when_the_catalog_changes(conn):
+    count = lambda table: conn.execute(f"SELECT count(*) FROM {table} WHERE user_id = %s", (USER,)).fetchone()[0]
+    load(conn)  # "Unknown Indie Game" is not in the library yet: quarantine
+    conn.execute("INSERT INTO games (app_id, name) VALUES (900006, 'Unknown Indie Game')")
+    games = {**GAMES, 900006: "Unknown Indie Game"}
+    assert load_history(conn, USER, PAGE, games, ALIASES) == {"rows": 18, "accepted": 8, "quarantined": 10}
+    assert (count("purchases"), count("quarantine")) == (8, 10)  # the row left the quarantine
+    # And back: without the game the row is quarantined again and leaves purchases
+    assert load(conn) == {"rows": 18, "accepted": 7, "quarantined": 11}
+    assert (count("purchases"), count("quarantine")) == (7, 11)
+
+
 def test_payment_method_recipient_wallet_balance_and_transaction_id_are_not_stored(conn):
     load(conn)
     stored = " ".join(str(v) for row in conn.execute(

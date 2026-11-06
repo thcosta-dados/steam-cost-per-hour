@@ -5,7 +5,7 @@ name: Daily collection
 on:
   schedule:
     # 06:17 UTC = 03:17 in Brasília. GitHub often starts scheduled runs hours late (observed
-    # between 08:05 and 10:07 in Brasília in October 2026); scheduling early keeps the run on
+    # between 08:04 and 12:58 in Brasília from 23 Oct to 5 Nov 2026); scheduling early keeps the run on
     # the same day even so. Minute 17 stays away from the top of the hour, when GitHub's queue is busiest.
     - cron: "17 6 * * *"
   workflow_dispatch: # "Run workflow" button for manual runs
@@ -47,4 +47,6 @@ jobs:
           # Not secret: Supabase session pooler port, database name and required encryption
           POSTGRES_PORT: "5432"
           POSTGRES_DB: postgres
-          POSTGRES_SSLMODE: require
+          # TLS with the server certificate checked against Supabase's root CA (versioned in tunnel/)
+          POSTGRES_SSLMODE: verify-full
+          PGSSLROOTCERT: ${{ github.workspace }}/tunnel/supabase-root-ca-2021.crt

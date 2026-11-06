@@ -593,6 +593,15 @@
           }
         ]
       }
+    },
+    "lineChart": {
+      "*": {
+        "lineStyles": [
+          {
+            "lineChartType": "linear"
+          }
+        ]
+      }
     }
   }
 }

@@ -96,7 +96,7 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Blocked by:** 03, 05.
 
 **Acceptance criteria:**
-- [x] A coleta roda no horário agendado sem nenhuma ação manual, e a execução aparece na aba de ações do repositório. Conferido: 5 execuções seguidas com gatilho schedule e sucesso (23 a 27/10/2026). O GitHub atrasou o início em 5 a 7 horas (rodaram entre 08:05 e 10:07), sem mudar a data dos snapshots.
+- [x] A coleta roda no horário agendado sem nenhuma ação manual, e a execução aparece na aba de ações do repositório. Conferido: 5 execuções seguidas com gatilho schedule e sucesso (23 a 27/10/2026). O GitHub atrasou o início em 5 a 7 horas (rodaram entre 08:04 e 10:07), sem mudar a data dos snapshots.
 - [x] Cada execução gera um registro na tabela de execuções, com status e quantidade de jogos. Conferido em 22/10/2026: as execuções no GitHub batem com as linhas de pipeline_runs no Supabase (status, horário e 79 jogos).
 - [x] Uma falha forçada de teste (por exemplo, chave inválida) gera registro de falha e e-mail do GitHub. Conferido em 22/10/2026: HTTP 401 registrado como failed, execução vermelha e e-mail recebido pelo dono.
 - [x] Um usuário de teste com perfil privado gera registro de falha só para ele, sem derrubar a execução. Coberto por teste automático com usuários fictícios e conferido em 27/10/2026 com uma conta real de familiar, que consentiu e estava com perfil privado: execução partial (79 jogos do dono, falha só da conta de teste), nenhum dado dela gravado e conta removida dos segredos logo depois.
@@ -212,7 +212,7 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 - [x] Cinco fatos conferidos contra a própria Steam (biblioteca e página de Histórico de compras).
 - [x] Toda métrica de custo mostra a origem do valor (regra 2), e um placar compara o gasto em jogos pagos e em jogos sem custo de acesso.
 - [x] A página Dia a dia tem os filtros de período, origem do valor e tempo de jogo, e cada filtro atualiza todos os visuais da página. Selecionar um jogo numa tabela não esvazia as outras.
-- [x] Uma revisão independente com o checklist da pesquisa ("parece IA ou feito por gente?") dá nota 8 ou mais em todas as páginas.
+- [x] Uma revisão independente de design e texto, com o checklist da pesquisa, dá nota 8 ou mais em todas as páginas.
 - [x] A spec registra o novo objetivo, as user stories e as regras novas.
 - [x] O GIF de demonstração mostra filtros, clique no jogo e navegação, em menos de 30 segundos (vindo do ticket 11). Gravado em 05/11/2026: docs/images/dashboard-demo.gif, 27 s e 4,2 MB.
 - [x] Verificado se é possível publicar o painel em link aberto com a conta disponível, e a resposta registrada (vindo do ticket 11). Resposta em 05/11/2026: não é possível. "Publicar na Web" exige entrar no serviço do Power BI com uma conta de trabalho ou de escola, e o autor só tem contas pessoais. O painel é apresentado pelo GIF e pelos prints no README, e o arquivo .pbip fica no repositório para quem tiver o Power BI Desktop.
@@ -226,8 +226,8 @@ Ao concluir um ticket, marque os critérios de aceite com [x].
 **Blocked by:** 06, 07, 11.
 
 **Acceptance criteria:**
-- [ ] Os 8 critérios de sucesso da especificação foram conferidos, e o resultado de cada um está registrado.
-- [ ] O GitHub Actions mostra 7 execuções diárias seguidas com sucesso.
-- [ ] O README explica em poucos segundos o que o projeto faz, mostra o fluxo dos dados, as regras de negócio principais e como rodar o ambiente local.
-- [ ] O README tem prints do painel e o GIF de demonstração.
-- [ ] Nenhuma credencial, SteamID em texto aberto ou histórico real existe em todo o histórico do repositório.
+- [x] Os 9 critérios de sucesso da especificação foram conferidos, e o resultado de cada um está registrado. Conferido em 05/11/2026: os 9 passaram, com fonte, data e resultado de cada um em docs/validation.md.
+- [x] O GitHub Actions mostra 7 execuções diárias seguidas com sucesso. Conferido: 14 execuções agendadas seguidas com sucesso, de 23/10 a 05/11/2026, com 79 snapshots em cada dia.
+- [x] O README explica em poucos segundos o que o projeto faz, mostra o fluxo dos dados, as regras de negócio principais e como rodar o ambiente local. Diagrama do fluxo em Mermaid, seção de regras de negócio e o passo de criar as tabelas antes dos testes num clone novo.
+- [x] O README tem prints do painel e o GIF de demonstração. GIF no topo e prints de Minha Steam, Valeu a pena? e da ficha do Deadlock.
+- [x] Nenhuma credencial, SteamID em texto aberto ou histórico real existe em todo o histórico do repositório. Conferido em 05/11/2026 nos 143 commits, contando os ramos de backup locais: 0 ocorrências do SteamID, da chave da API, da chave do hash e das senhas, e nenhum .env ou histórico de compras real versionado.
